@@ -1,0 +1,63 @@
+.cadre{
+display: flex;
+flex-direction: column;
+align-items: center;
+
+    
+    width: 100%;
+   
+
+}
+fieldset{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    width: 30px;
+    margin-left: 30px;
+}
+input{
+    margin: 10px;
+    height: 40px;
+    width: 400px;
+    background-color:#C4C4C4 ;
+    
+
+}
+fieldset{
+    padding: 30px;
+    border:solid 1px #585aec1c;
+    box-shadow: #585AEC;
+
+    width: 300px;
+}
+form{
+display: flex;
+flex-wrap: wrap;
+}
+#milieux_bas{
+
+}
+button{
+    font-size: 30px;
+    color: white;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 30px;
+    background-color: #C6D7EB;
+    border-radius: 15px;
+
+}
+h2{
+    font-size: 30px;
+    color: white;
+    width: 60%;
+   text-align: center;
+    height: 50px;
+    background-color: #C6D7EB;
+    border-radius: 15px;
+
+
+}
+#droite , #gauche{
+    height: 100%;
+}

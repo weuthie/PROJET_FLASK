@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/base.css">
+    <!-- <link rel="stylesheet" href="../static/css/base.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
 
 
     <title>{% block title %} {% endblock %} </title>
@@ -28,7 +29,7 @@
         <a href="#" class="profil"><img src="../static/img/homee.png" alt="profil"></a>
     </nav>
     <div id="containt">
-        <!-- {% block content %} {% endblock %} -->
+        {% block content %} {% endblock %}
     </div>
     <footer>&copy Groupe4 Flask_Projet P4 Dev_Data SA 2022</footer>
 </body>

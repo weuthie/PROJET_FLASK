@@ -1,6 +1,7 @@
 from crypt import methods
 import email
-from flask import Flask ,render_template , request
+from click import password_option
+from flask import Flask, redirect ,render_template , request
 from flask_wtf import FlaskForm
 from wtforms import StringField ,PasswordField
 from wtforms.validators import InputRequired
@@ -48,37 +49,33 @@ def form():
         return "valide"
     return render_template('formulaire_de__connxion.html', info_user = info_user)
 
-@app.route('/')
-def index():
-    return render_template('formulairedajout.html')
-
 @app.route('/adduser', methods=["GET","POST"])
 def adduser():
-    name = request.form['name']
-    username = request.form['username']
-    email = request.form['email']
-    phone = request.form['phone']
-    website = request.form['website']
-    street = request.form['street']
-    suite = request.form['suite']
-    city = request.form['city']
-    zipcode = request.form['zipcode']
-    latitude = request.form['latitude']
-    longitude = request.form['longitude']
-    companyname = request.form['companyname']
-    catchPhrase = request.form['catchPhrase']
-    bs = request.form['bs']
-    # donne_personnel= Users(name = name , username = username,phone=phone,email=email,website=website)
-    # db.session.add(donne_personnel)
-    # db.commit()
-
-
-
-    return  name 
+    if request.method == 'POST':
+        name = request.form['name']
+        username = request.form['username']
+        email = request.form['email']
+        phone = request.form['phone']
+        website = request.form['website']
+        street = request.form['street']
+        suite = request.form['suite']
+        city = request.form['city']
+        zipcode = request.form['zipcode']
+        latitude = request.form['latitude']
+        longitude = request.form['longitude']
+        companyname = request.form['companyname']
+        catchPhrase = request.form['catchPhrase']
+        bs = request.form['bs']
+        donne_personnel= Users(name = name , username = username,phone=phone,email=email,website=website, password=123)
+        try:
+            db.session.add(donne_personnel)
+            db.session.commit()
+            return  redirect('/') 
+        except:
+            db.session.rollback()
+            return  "erreur"
+    else:
+        return render_template('formulairedajout.html')
 
 app.run(debug=True)
-# @app.route('/adduser', methods=['get','POST'])
-# def adduser():
-#     name = request.form['name']
-#     username = request.form['username']
 

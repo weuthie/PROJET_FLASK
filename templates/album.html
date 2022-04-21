@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href=" {{ url_for('static', filename='album.css') }} ">
+<button id="addAlbum">ADD ALBUM</button>
+<div class="album">
+    <a href="#"><img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}" alt=""></a>
+
+    <a href="#"><img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}" alt=""></a>
+
+</div>
+
+{% endblock %}

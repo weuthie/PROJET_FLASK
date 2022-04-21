@@ -13,13 +13,21 @@ class Login(FlaskForm):
     email = StringField('email', validators=[InputRequired()])
     pwd = PasswordField('pwd')
 
-
+# --------------------DOING BY LOUFA---------------------
 # @app.route('/')
 @app.route('/pagePrincipal')
 def pagePrincipal():
-    return render_template('pagePrincipal.html')
+    return render_template('base.html')
 
 
+@app.route('/pageUser')
+def pageUser():
+    return render_template('pageUser.html')
+
+@app.route('/album')
+def album():
+    return render_template('album.html')
+# ----------------END DOING BY LOUFA---------------
 @app.route('/singin', methods=['GET','POST'])
 def form():
     info_user = Login()

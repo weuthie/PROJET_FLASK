@@ -20,6 +20,7 @@ input{
     height: 40px;
     width: 400px;
     background-color:#C4C4C4 ;
+    font-size: x-large;
     
 
 }
@@ -29,6 +30,10 @@ fieldset{
     box-shadow: #585AEC;
 
     width: 300px;
+}
+legend{
+    font-weight: bold;
+    font-size: 25px;
 }
 form{
 display: flex;

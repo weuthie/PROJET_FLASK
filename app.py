@@ -25,6 +25,13 @@ class Login(FlaskForm):
 def pagePrincipal():
     return render_template('pagePrincipal.html')
 
+# ----------------------------------------------------
+@app.route('/userPost')
+def userPost():
+    return render_template('userPost.html')
+
+# ---------------------------------------------------
+
 
 @app.route('/singin', methods=['GET','POST'])
 def form():

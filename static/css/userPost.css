@@ -1,0 +1,23 @@
+button{
+    background-color: #C6D7EB;
+    width: 150px;
+    height: 50px;
+    border-radius: 10px;
+    margin-left: 50px;
+    margin-top: 15px;
+    color: white;
+    border-color: #C6D7EB;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+}
+
+article{
+    background-color: #FBF8F8;
+    width: 80%;
+    height: 120px;
+    margin-top: 40px;
+    margin-left: 10%;
+    border: 1px solid #C6D7EB;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px 0px;
+}

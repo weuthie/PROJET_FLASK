@@ -1,0 +1,100 @@
+* {
+    margin: O;
+    padding: o;
+    /* outline: none; */
+}
+
+body {
+    /* background: linear-gradient(45deg, #FC466B, #3F5EFB); */
+    background: white;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    position: relative;
+}
+
+form {
+    /* background: rgba(255, 255, 255, .3); */
+    background-color: white;
+    padding: 200px;
+    height: 450px;
+    border-radius: 20px;
+    /*effet reflet*/
+    border-left: 1px solid rgba(255, 255, 255, .3);
+    border-top: 1px solid rgba(255, 255, 255, .3);
+    /*filtre pour les éléments en dessous */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    -moz-backdrop-filter: blur(10px);
+    box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, .2);
+    text-align: center;
+}
+
+p {
+    color: white;
+    font-weight: 500;
+    opacity: .7;
+    font-size: 27px;
+    margin-bottom: 60px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+    border: 1px solid rgb(110, 154, 197);
+    padding: 25px;
+    width: 100%;
+    border-radius: 10px;
+    background:#C6D7EB;
+}
+
+a {
+    color: #ddd;
+    text-decoration: none;
+    font-size: 12px;
+    transition: all .3s;
+}
+
+a:hover {
+    text-shadow: 2px 2px 6px rgba(0, 0, 0);
+}
+
+input {
+    background: #FBFBFB;
+    border-left: 1px solid #C6D7EB;
+    border-top: 1px solid #C6D7EB;
+    padding: 40px;
+    width: 400px;
+    border-radius: 30px;
+    color:black;
+    border: 1px solide rgb(95, 95, 130);
+    font-weight: 500;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+    transition: all .3s;
+    margin-bottom: 20px;
+}
+
+::placeholder {
+    color:black;
+}
+
+/*lorsque lorsque l'on clic dedant*/
+input:hover,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    background: rgba(255, 255, 255, .1);
+    box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, .2);
+    transition: all .3s;
+}
+
+input[type="button"] {
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 16px;
+    width: 150px;
+}
+
+.button{
+    height: 5px;
+}

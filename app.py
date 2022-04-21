@@ -23,6 +23,13 @@ def pagePrincipal():
 @app.route('/pageUser')
 def pageUser():
     return render_template('pageUser.html')
+# ----------------------------------------------------
+@app.route('/userPost')
+def userPost():
+    return render_template('userPost.html')
+
+# ---------------------------------------------------
+
 
 @app.route('/album')
 def album():

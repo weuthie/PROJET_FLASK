@@ -7,10 +7,8 @@ app = Flask(__name__)
 def pagePrincipal():
     return render_template('pagePrincipal.html')
 
-@app.route('/adduser', methods=['get','POST'])
-def adduser():
-    name = request.form['name']
-    username = request.form['username']
+# @app.route('/adduser', methods=['get','POST'])
+# def adduser():
+#     name = request.form['name']
+#     username = request.form['username']
 
-
-app.run()

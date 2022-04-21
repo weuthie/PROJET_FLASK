@@ -4,43 +4,44 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/formulairdajout.css">
+    <!-- <link rel="stylesheet" href="../static/css/formulairdajout.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulairdajout.css') }}">
     <title>formulaire</title>
 </head>
 <body>
-    <a href="#"><img src="../static/img/homee.png" alt=""></a>
+    <!-- <a href="#"><img src="../static/img/homee.png" alt=""></a> -->
+    <a href="#"><img src="{{ url_for('static', filename='img/homee.png')}}" alt=""></a>
 
     <div class="cadre">
         <h2>ADD USER</h2>
     <form action="">
         <fieldset id="gauche">
         <legend>Donnee Personnel</legend>
-        <input type="text" placeholder="name"/>
-        <input type="text" placeholder="username"/>
-        <input type="email" placeholder="email"/>
-        <input type="text" placeholder="name"/>
-        <input type="text" placeholder="phone"/>
-        <input type="text" placeholder="website"/>
+        <input type="text" name="name" placeholder="name"/>
+        <input type="text" name="username" placeholder="username"/>
+        <input type="email" name="email" placeholder="email"/>
+        <input type="text" name="phone" placeholder="phone"/>
+        <input type="text"  name="website" placeholder="website"/>
     </fieldset>
 <div>
     <fieldset id="milieux">
     <legend>Address</legend>
-    <input type="text" placeholder="street"/>
-    <input type="text" placeholder="suite"/>
-    <input type="text" placeholder="city"/>
-    <input type="text" placeholder="zipcode"/>
+    <input type="text" name="street" placeholder="street"/>
+    <input type="text" name="suite" placeholder="suite"/>
+    <input type="text" name="city" placeholder="city"/>
+    <input type="text" name="zipcode" placeholder="zipcode"/>
 </fieldset>
 <fieldset id="milieux_bas">
 <legend>Geo</legend>
-<input type="text" placeholder="latitude"/>
-<input type="text" placeholder="longitude"/>
+<input type="text" name="latitude"  placeholder="latitude"/>
+<input type="text" name="longitude" placeholder="longitude"/>
 </fieldset>
 </div>
 <fieldset id="droite">
     <legend>Company</legend>
-    <input type="text" placeholder="name"/>
-    <input type="text" placeholder="catchPhrase"/>
-    <input type="text" placeholder="bs"/>
+    <input type="text" name="companyname" placeholder="name"/>
+    <input type="text"name="catchPhrase" placeholder="catchPhrase"/>
+    <input type="text" name="bs" placeholder="bs"/>
     
 </fieldset>
 

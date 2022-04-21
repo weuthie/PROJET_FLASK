@@ -6,7 +6,7 @@
 
 body {
     /* background: linear-gradient(45deg, #FC466B, #3F5EFB); */
-    background: gray;
+    background: white;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -20,10 +20,9 @@ body {
 
 form {
     /* background: rgba(255, 255, 255, .3); */
-    background-color: #2f4353;
-    background-image: linear-gradient(315deg, #2f4353 0%, #d2ccc4 74%);
+    background-color: white;
     padding: 200px;
-    height: 390px;
+    height: 450px;
     border-radius: 20px;
     /*effet reflet*/
     border-left: 1px solid rgba(255, 255, 255, .3);
@@ -43,6 +42,11 @@ p {
     font-size: 27px;
     margin-bottom: 60px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+    border: 1px solid rgb(110, 154, 197);
+    padding: 25px;
+    width: 100%;
+    border-radius: 10px;
+    background:#C6D7EB;
 }
 
 a {
@@ -57,17 +61,14 @@ a:hover {
 }
 
 input {
-    background: transparent;
-    border-left: 1px solid rgba(255, 255, 255, .3);
-    border-top: 1px solid rgba(255, 255, 255, .3);
+    background: #FBFBFB;
+    border-left: 1px solid #C6D7EB;
+    border-top: 1px solid #C6D7EB;
     padding: 40px;
     width: 400px;
-    border-radius: 50px;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    -moz-backdrop-filter: blur(5px);
-    box-shadow: 4px 4px 60px rgba(0, 0, 0, .2);
-    color: white;
+    border-radius: 30px;
+    color:black;
+    border: 1px solide rgb(95, 95, 130);
     font-weight: 500;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
     transition: all .3s;
@@ -75,7 +76,7 @@ input {
 }
 
 ::placeholder {
-    color: white;
+    color:black;
 }
 
 /*lorsque lorsque l'on clic dedant*/
@@ -92,4 +93,8 @@ input[type="button"] {
     margin-top: 10px;
     font-size: 16px;
     width: 150px;
+}
+
+.button{
+    height: 5px;
 }

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/formulaire_de_connexion.css')}}">
+    <title>{{url_for("form")}}</title>
+</head>
+<body>
+    <div id="cadre">
+    <h2> Sing in</h2>
+    <form action="{{ url_for('form')}}" method="POST">
+        {{ info_user.csrf_token}} 
+        {{ info_user.email(placeholder="email")}}
+        {{ info_user.pwd(placeholder="password")}}
+        <input type="submit" value="CONNEXION">
+    </form>
+</div>
+</body>
+</html

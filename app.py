@@ -20,6 +20,7 @@ class Login(FlaskForm):
     email = StringField('email', validators=[InputRequired()])
     pwd = PasswordField('pwd')
 
+<<<<<<< HEAD
 # recuperation des donne de l'api
 
 @app.route('/')
@@ -30,7 +31,18 @@ def index():
 def pagePrincipal():
     users= Users.query.all()
     return render_template('pagePrincipal.html',users=users)
+=======
+# --------------------DOING BY LOUFA---------------------
+# @app.route('/')
+@app.route('/pagePrincipal')
+def pagePrincipal():
+    return render_template('base.html')
+>>>>>>> 570c0fcdb482e300e1b58aca95a55532cbcd9e07
 
+
+@app.route('/pageUser')
+def pageUser():
+    return render_template('pageUser.html')
 # ----------------------------------------------------
 @app.route('/userPost')
 def userPost():
@@ -39,6 +51,10 @@ def userPost():
 # ---------------------------------------------------
 
 
+@app.route('/album')
+def album():
+    return render_template('album.html')
+# ----------------END DOING BY LOUFA---------------
 @app.route('/singin', methods=['GET','POST'])
 def form():
     info_user = Login()
@@ -73,6 +89,7 @@ def adduser():
             return  "erreur"
     else:
         return render_template('formulairedajout.html')
+<<<<<<< HEAD
 
 
 
@@ -80,4 +97,8 @@ def adduser():
 
 
 app.run(debug=True)
+=======
+if __name__ == '__main__':
+    app.run(debug=True)
+>>>>>>> 570c0fcdb482e300e1b58aca95a55532cbcd9e07
 

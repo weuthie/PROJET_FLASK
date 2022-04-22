@@ -10,7 +10,7 @@ nav{
 nav ul{
     list-style: none;
     position: relative;
-    left: 5%;
+    /* left: 5%; */
     bottom: 25%;
     /* padding-left: 30px; */
     
@@ -65,5 +65,5 @@ footer{
     text-align: center;
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-size: 20px;
-    color: #585aecef;
+    color: #C6D7EB;
 }

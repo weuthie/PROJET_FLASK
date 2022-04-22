@@ -7,7 +7,7 @@
     <a href="#"><img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}" alt=""></a>
 
     <a href="#"><img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}" alt=""></a>
-    
+
 </div>
 <div id="containtAddAlbum">
     <button id="close">
@@ -25,14 +25,13 @@
     let closeBtn = document.getElementById("close");
     let addAlbum = document.getElementById("addAlbum");
 
-    addAlbum.addEventListener('click', ()=>{
+    addAlbum.addEventListener('click', () => {
         popup.style.display = 'block';
     });
 
-    closeBtn.addEventListener('click' ,() => {
+    closeBtn.addEventListener('click', () => {
         popup.style.display = 'none';
     });
 </script>
 {% endblock %}
 <!-- <script src="{{ url_for('static', filename='js/album.js') }}" defer></script> -->
-

@@ -1,4 +1,17 @@
-button {
+#containtPhoto{
+    height: 76vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+#containtPhoto img{
+    margin: 15px;
+    height: 150px;
+    width: 150px;
+}
+
+#addPhoto {
     background-color: #C6D7EB;
     width: 150px;
     height: 50px;
@@ -11,23 +24,8 @@ button {
     font-size: 20px;
 }
 
-article {
-    display: inline-block;
-    background-color: #FBF8F8;
-    width: 80%;
-    height: 120px;
-    margin-top: 40px;
-    margin-left: 10%;
-    border: 1px solid #C6D7EB;
-    border-radius: 10px;
-    box-shadow: 0px 0px 5px 0px;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 25px;
-}
-
-/* ------------popup addPost-------------- */
-
-#containtAddPost {
+/* --------------------ADD PHOTO-------------- */
+#containtAddPhoto {
     width: 70vh;
     background-color: red;
     height: 43vh;
@@ -49,16 +47,18 @@ article {
     cursor: pointer;
     position: absolute;
     right: 10px;
-    top: -20px;
+    top: -5px;
     width: 60px;
 
 }
 
-#containtAddPost>form {
+#containtAddPhoto>form {
     height: 37vh;
+    display: flex;
+    flex-direction: column;
 }
 
-#containtAddPost>p {
+#containtAddPhoto>p {
     border: 1px solid #5894d8;
     width: 70%;
     text-align: center;
@@ -73,31 +73,23 @@ article {
     font-family: 'Times New Roman', Times, serif;
 }
 
-#title {
+#containtAddPhoto input {
     position: relative;
     top: 15%;
     left: 12%;
     width: 70%;
     height: 40px;
+    margin-top: 20px;
     border: 1px solid #5894d8;
     border-radius: 10px;
     font-size: x-large;
-}
-
-#containtAddPost form>textarea {
-    position: relative;
-    top: 20%;
-    left: 12%;
-    border: 1px solid #5894d8;
-    border-radius: 10px;
-    font-size: x-large;
-
+    font-family: 'Times New Roman', Times, serif;
 }
 
 #submit {
     position: relative;
-    top: 33%;
-    right: 10%;
+    top: 20%;
+    left: 65%;
     padding: 10px;
     border: 1px solid #5894d8;
     border-radius: 10px;

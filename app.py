@@ -78,4 +78,3 @@ def adduser():
         return render_template('formulairedajout.html')
 
 app.run(debug=True)
-

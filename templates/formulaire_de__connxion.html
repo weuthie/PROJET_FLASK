@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="cadre">
-    <h2> Sing in</h2>
+    <h2> Sign in</h2>
     <form action="{{ url_for('form')}}" method="POST">
         {{ info_user.csrf_token}} 
         {{ info_user.email(placeholder="email")}}
@@ -17,5 +17,6 @@
         <input type="submit" value="CONNEXION">
     </form>
 </div>
+<footer>&copy Groupe4 Flask_Projet P4 Dev_Data SA 2022</footer>
 </body>
 </html

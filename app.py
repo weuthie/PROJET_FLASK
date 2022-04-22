@@ -20,6 +20,7 @@ class Login(FlaskForm):
     email = StringField('email', validators=[InputRequired()])
     pwd = PasswordField('pwd')
 
+# recuperation des donne de l'api
 
 @app.route('/')
 def index():
@@ -27,7 +28,8 @@ def index():
 
 @app.route('/pagePrincipal')
 def pagePrincipal():
-    return render_template('pagePrincipal.html')
+    users= Users.query.all()
+    return render_template('pagePrincipal.html',users=users)
 
 # ----------------------------------------------------
 @app.route('/userPost')
@@ -65,12 +67,17 @@ def adduser():
         try:
             db.session.add(donne_personnel)
             db.session.commit()
-            return  redirect('/') 
+            return  redirect('/pagePrincipal') 
         except:
             db.session.rollback()
             return  "erreur"
     else:
         return render_template('formulairedajout.html')
+
+
+
+
+
 
 app.run(debug=True)
 

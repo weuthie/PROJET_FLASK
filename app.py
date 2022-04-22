@@ -22,11 +22,24 @@ class Login(FlaskForm):
     email = StringField('email', validators=[InputRequired()])
     pwd = PasswordField('pwd')
 
+<<<<<<< HEAD
+# recuperation des donne de l'api
+
+@app.route('/')
+def index():
+    return render_template('pageindex.html')
+
+@app.route('/pagePrincipal')
+def pagePrincipal():
+    users= Users.query.all()
+    return render_template('pagePrincipal.html',users=users)
+=======
 # --------------------DOING BY LOUFA---------------------
 # @app.route('/')
 @app.route('/pagePrincipal')
 def pagePrincipal():
     return render_template('base.html')
+>>>>>>> 570c0fcdb482e300e1b58aca95a55532cbcd9e07
 
 
 @app.route('/pageUser')
@@ -77,12 +90,22 @@ def adduser():
         try:
             db.session.add(donne_personnel)
             db.session.commit()
-            return  redirect('/') 
+            return  redirect('/pagePrincipal') 
         except:
             db.session.rollback()
             return  "erreur"
     else:
         return render_template('formulairedajout.html')
+<<<<<<< HEAD
+
+
+
+
+
+
+app.run(debug=True)
+=======
 if __name__ == '__main__':
     app.run(debug=True)
+>>>>>>> 570c0fcdb482e300e1b58aca95a55532cbcd9e07
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,46 +10,50 @@
 
     <title>formulaire</title>
 </head>
+
 <body>
     <a href="#"><img src="{{ url_for('static', filename='img/homee.png')}}" alt=""></a>
 
     <div class="cadre">
         <h2>ADD USER</h2>
-    <form action="/" method="post">
-        <fieldset id="gauche">
-        <legend>Donnee Personnel</legend>
-        <input type="text" name="name" placeholder="name" required/>
-        <input type="text" name="username" placeholder="username" required/>
-        <input type="email" name="email" placeholder="email" required/>
-        <input type="text" name="phone" placeholder="phone" required/>
-        <input type="text"  name="website" placeholder="website" required />
-    </fieldset>
-<div>
-    <fieldset id="milieux">
-    <legend>Address</legend>
-    <input type="text" name="street" placeholder="street" required/>
-    <input type="text" name="suite" placeholder="suite" required/>
-    <input type="text" name="city" placeholder="city" required/>
-    <input type="text" name="zipcode" placeholder="zipcode" required/>
-</fieldset>
-<fieldset id="milieux_bas">
-<legend>Geo</legend>
-<input type="number" step="0.1" name="latitude"  placeholder="latitude" required/>
-<input type="number" step="0.1" name="longitude" placeholder="longitude" required/>
-</fieldset>
-</div>
-<fieldset id="droite">
-    <legend>Company</legend>
-    <input type="text" name="companyname" placeholder="name" required/>
-    <input type="text"name="catchPhrase" placeholder="catchPhrase" required/>
-    <input type="text" name="bs" placeholder="bs" required/>
-    
-</fieldset>
+        <form action="/adduser" method="POST">
+            <fieldset id="gauche">
+                <legend>Donnee Personnel</legend>
+                <input type="text" name="name" placeholder="name" required />
+                <input type="text" name="username" placeholder="username" required />
+                <input type="email" name="email" placeholder="email" required />
+                <input type="text" name="phone" placeholder="phone" required />
+                <input type="text" name="website" placeholder="website" required />
+            </fieldset>
+            <div>
+                <fieldset id="milieux">
+                    <legend>Address</legend>
+                    <input type="text" name="street" placeholder="street" required />
+                    <input type="text" name="suite" placeholder="suite" required />
+                    <input type="text" name="city" placeholder="city" required />
+                    <input type="text" name="zipcode" placeholder="zipcode" required />
+                </fieldset>
+                <fieldset id="milieux_bas">
+                    <legend>Geo</legend>
+                    <input type="number" step="0.1" name="latitude" placeholder="latitude" required />
+                    <input type="number" step="0.1" name="longitude" placeholder="longitude" required />
+                </fieldset>
+            </div>
+            <fieldset id="droite">
+                <legend>Company</legend>
+                <input type="text" name="companyname" placeholder="name" required />
+                <input type="text" name="catchPhrase" placeholder="catchPhrase" required />
+                <input type="text" name="bs" placeholder="bs" required />
+
+            </fieldset>
 
 
-<button type="submit">ADD</button>
-    </form>
+            <button type="submit">ADD</button>
+        </form>
 
-</div>
+    </div>
+    <footer>&copy Groupe4 Flask_Projet P4 Dev_Data SA 2022</footer>
+
 </body>
+
 </html>

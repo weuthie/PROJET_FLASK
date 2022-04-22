@@ -76,6 +76,6 @@ def adduser():
             return  "erreur"
     else:
         return render_template('formulairedajout.html')
-
-app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
 

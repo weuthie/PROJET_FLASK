@@ -15,15 +15,16 @@
 
     <div id="container">
         <div id="btns">
-            <a href="#">
-                <button class="btnP" id="btn1">AJOUTER</button>
-            </a>
-            <form action="/pagePrincipal" method="post">
-                <a href="#">
-                    <button type="submit" class="btnP" id="btn2">CHARGER</button>
-                </a>
-                <input type="number" name="input" class="numelt" placeholder="nbre elms à charger"  max="5" min="1">
-            </form>
+            <button class="btnP" id="btn1">AJOUTER</button>
+             <form action="" method="post"> 
+            <!-- <input type="submit" class="btnP" id="btn2" value="CHARGER"> -->
+            <!-- <input type="number" name="inputs" class="numelt" placeholder="nbre elms à charger" max="5" min="1"> -->
+<!-- les modification que j'ai aporter -->
+            {{ formulair.hidden_tag()}}
+            {{ formulair.btn}}
+            <br>
+            {{ formulair.nbchoix(class="numelt" )}}
+         </form> 
         </div>
         <!-- formulaire a revoir en cas de wouyayoe -->
 
@@ -38,7 +39,8 @@
                 </tr>
             </thead>
             <tbody>
-                {% for user in range(5) %}
+                
+                {% for user in range(nbuser) if user < nb %}
                 <tr>
                     <td>{{ users[user].name}}</td>
                     <td>{{ users[user].username}}</td>

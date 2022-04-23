@@ -3,7 +3,6 @@ import email
 from click import password_option
 from flask import Flask, redirect ,render_template , request
 from flask_wtf import FlaskForm
-from regex import F
 from sqlalchemy import false
 from wtforms import StringField ,PasswordField
 from wtforms.validators import InputRequired
@@ -96,8 +95,4 @@ def adduser():
             return  "erreur"
     else:
         return render_template('formulairedajout.html')
-
-
-
 app.run(debug=True)
-

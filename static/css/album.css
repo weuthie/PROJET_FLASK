@@ -39,7 +39,7 @@
     background-color: #5894d8;
     height: 80vh;
 } */
-
+/* ----------popup add album---------- */
 #containtAddAlbum{
     width: 70vh;
     background-color: red;
@@ -53,6 +53,9 @@
     background-color: #787A7C;
     display: none;
     z-index: 1;
+}
+#containtAddAlbum>form{
+    height: 37vh;
 }
 #close{
     float: right;
@@ -79,7 +82,7 @@
 }
 #title{
     position: relative;
-    top: 25%;
+    top: 30%;
     left: 12%;
     width: 70%;
     height: 40px;
@@ -89,7 +92,7 @@
 }
 #submit{
     position: relative;
-    top: 50%;
+    top: 55%;
     padding: 10px;
     border: 1px solid #5894d8;
     border-radius: 10px;

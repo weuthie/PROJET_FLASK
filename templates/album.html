@@ -7,15 +7,17 @@
     <a href="#"><img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}" alt=""></a>
 
     <a href="#"><img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}" alt=""></a>
-    
+
 </div>
 <div id="containtAddAlbum">
     <button id="close">
         <img src="{{ url_for('static', filename='img/close.png') }}" alt="">
     </button>
     <p>ADD ALBUM</p>
-    <input type="text" name="title" id="title" placeholder="Title">
-    <button type="submit" id="submit">VALIDER</button>
+    <form action="">
+        <input type="text" name="title" id="title" placeholder="Title">
+        <button type="submit" id="submit">VALIDER</button>
+    </form>
 </div>
 
 <script>
@@ -23,14 +25,13 @@
     let closeBtn = document.getElementById("close");
     let addAlbum = document.getElementById("addAlbum");
 
-    addAlbum.addEventListener('click', ()=>{
+    addAlbum.addEventListener('click', () => {
         popup.style.display = 'block';
     });
 
-    closeBtn.addEventListener('click' ,() => {
+    closeBtn.addEventListener('click', () => {
         popup.style.display = 'none';
     });
 </script>
 {% endblock %}
 <!-- <script src="{{ url_for('static', filename='js/album.js') }}" defer></script> -->
-

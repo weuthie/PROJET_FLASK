@@ -14,19 +14,19 @@
     <nav>
         <ul>
             <li class="li">
-                <a href="#"><img src="../static/img/home.png" alt=""></a>
+                <a href=" {{ url_for('index') }}"><img src="../static/img/home.png" alt=""></a>
             </li>
             <li>
-                <a href="#">POSTS</a>
+                <a href="{{ url_for('userPost') }}">POSTS</a>
             </li>
             <li>
-                <a href="#">ALBUM</a>
+                <a href="{{ url_for('album') }}">ALBUM</a>
             </li>
             <li>
-                <a href="#">TODO</a>
+                <a href="{{ url_for('todo') }}">TODO</a>
             </li>
         </ul>
-        <a href="#" class="profil"><img src="../static/img/avatar.png" alt="profil"></a>
+        <a href="{{ url_for('profil') }}" class="profil"><img src="../static/img/avatar.png" alt="profil"></a>
     </nav>
     <div id="containt">
         {% block content %} {% endblock %}

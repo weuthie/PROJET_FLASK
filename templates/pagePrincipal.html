@@ -11,19 +11,21 @@
 </head>
 
 <body>
-    <a href="#"><img src="../static/img/homee.png" alt=""></a>
+    <a href="/"><img src="../static/img/homee.png" alt=""></a>
 
     <div id="container">
         <div id="btns">
+            <a href="adduser">
             <button class="btnP" id="btn1">AJOUTER</button>
+        </a>
              <form action="" method="post"> 
             <!-- <input type="submit" class="btnP" id="btn2" value="CHARGER"> -->
             <!-- <input type="number" name="inputs" class="numelt" placeholder="nbre elms à charger" max="5" min="1"> -->
 <!-- les modification que j'ai aporter -->
             {{ formulair.hidden_tag()}}
-            {{ formulair.btn}}
-            <br>
-            {{ formulair.nbchoix(class="numelt" )}}
+            {{ formulair.btn(class="btnP" ,id="btn2" )}}
+            
+            {{ formulair.nbchoix(class="numelt" , placeholder="nbre elms à charger" )}}
          </form> 
         </div>
         <!-- formulaire a revoir en cas de wouyayoe -->
@@ -53,7 +55,7 @@
             </tbody>
         </table>
     </div>
-    <footer></footer>
+    <footer>&copy Groupe4 Flask_Projet P4 Dev_Data SA 2022</footer>
 </body>
 
 </html>

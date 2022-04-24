@@ -24,7 +24,7 @@ class Login(FlaskForm):
 
 class Gerenmbre(FlaskForm):
     nbchoix=IntegerField('',validators=[InputRequired()])
-    btn = SubmitField('Charger users')
+    btn = SubmitField('Charger')
 
 # recuperation des donne de l'api
 

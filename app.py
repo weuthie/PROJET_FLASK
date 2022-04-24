@@ -3,8 +3,10 @@ import email
 from click import password_option
 from flask import Flask, redirect ,render_template , request
 from flask_wtf import FlaskForm
+
+from wtforms import StringField ,PasswordField ,IntegerField ,SubmitField
 from sqlalchemy import false
-from wtforms import StringField ,PasswordField
+
 from wtforms.validators import InputRequired
 from flask import Flask, render_template, url_for ,request
 from flask_sqlalchemy import SQLAlchemy
@@ -21,16 +23,30 @@ class Login(FlaskForm):
     email = StringField('email', validators=[InputRequired()])
     pwd = PasswordField('pwd')
 
+#formulaire pour gerer l'entreer
+
+class Gerenmbre(FlaskForm):
+    nbchoix=IntegerField('',validators=[InputRequired()])
+    btn = SubmitField('Charger')
+
 # recuperation des donne de l'api
 
 @app.route('/')
 def index():
+
     return render_template('pageindex.html')
 
-@app.route('/pagePrincipal')
+@app.route('/pagePrincipal', methods=["POST","GET"])
 def pagePrincipal():
-    users= Users.query.all()
-    return render_template('pagePrincipal.html',users=users)
+    nb = 0
+    users=[]
+    nbuser = 0
+    formulair= Gerenmbre()
+    if formulair.validate_on_submit():
+        nb = formulair.nbchoix.data
+        users = Users.query.all()
+        nbuser =len(users)
+    return render_template('pagePrincipal.html',users=users,nb=nb,nbuser=nbuser,formulair=formulair)
 
 
 @app.route('/pageUser')
@@ -95,4 +111,5 @@ def adduser():
             return  "erreur"
     else:
         return render_template('formulairedajout.html')
+
 app.run(debug=True)

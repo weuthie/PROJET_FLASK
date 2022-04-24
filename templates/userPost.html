@@ -4,38 +4,48 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/userPost.css') }}">
 
 
+<<<<<<< HEAD
     <div class="button">
-        <button id="addPost">ADD POST</button>
-        <article>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Atque maxime eos rem ipsum ab similique iste praesentium reiciendis mollitia deleniti.
-        
-        </article>
+        <button>ADD POST</button>
+        <article></article>
     </div>
+   
+=======
+<div class="button">
+    <button id="addPost">ADD POST</button>
+    <article>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Atque maxime eos rem ipsum ab similique iste
+        praesentium reiciendis mollitia deleniti.
 
-    <div id="containtAddPost">
-        <button id="close">
-            <img src="{{ url_for('static', filename='img/close.png') }}" alt="">
-        </button>
-        <p>ADD POST</p>
-        <form action="">
-        <input type="text" name="title" id="title" placeholder="Title"><textarea name="content" id="content" cols="36" rows="5" placeholder="CONTENT"></textarea>
+    </article>
+</div>
+
+<div id="containtAddPost">
+    <button id="close">
+        <img src="{{ url_for('static', filename='img/close.png') }}" alt="">
+    </button>
+    <p>ADD POST</p>
+    <form action="">
+        <input type="text" name="title" id="title" placeholder="Title">
+        <textarea name="content" id="content" cols="36" rows="5" placeholder="CONTENT"></textarea>
 
         <button type="submit" id="submit">VALIDER</button>
     </form>
-    </div>   
-    
+</div>
+
 <script>
     let addPost = document.getElementById("addPost");
     let popupAddPost = document.getElementById("containtAddPost");
     let closePopupPost = document.getElementById("close");
-    
-    addPost.addEventListener('click',()=>{
+
+    addPost.addEventListener('click', () => {
         popupAddPost.style.display = 'block';
-        
+
     });
 
-    closePopupPost.addEventListener('click', ()=>{
+    closePopupPost.addEventListener('click', () => {
         popupAddPost.style.display = 'none';
 
     });
 </script>
+>>>>>>> 5df63e1fd26b74c51fbd57fefbcedd2428eded98
 {% endblock %}

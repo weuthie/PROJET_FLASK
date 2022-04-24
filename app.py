@@ -3,7 +3,10 @@ import email
 from click import password_option
 from flask import Flask, redirect ,render_template , request
 from flask_wtf import FlaskForm
+
 from wtforms import StringField ,PasswordField ,IntegerField ,SubmitField
+from sqlalchemy import false
+
 from wtforms.validators import InputRequired
 from flask import Flask, render_template, url_for ,request
 from flask_sqlalchemy import SQLAlchemy
@@ -13,7 +16,7 @@ from creationbd import  Users , Address,Company
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'groupe4'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://groupe4:test123@localhost/projetflask'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = false
 db = SQLAlchemy(app)
 
 class Login(FlaskForm):
@@ -46,7 +49,6 @@ def pagePrincipal():
     return render_template('pagePrincipal.html',users=users,nb=nb,nbuser=nbuser,formulair=formulair)
 
 
-
 @app.route('/pageUser')
 def pageUser():
     return render_template('pageUser.html')
@@ -61,6 +63,19 @@ def userPost():
 @app.route('/album')
 def album():
     return render_template('album.html')
+
+@app.route('/photo')
+def photo():
+    return render_template('photo.html')
+
+@app.route('/todo')
+def todo():
+    return render_template('todo.html')
+
+@app.route('/profil')
+def profil():
+    return render_template('profil.html')
+
 # ----------------END DOING BY LOUFA---------------
 @app.route('/singin', methods=['GET','POST'])
 def form():
@@ -86,7 +101,7 @@ def adduser():
         companyname = request.form['companyname']
         catchPhrase = request.form['catchPhrase']
         bs = request.form['bs']
-        donne_personnel= Users(name = name , username = username,phone=phone,email=email,website=website, password=123)
+        donne_personnel= Users(name = name , username = username,phone=phone,email=email,website=website, password=12)
         try:
             db.session.add(donne_personnel)
             db.session.commit()
@@ -98,4 +113,3 @@ def adduser():
         return render_template('formulairedajout.html')
 
 app.run(debug=True)
-

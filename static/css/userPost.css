@@ -1,4 +1,4 @@
-button{
+button {
     background-color: #C6D7EB;
     width: 150px;
     height: 50px;
@@ -11,7 +11,7 @@ button{
     font-size: 20px;
 }
 
-article{
+article {
     display: inline-block;
     background-color: #FBF8F8;
     width: 80%;
@@ -27,7 +27,7 @@ article{
 
 /* ------------popup addPost-------------- */
 
-#containtAddPost{
+#containtAddPost {
     width: 70vh;
     background-color: red;
     height: 43vh;
@@ -41,7 +41,8 @@ article{
     display: none;
     z-index: 1;
 }
-#close{
+
+#close {
     float: right;
     background: none;
     border: none;
@@ -52,10 +53,12 @@ article{
     width: 60px;
 
 }
-#containtAddPost>form{
+
+#containtAddPost>form {
     height: 37vh;
 }
-#containtAddPost>p{
+
+#containtAddPost>p {
     border: 1px solid #5894d8;
     width: 70%;
     text-align: center;
@@ -69,7 +72,8 @@ article{
     font-weight: bold;
     font-family: 'Times New Roman', Times, serif;
 }
-#title{
+
+#title {
     position: relative;
     top: 15%;
     left: 12%;
@@ -79,7 +83,8 @@ article{
     border-radius: 10px;
     font-size: x-large;
 }
-#containtAddPost form>textarea{
+
+#containtAddPost form>textarea {
     position: relative;
     top: 20%;
     left: 12%;
@@ -88,7 +93,8 @@ article{
     font-size: x-large;
 
 }
-#submit{
+
+#submit {
     position: relative;
     top: 33%;
     right: 10%;
@@ -102,10 +108,14 @@ article{
     color: white;
     width: 120px;
 }
-button:hover, #submit:hover{
+
+button:hover,
+#submit:hover {
     background-color: #787A7C;
     cursor: pointer;
 }
-button:active, #submit:active{
+
+button:active,
+#submit:active {
     background-color: #5894d8;
 }

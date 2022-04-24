@@ -1,0 +1,113 @@
+#containtPhoto{
+    height: 76vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+#containtPhoto img{
+    margin: 15px;
+    height: 150px;
+    width: 150px;
+}
+
+#addPhoto {
+    background-color: #C6D7EB;
+    width: 150px;
+    height: 50px;
+    border-radius: 10px;
+    margin-left: 50px;
+    margin-top: 15px;
+    color: white;
+    border-color: #C6D7EB;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+}
+
+/* --------------------ADD PHOTO-------------- */
+#containtAddPhoto {
+    width: 70vh;
+    background-color: red;
+    height: 43vh;
+    position: absolute;
+    bottom: 35%;
+    left: 25%;
+    border: 1px solid #5894d8;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 0px;
+    background-color: #787A7C;
+    display: none;
+    z-index: 1;
+}
+
+#close {
+    float: right;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: -5px;
+    width: 60px;
+
+}
+
+#containtAddPhoto>form {
+    height: 37vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#containtAddPhoto>p {
+    border: 1px solid #5894d8;
+    width: 70%;
+    text-align: center;
+    background-color: #5894d8;
+    padding: 12px;
+    border-radius: 10px;
+    position: relative;
+    top: 10%;
+    left: 10%;
+    color: white;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+#containtAddPhoto input {
+    position: relative;
+    top: 15%;
+    left: 12%;
+    width: 70%;
+    height: 40px;
+    margin-top: 20px;
+    border: 1px solid #5894d8;
+    border-radius: 10px;
+    font-size: x-large;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+#submit {
+    position: relative;
+    top: 20%;
+    left: 65%;
+    padding: 10px;
+    border: 1px solid #5894d8;
+    border-radius: 10px;
+    background-color: #5894d8;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    width: 120px;
+}
+
+button:hover,
+#submit:hover {
+    background-color: #787A7C;
+    cursor: pointer;
+}
+
+button:active,
+#submit:active {
+    background-color: #5894d8;
+}

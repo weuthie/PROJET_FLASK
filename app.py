@@ -5,7 +5,7 @@ from flask import Flask, redirect ,render_template , request
 from flask_wtf import FlaskForm
 
 from wtforms import StringField ,PasswordField ,IntegerField ,SubmitField
-from sqlalchemy import false
+from sqlalchemy import false, null
 
 from wtforms.validators import InputRequired
 from flask import Flask, render_template, url_for ,request
@@ -33,7 +33,6 @@ class Gerenmbre(FlaskForm):
 
 @app.route('/')
 def index():
-
     return render_template('pageindex.html')
 
 @app.route('/pagePrincipal', methods=["POST","GET"])
@@ -46,6 +45,8 @@ def pagePrincipal():
         nb = formulair.nbchoix.data
         users = Users.query.all()
         nbuser =len(users)
+    # id = db.select([Users.userid])
+    # [print(i) for i in users]
     return render_template('pagePrincipal.html',users=users,nb=nb,nbuser=nbuser,formulair=formulair)
 
 
@@ -71,6 +72,13 @@ def photo():
 @app.route('/todo')
 def todo():
     return render_template('todo.html')
+
+# @app.route('/addtodo')
+# def addtodo():
+#     if request.method == "POST":
+#         title = request.form['title']
+#         etat = request.form['etat']
+
 
 @app.route('/profil')
 def profil():
@@ -102,12 +110,26 @@ def adduser():
         catchPhrase = request.form['catchPhrase']
         bs = request.form['bs']
         donne_personnel= Users(name = name , username = username,phone=phone,email=email,website=website, password=12)
+        userid = Users.query.all()
+
+        if len(userid) == 0:
+            addres = Address(street = street, suite = suite, city = city, zipcode = zipcode, geo_lat = latitude, geo_lng = longitude, userid = 1)
+
+            company = Company(companyname = companyname, companycatchphrase = catchPhrase, companybs = bs, userid = 1)
+
+        else:
+            addres = Address(street = street, suite = suite, city = city, zipcode = zipcode, geo_lat = latitude, geo_lng = longitude, userid = userid[-1].userid+1)
+        
+        company = Company(companyname = companyname, companycatchphrase = catchPhrase, companybs = bs, userid = userid[-1].userid+1)
         try:
             db.session.add(donne_personnel)
+            db.session.add(addres)
+            db.session.add(company)
             db.session.commit()
             return  redirect('/pagePrincipal') 
         except:
             db.session.rollback()
+            print(userid[-1].userid)
             return  "erreur"
     else:
         return render_template('formulairedajout.html')

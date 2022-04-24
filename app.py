@@ -1,11 +1,12 @@
 from crypt import methods
 import email
+from wsgiref.validate import validator
 from click import password_option
 from flask import Flask, redirect ,render_template , request
 from flask_wtf import FlaskForm
 from sqlalchemy import false
 from wtforms import StringField ,PasswordField
-from wtforms.validators import InputRequired
+from wtforms.validators import InputRequired,Email,Length,ValidationError
 from flask import Flask, render_template, url_for ,request
 from flask_sqlalchemy import SQLAlchemy
 from creationbd import  Users , Address,Company
@@ -17,9 +18,16 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://groupe4:test123@localhost/
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = false
 db = SQLAlchemy(app)
 
+#### Validation formulaire Dabakh #######
+
 class Login(FlaskForm):
-    email = StringField('email', validators=[InputRequired()])
-    pwd = PasswordField('pwd')
+    email = StringField('email', validators=[InputRequired(),Email()])
+    pwd = PasswordField('pwd',validators = [InputRequired(),Length(min=4,max=10)])
+
+    def validation_email(self,email):
+        if email.data == "root@domain.com":
+            raise ValidationError("cette email est déja enrégistrer")
+
 
 # recuperation des donne de l'api
 
@@ -96,3 +104,4 @@ def adduser():
     else:
         return render_template('formulairedajout.html')
 app.run(debug=True)
+

@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<link rel="stylesheet" href=" {{ url_for('static', filename='css/profil.css') }} ">
+
 <div id="containtProfil">
-    <fieldset>
+    <fieldset class="title">
         <legend>DONNEES PERSONNELLES</legend>
         <table>
             <tbody>
-                <tr>
+                <tr class="row">
                     <td>name</td>
                     <td>username</td>
                     <td>email</td>
@@ -16,6 +18,51 @@
             </tbody>
         </table>
     </fieldset>
+    <div id="middle">
+        <fieldset class="titleMiddle">
+            <legend>ADDRESS</legend>
+            <table>
+                <tbody>
+                    <tr class="row">
+                        <td>street</td>
+                        <td>suite</td>
+                        <td>city</td>
+                        <td>zipcode</td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+
+        <fieldset class="titleMiddle">
+            <legend>GEO</legend>
+            <table>
+                <tbody>
+                    <tr class="row">
+                        <td>latitude</td>
+                        <td>longitude</td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+
+    </div>
+
+    <div id="right">
+        <img src=" {{ url_for('static', filename='img/defaultImg.png') }}" alt="">
+
+        <fieldset class="titleRight">
+            <legend>COMPANY</legend>
+            <table>
+                <tbody>
+                    <tr class="row">
+                        <td>name</td>
+                        <td>catchPhrase</td>
+                        <td>bs</td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
 
 </div>
 

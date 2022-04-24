@@ -81,7 +81,8 @@ class Comment(db.Model):
     postid = db.Column(db.Integer, db.ForeignKey('posts.postid'))
 
 
-
+# if __name__ == '__main__':
+    # db.create_all()
 
 
 

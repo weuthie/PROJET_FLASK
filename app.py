@@ -88,7 +88,7 @@ def profil():
 def form():
     info_user = Login()
     if info_user.validate_on_submit():
-        return "valide"
+        return render_template('pageUser.html')
     return render_template('formulaire_de__connxion.html', info_user = info_user)
 
 @app.route('/adduser', methods=["GET","POST"])

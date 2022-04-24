@@ -81,8 +81,8 @@ body>a>img{
 footer{
     width: 100%;
     background-color: #787A7C;
-    position: absolute;
-    bottom: 0;
+    position: relative;
+    top: 30px;
     padding-top: 50px;
     height: 50px;
     text-align: center;

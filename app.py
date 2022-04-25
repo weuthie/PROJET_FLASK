@@ -3,7 +3,7 @@ import email
 import re
 from wsgiref.validate import validator
 from click import password_option
-from flask import Flask, redirect ,render_template , request
+from flask import Flask, redirect ,render_template , request, session  
 from flask_wtf import FlaskForm
 from matplotlib.image import thumbnail
 from wtforms import StringField ,PasswordField ,IntegerField ,SubmitField
@@ -12,7 +12,15 @@ from wtforms import StringField ,PasswordField
 from wtforms.validators import InputRequired,Email,Length,ValidationError
 from flask import Flask, render_template, url_for ,request
 from flask_sqlalchemy import SQLAlchemy
-from creationbd import  Posts, Users , Address,Company,Todo, Albums, Photos, Comment
+from creationbd import  Users , Address,Company
+import requests
+
+#recuperation des donne de l'api 
+
+
+
+
+
 
 
 app = Flask(__name__)
@@ -25,11 +33,11 @@ db = SQLAlchemy(app)
 
 class Login(FlaskForm):
     email = StringField('email', validators=[InputRequired(),Email()])
-    pwd = PasswordField('pwd',validators = [InputRequired(),Length(min=4,max=10)])
-
-    def validation_email(self,email):
-        if email.data == "root@domain.com":
-            raise ValidationError("cette email est déja enrégistrer")
+    pwd = PasswordField('pwd')
+# render_template('formulaire_de__connxion.html')
+    # def validation_email(self,email):
+    #     if email.data == "root@domain.com":
+    #         raise ValidationError("cette email est déja enrégistrer")
 
 
 #formulaire pour gerer l'entreer
@@ -60,10 +68,12 @@ def pagePrincipal():
 
 @app.route('/pageUser')
 def pageUser():
-    return render_template('pageUser.html')
+    users = Users.query.all()
+    return render_template('pageUser.html' , users=users)
 # ----------------------------------------------------
 @app.route('/userPost')
 def userPost():
+    
     return render_template('userPost.html')
 
 # ---------------------------------------------------
@@ -86,12 +96,16 @@ def profil():
     return render_template('profil.html')
 
 # ----------------END DOING BY LOUFA---------------
-@app.route('/singin', methods=['GET','POST'])
-def form():
+@app.route('/singin/<int:userid>', methods=['GET','POST'])
+def form(userid):
+    session.pop('userid',None)
+    users = Users.query.get_or_404(userid)
     info_user = Login()
-    if info_user.validate_on_submit():
-        return render_template('pageUser.html')
-    return render_template('formulaire_de__connxion.html', info_user = info_user)
+    if info_user.pwd.data == users.password:
+        session["userid"]=users.userid
+        return render_template('pageUser.html',users=users) 
+     
+    return render_template('formulaire_de__connxion.html', info_user = info_user,users=users)
 
 @app.route('/adduser', methods=["GET","POST"])
 def adduser():
@@ -111,6 +125,7 @@ def adduser():
         catchPhrase = request.form['catchPhrase']
         bs = request.form['bs']
         donne_personnel= Users(name = name , username = username,phone=phone,email=email,website=website, password=12)
+
         try:
             db.session.add(donne_personnel)
             db.session.commit()

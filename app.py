@@ -12,6 +12,8 @@ from flask import Flask, render_template, url_for ,request
 from flask_sqlalchemy import SQLAlchemy
 from creationbd import  Users , Address,Company
 
+from requests import get
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'groupe4'
@@ -22,8 +24,8 @@ db = SQLAlchemy(app)
 #### Validation formulaire Dabakh #######
 
 class Login(FlaskForm):
-    email = StringField('email', validators=[InputRequired(),Email()])
-    pwd = PasswordField('pwd',validators = [InputRequired(),Length(min=4,max=10)])
+    # email = StringField('email', validators=[InputRequired(),Email()])
+    # pwd = PasswordField('pwd',validators = [InputRequired(),Length(min=4,max=10)])
 
     def validation_email(self,email):
         if email.data == "root@domain.com":
@@ -52,9 +54,12 @@ def pagePrincipal():
         nb = formulair.nbchoix.data
         users = Users.query.all()
         nbuser =len(users)
-    # id = db.select([Users.userid])
-    # [print(i) for i in users]
     return render_template('pagePrincipal.html',users=users,nb=nb,nbuser=nbuser,formulair=formulair)
+
+def getAndInsertDataFromApi(endpoint, nbelt):
+    dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
+    data = dataFromApi.json()
+    
 
 
 @app.route('/pageUser')
@@ -127,7 +132,7 @@ def adduser():
         else:
             addres = Address(street = street, suite = suite, city = city, zipcode = zipcode, geo_lat = latitude, geo_lng = longitude, userid = userid[-1].userid+1)
         
-        company = Company(companyname = companyname, companycatchphrase = catchPhrase, companybs = bs, userid = userid[-1].userid+1)
+            company = Company(companyname = companyname, companycatchphrase = catchPhrase, companybs = bs, userid = userid[-1].userid+1)
         try:
             db.session.add(donne_personnel)
             db.session.add(addres)

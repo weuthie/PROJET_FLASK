@@ -44,13 +44,12 @@
                 
                 {% for user in range(nbuser) if user < nb %}
                 <tr>
-                    <td>{{ users[user].name}}</td>
-                    <td>{{ users[user].username}}</td>
-                    <td>{{ users[user].email}}</td>
-                    <td>{{ users[user].website}}</td>
-                    <td>{{ users[user].phone}}</td>
+                    <td><a href="/singin/{{users[user].userid}}">{{ users[user].name}}</a></td>
+                    <td><a href="#">{{ users[user].username}}</a></td>
+                    <td><a href="#">{{ users[user].email}}</a></td>
+                    <td><a href="#">{{ users[user].website}}</a></td>
+                    <td><a href="#">{{ users[user].phone}}</a></td>
                 </tr>
-
                 {% endfor %}
             </tbody>
         </table>

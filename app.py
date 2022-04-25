@@ -1,16 +1,18 @@
 from crypt import methods
 import email
+import re
 from wsgiref.validate import validator
 from click import password_option
 from flask import Flask, redirect ,render_template , request
 from flask_wtf import FlaskForm
+from matplotlib.image import thumbnail
 from wtforms import StringField ,PasswordField ,IntegerField ,SubmitField
 from sqlalchemy import false
 from wtforms import StringField ,PasswordField
 from wtforms.validators import InputRequired,Email,Length,ValidationError
 from flask import Flask, render_template, url_for ,request
 from flask_sqlalchemy import SQLAlchemy
-from creationbd import  Users , Address,Company
+from creationbd import  Posts, Users , Address,Company,Todo, Albums, Photos, Comment
 
 
 app = Flask(__name__)
@@ -118,6 +120,35 @@ def adduser():
             return  "erreur"
     else:
         return render_template('formulairedajout.html')
+# --------------------ADD BY DEME-----------------------
+def addPost():
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+        donnee_posts = Posts(posttitle = title, comments = content)
 
+
+def addTodo():
+    if request.method == 'POST':
+        title = request.form['title']
+        etat = request.form['etat']
+        donnee_todo = Todo(todotitle = title)
+
+def addAlbums():
+    if request.method == 'POST':
+        title = request.form('title')
+        donnee_Albums = Albums(albumtitle = title)
+
+def addPhotos():
+    if request.method == 'POST':
+        title = request.form('title')
+        url = request.form('url')
+        thumb = request.form('thumbnailUrl')
+        donnee_Photo = Photos(phototitle = title, photourl = url, photothumbnailurl = thumb)
+
+
+        
+
+# --------------------------END--------------------------
 app.run(debug=True)
 

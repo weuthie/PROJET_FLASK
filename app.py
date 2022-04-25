@@ -3,7 +3,7 @@ import email
 from pickletools import OpcodeInfo
 from wsgiref.validate import validator
 from click import password_option
-from flask import Flask, redirect ,render_template , request, url_for
+from flask import Flask, redirect ,render_template , request, session, url_for  
 from flask_wtf import FlaskForm
 from wtforms import StringField ,PasswordField ,IntegerField ,SubmitField
 from sqlalchemy import false
@@ -24,12 +24,12 @@ db = SQLAlchemy(app)
 #### Validation formulaire Dabakh #######
 
 class Login(FlaskForm):
-    # email = StringField('email', validators=[InputRequired(),Email()])
-    # pwd = PasswordField('pwd',validators = [InputRequired(),Length(min=4,max=10)])
-
-    def validation_email(self,email):
-        if email.data == "root@domain.com":
-            raise ValidationError("cette email est déja enrégistrer")
+    email = StringField('email', validators=[InputRequired(),Email()])
+    pwd = PasswordField('pwd')
+# render_template('formulaire_de__connxion.html')
+    # def validation_email(self,email):
+    #     if email.data == "root@domain.com":
+    #         raise ValidationError("cette email est déja enrégistrer")
 
 
 #formulaire pour gerer l'entreer
@@ -106,10 +106,12 @@ def getAndInsertDataFromApi(endpoint, nbelt):
 
 @app.route('/pageUser')
 def pageUser():
-    return render_template('pageUser.html')
+    users = Users.query.all()
+    return render_template('pageUser.html' , users=users)
 # ----------------------------------------------------
 @app.route('/userPost')
 def userPost():
+    
     return render_template('userPost.html')
 
 # ---------------------------------------------------
@@ -139,12 +141,16 @@ def profil():
     return render_template('profil.html')
 
 # ----------------END DOING BY LOUFA---------------
-@app.route('/singin', methods=['GET','POST'])
-def form():
+@app.route('/singin/<int:userid>', methods=['GET','POST'])
+def form(userid):
+    session.pop('userid',None)
+    users = Users.query.get_or_404(userid)
     info_user = Login()
-    if info_user.validate_on_submit():
-        return render_template('pageUser.html')
-    return render_template('formulaire_de__connxion.html', info_user = info_user)
+    if info_user.pwd.data == users.password:
+        session["userid"]=users.userid
+        return render_template('pageUser.html',users=users) 
+     
+    return render_template('formulaire_de__connxion.html', info_user = info_user,users=users)
 
 @app.route('/adduser', methods=["GET","POST"])
 def adduser():

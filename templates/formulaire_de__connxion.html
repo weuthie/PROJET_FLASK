@@ -5,18 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static',filename='css/formulaire_de_connexion.css')}}">
-    <title>{{url_for("form")}}</title>
+    <title>bonjour</title>
 </head>
 <body>
     <div id="cadre">
     <h2> Sign in</h2>
-    <form action="{{ url_for('form')}}" method="POST">
+    <form action="" method="POST">
         {{ info_user.csrf_token}} 
-        {{ info_user.email(placeholder="email")}}
+        {{ info_user.email(placeholder="email" , value=users.email)}}
         {{ info_user.pwd(placeholder="password")}}
         <input type="submit" value="CONNEXION">
     </form>
 </div>
 <footer>&copy Groupe4 Flask_Projet P4 Dev_Data SA 2022</footer>
+<script>
+    var email = document.getElementById('email');
+    email.disabled= true;
+</script>
 </body>
 </html>

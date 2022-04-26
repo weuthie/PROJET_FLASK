@@ -11,6 +11,7 @@ from wtforms import StringField ,PasswordField
 from wtforms.validators import InputRequired,Email,Length,ValidationError
 # from flask import Flask, render_template, url_for ,request
 from flask_sqlalchemy import SQLAlchemy
+
 from creationbd import  *
 import requests 
 from requests import get
@@ -62,6 +63,7 @@ def pagePrincipal():
         nbuser =len(users)
     return render_template('pagePrincipal.html',users=users,nb=nb,nbuser=nbuser,formulair=formulair)
 
+# -------------------BEGIN API PROCESS--------------------
 def getAndInsertDataFromApi(endpoint, nbelt):
     isEmpty = Users.query.all()
     dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
@@ -75,9 +77,17 @@ def getAndInsertDataFromApi(endpoint, nbelt):
         # dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
         # data = dataFromApi.json()
         for i in range(stepApi):
-            personal_data = Users(userid = data[i].get('id'), name = data[i].get('name') , username = data[i].get('username'),phone=data[i].get('phone'),email=data[i].get('email'),website=data[i].get('website'), password=12)
+
+            personalDataFromApi = Users(userid = data[i].get('id'), name = data[i].get('name') , username = data[i].get('username'),phone=data[i].get('phone'),email=data[i].get('email'),website=data[i].get('website'), password=12)
+            
+            addresFromApi = Address(addressid = data[i].get('id'), street = data[i]['address']['street'], suite = data[i]['address']['suite'], city = data[i]['address']['city'], zipcode = data[i]['address']['zipcode'], geo_lat = data[i]['address']['geo']['lat'], geo_lng = data[i]['address']['geo']['lat'], userid = data[i].get('id'))
+
+            companyFromApi = Company(companyid = data[i].get('id'), companyname = data[i]['company']['name'], companycatchphrase = data[i]['company']['catchPhrase'], companybs = data[i]['company']['bs'], userid = data[i].get('id'))
+
             try:
-                db.session.add(personal_data)
+                db.session.add(personalDataFromApi)
+                db.session.add(addresFromApi)
+                db.session.add(companyFromApi)
                 db.session.commit()
             except:
                 db.session.rollback()
@@ -98,14 +108,21 @@ def getAndInsertDataFromApi(endpoint, nbelt):
             # data = dataFromApi.json()
             for i in range(nextStepApi,endIndex):
                 if data[i].get('id') not in listOfId:
-                    personal_data = Users(userid = data[i].get('id'), name = data[i].get('name') , username = data[i].get('username'),phone=data[i].get('phone'),email=data[i].get('email'),website=data[i].get('website'), password=12)
+
+                    personalDataFromApi = Users(userid = data[i].get('id'), name = data[i].get('name') , username = data[i].get('username'),phone=data[i].get('phone'),email=data[i].get('email'),website=data[i].get('website'), password=12)
+
+                    addresFromApi = Address(addressid = data[i].get('id'), street = data[i]['address']['street'], suite = data[i]['address']['suite'], city = data[i]['address']['city'], zipcode = data[i]['address']['zipcode'], geo_lat = data[i]['address']['geo']['lat'], geo_lng = data[i]['address']['geo']['lat'], userid = data[i].get('id'))
+
+                    companyFromApi = Company(companyid = data[i].get('id'), companyname = data[i]['company']['name'], companycatchphrase = data[i]['company']['catchPhrase'], companybs = data[i]['company']['bs'], userid = data[i].get('id'))
                 try:
-                    db.session.add(personal_data)
+                    db.session.add(personalDataFromApi)
+                    db.session.add(addresFromApi)
+                    db.session.add(companyFromApi)
                     db.session.commit()
                 except:
                     db.session.rollback()                    
                     return  "erreur"
-
+# ---------------------END API PROCESS------------------------
 
 @app.route('/pageUser')
 def pageUser():
@@ -251,4 +268,3 @@ def addPhotos():
 
 # --------------------------END--------------------------
 app.run(debug=True)
-

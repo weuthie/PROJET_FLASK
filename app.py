@@ -1,18 +1,20 @@
 from crypt import methods
 import email
-import re
+from pickletools import OpcodeInfo
 from wsgiref.validate import validator
 from click import password_option
-from flask import Flask, flash, redirect ,render_template , request, session  
+from flask import Flask, redirect ,render_template , request, session, url_for, flash  
 from flask_wtf import FlaskForm
 from wtforms import StringField ,PasswordField ,IntegerField ,SubmitField
 from sqlalchemy import false, null
 from wtforms import StringField ,PasswordField
 from wtforms.validators import InputRequired,Email,Length,ValidationError
-from flask import Flask, render_template, url_for ,request
+# from flask import Flask, render_template, url_for ,request
 from flask_sqlalchemy import SQLAlchemy
-from creationbd import  Users , Address,Company,Albums,Posts,Todo,Photos
-import requests
+
+from creationbd import  *
+from requests import get
+
 
 
 app = Flask(__name__)
@@ -53,9 +55,56 @@ def pagePrincipal():
     formulair= Gerenmbre()
     if formulair.validate_on_submit():
         nb = formulair.nbchoix.data
+
+        getAndInsertDataFromApi('users', nb)
+
         users = Users.query.all()
         nbuser =len(users)
     return render_template('pagePrincipal.html',users=users,nb=nb,nbuser=nbuser,formulair=formulair)
+
+def getAndInsertDataFromApi(endpoint, nbelt):
+    isEmpty = Users.query.all()
+    dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
+    data = dataFromApi.json()
+    # if len(isEmpty) == 0:
+    if len(isEmpty) == 0:
+        if nbelt > len(data):
+            stepApi = len(data)
+        else:
+            stepApi = nbelt
+        # dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
+        # data = dataFromApi.json()
+        for i in range(stepApi):
+            personal_data = Users(userid = data[i].get('id'), name = data[i].get('name') , username = data[i].get('username'),phone=data[i].get('phone'),email=data[i].get('email'),website=data[i].get('website'), password=12)
+            try:
+                db.session.add(personal_data)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                return  "erreur"
+    else:
+        userOfId = Users.query.all()
+        listOfId = {0}
+        for i in range(len(userOfId)):
+            listOfId.add(userOfId[i].userid)
+
+        nextStepApi = len(Users.query.all())
+        if nbelt >  nextStepApi:
+            if nextStepApi+nbelt < len(data):
+                endIndex = nextStepApi + nbelt
+            else:
+                endIndex = len(data)
+            # dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
+            # data = dataFromApi.json()
+            for i in range(nextStepApi,endIndex):
+                if data[i].get('id') not in listOfId:
+                    personal_data = Users(userid = data[i].get('id'), name = data[i].get('name') , username = data[i].get('username'),phone=data[i].get('phone'),email=data[i].get('email'),website=data[i].get('website'), password=12)
+                try:
+                    db.session.add(personal_data)
+                    db.session.commit()
+                except:
+                    db.session.rollback()                    
+                    return  "erreur"
 
 
 @app.route('/pageUser')
@@ -126,10 +175,32 @@ def adduser():
         companyname = request.form['companyname']
         catchPhrase = request.form['catchPhrase']
         bs = request.form['bs']
-        donne_personnel= Users(name = name , username = username,phone=phone,email=email,website=website, password=12)
+        # donne_personnel= Users(name = name , username = username,phone=phone,email=email,website=website, password=12)
+        userid = Users.query.all()
+        listId = {0}
+        for i in range(len(userid)):
+            listId.add(userid[i].userid)
+        maxid = max(listId)+1
+        if len(userid) <= 10 and 11 not in listId:
+            iduser = 11
 
+            donne_personnel= Users(userid = iduser, name = name , username = username,phone=phone,email=email,website=website, password=12)
+
+            addres = Address(addressid = iduser, street = street, suite = suite, city = city, zipcode = zipcode, geo_lat = latitude, geo_lng = longitude, userid = iduser)
+
+            company = Company(companyid = iduser, companyname = companyname, companycatchphrase = catchPhrase, companybs = bs, userid = iduser)
+
+        else:
+            donne_personnel= Users(userid = maxid, name = name , username = username,phone=phone,email=email,website=website, password=12)
+            
+            addres = Address(addressid = maxid, street = street, suite = suite, city = city, zipcode = zipcode, geo_lat = latitude, geo_lng = longitude, userid = maxid)
+        
+            company = Company(companyid = maxid, companyname = companyname, companycatchphrase = catchPhrase, companybs = bs, userid = maxid)
+        
         try:
             db.session.add(donne_personnel)
+            db.session.add(addres)
+            db.session.add(company)
             db.session.commit()
             return  redirect('/pagePrincipal') 
         except:

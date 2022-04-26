@@ -39,9 +39,9 @@ class Address(db.Model):
     suite = db.Column(db.String(255),nullable = False)
     city = db.Column(db.String(255),nullable = False)
     zipcode = db.Column(db.String(255),nullable = False)
-    geo_lat = db.Column(db.Integer,nullable = False)
-    geo_lng = db.Column(db.Integer,nullable = False)
-    userid = db.Column(db.Integer, db.ForeignKey('users.userid'))
+    geo_lat = db.Column(db.Float(),nullable = False)
+    geo_lng = db.Column(db.Float(),nullable = False)
+    userid = db.Column(db.Integer(), db.ForeignKey('users.userid'))
 
 class Todo(db.Model):
     todoid = db.Column(db.Integer(), primary_key = True) 
@@ -81,8 +81,6 @@ class Comment(db.Model):
     postid = db.Column(db.Integer, db.ForeignKey('posts.postid'))
 
 
-if __name__ == '__main__':
-    db.create_all()
 
 
 

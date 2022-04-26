@@ -5,7 +5,6 @@ from wsgiref.validate import validator
 from click import password_option
 from flask import Flask, flash, redirect ,render_template , request, session  
 from flask_wtf import FlaskForm
-from matplotlib.image import thumbnail
 from wtforms import StringField ,PasswordField ,IntegerField ,SubmitField
 from sqlalchemy import false, null
 from wtforms import StringField ,PasswordField

@@ -12,7 +12,9 @@ from wtforms.validators import InputRequired,Email,Length,ValidationError
 # from flask import Flask, render_template, url_for ,request
 from flask_sqlalchemy import SQLAlchemy
 from creationbd import  *
-import requests
+import requests 
+from requests import get
+
 
 
 app = Flask(__name__)
@@ -33,7 +35,7 @@ class Login(FlaskForm):
 
 
 #formulaire pour gerer l'entreer
-
+ 
 class Gerenmbre(FlaskForm):
     nbchoix=IntegerField('',validators=[InputRequired()])
     btn = SubmitField('Charger')
@@ -112,8 +114,12 @@ def pageUser():
 # ----------------------------------------------------
 @app.route('/userPost')
 def userPost():
-    
-    return render_template('userPost.html')
+    if 'userid' in session:
+        return render_template('userPost.html')
+    else:
+        flash("Chargez votre user et connectez vous")
+
+        return redirect('/pagePrincipal')
 
 # ---------------------------------------------------
 
@@ -123,6 +129,8 @@ def album():
     if 'userid' in session:
         return render_template('album.html')
     else:
+        flash("Chargez votre user et connectez vous")
+
         return redirect('/pagePrincipal')
 
 @app.route('/photo')
@@ -130,6 +138,8 @@ def photo():
     if 'userid' in session:
         return render_template('photo.html')
     else:
+        flash("Chargez votre user et connectez vous")
+
         return redirect('/pagePrincipal')
 @app.route('/todo')
 
@@ -137,12 +147,16 @@ def todo():
     if 'userid' in session:
         return render_template('todo.html')
     else:
+        flash("Chargez votre user et connectez vous")
+
         return redirect('/pagePrincipal')
 @app.route('/profil')
 def profil():
     if 'userid' in session:
         return render_template('profil.html')
     else:
+        flash("Chargez votre user et connectez vous")
+
         return redirect('/pagePrincipal')
 # ----------------END DOING BY LOUFA---------------
 @app.route('/singin/<int:userid>', methods=['GET','POST'])

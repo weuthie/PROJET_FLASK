@@ -225,10 +225,17 @@ def photo():
 
         return redirect('/pagePrincipal')
 @app.route('/todo')
-
 def todo():
     if 'userid' in session:
         return render_template('todo.html')
+    else:
+        flash("Chargez votre user et connectez vous")
+
+        return redirect('/pagePrincipal')
+@app.route('/map')
+def map():
+    if 'userid' in session:
+        return render_template('map.html')
     else:
         flash("Chargez votre user et connectez vous")
 

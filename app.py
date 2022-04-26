@@ -63,18 +63,17 @@ def pagePrincipal():
     return render_template('pagePrincipal.html',users=users,nb=nb,nbuser=nbuser,formulair=formulair)
 
 # -------------------BEGIN API PROCESS--------------------
+URL = 'https://jsonplaceholder.typicode.com/'
 def getAndInsertDataFromApi(endpoint, nbelt):
     isEmpty = Users.query.all()
-    dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
-    data = dataFromApi.json()
+    userDataFromApi = get(URL+endpoint)
+    data = userDataFromApi.json()
     # if len(isEmpty) == 0:
     if len(isEmpty) == 0:
         if nbelt > len(data):
             stepApi = len(data)
         else:
             stepApi = nbelt
-        # dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
-        # data = dataFromApi.json()
         for i in range(stepApi):
 
             personalDataFromApi = Users(userid = data[i].get('id'), name = data[i].get('name') , username = data[i].get('username'),phone=data[i].get('phone'),email=data[i].get('email'),website=data[i].get('website'), password=12)
@@ -82,6 +81,36 @@ def getAndInsertDataFromApi(endpoint, nbelt):
             addresFromApi = Address(addressid = data[i].get('id'), street = data[i]['address']['street'], suite = data[i]['address']['suite'], city = data[i]['address']['city'], zipcode = data[i]['address']['zipcode'], geo_lat = data[i]['address']['geo']['lat'], geo_lng = data[i]['address']['geo']['lat'], userid = data[i].get('id'))
 
             companyFromApi = Company(companyid = data[i].get('id'), companyname = data[i]['company']['name'], companycatchphrase = data[i]['company']['catchPhrase'], companybs = data[i]['company']['bs'], userid = data[i].get('id'))
+
+            userPostFromApi = get(URL+endpoint+'/'+str(i+1)+'/posts')
+            postData = userPostFromApi.json()
+            userAlbumFromApi = get(URL+endpoint+'/'+str(i+1)+'/albums')
+            albumData = userAlbumFromApi.json()
+            userTodoFromApi = get(URL+endpoint+'/'+str(i+1)+'/todos')
+            todoData = userTodoFromApi.json()
+
+            for j in range(len(postData)):
+                postFromApi = Posts(postid = postData[j].get('id'), posttitle = postData[j].get('title'), postbody = postData[j].get('body'), userid = postData[j].get('userId'))
+                try:
+                    db.session.add(postFromApi)
+                except:
+                    db.session.rollback()
+                    return "erreur"
+            for j in range(len(albumData)):
+                albumFromApi = Albums(albumid = albumData[j].get('id'), albumtitle = albumData[j].get('title'), userid = albumData[j].get('userId'))
+                try:
+                    db.session.add(albumFromApi)
+                except:
+                    db.session.rollback()
+                    return "erreur"
+
+            for j in range(len(todoData)):
+                todoFromApi  = Todo(todoid = todoData[j].get('id'),todotitle = todoData[j].get('title'),todoetat = todoData[j].get('completed'), userid = todoData[j].get('userId') )
+                try:
+                    db.session.add(todoFromApi)
+                except:
+                    db.session.rollback()
+                    return "erreur"
 
             try:
                 db.session.add(personalDataFromApi)
@@ -103,8 +132,8 @@ def getAndInsertDataFromApi(endpoint, nbelt):
                 endIndex = nextStepApi + nbelt
             else:
                 endIndex = len(data)
-            # dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
-            # data = dataFromApi.json()
+            # userDataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
+            # data = userDataFromApi.json()
             for i in range(nextStepApi,endIndex):
                 if data[i].get('id') not in listOfId:
 
@@ -113,6 +142,37 @@ def getAndInsertDataFromApi(endpoint, nbelt):
                     addresFromApi = Address(addressid = data[i].get('id'), street = data[i]['address']['street'], suite = data[i]['address']['suite'], city = data[i]['address']['city'], zipcode = data[i]['address']['zipcode'], geo_lat = data[i]['address']['geo']['lat'], geo_lng = data[i]['address']['geo']['lat'], userid = data[i].get('id'))
 
                     companyFromApi = Company(companyid = data[i].get('id'), companyname = data[i]['company']['name'], companycatchphrase = data[i]['company']['catchPhrase'], companybs = data[i]['company']['bs'], userid = data[i].get('id'))
+# --------------------------------------------------------------
+                    userPostFromApi = get(URL+endpoint+'/'+str(i+1)+'/posts')
+                    postData = userPostFromApi.json()
+                    userAlbumFromApi = get(URL+endpoint+'/'+str(i+1)+'/albums')
+                    albumData = userAlbumFromApi.json()
+                    userTodoFromApi = get(URL+endpoint+'/'+str(i+1)+'/todos')
+                    todoData = userTodoFromApi.json()
+
+                    for j in range(len(postData)):
+                        postFromApi = Posts(postid = postData[j].get('id'), posttitle = postData[j].get('title'), postbody = postData[j].get('body'), userid = postData[j].get('userId'))
+                        try:
+                            db.session.add(postFromApi)
+                        except:
+                            db.session.rollback()
+                            return "erreur"
+                    for j in range(len(albumData)):
+                        albumFromApi = Albums(albumid = albumData[j].get('id'), albumtitle = albumData[j].get('title'), userid = albumData[j].get('userId'))
+                        try:
+                            db.session.add(albumFromApi)
+                        except:
+                            db.session.rollback()
+                            return "erreur"
+
+                    for j in range(len(todoData)):
+                        todoFromApi  = Todo(todoid = todoData[j].get('id'),todotitle = todoData[j].get('title'),todoetat = todoData[j].get('completed'), userid = todoData[j].get('userId') )
+                        try:
+                            db.session.add(todoFromApi)
+                        except:
+                            db.session.rollback()
+                            return "erreur"
+# ----------------------------------------------------------------------------------------------
                 try:
                     db.session.add(personalDataFromApi)
                     db.session.add(addresFromApi)

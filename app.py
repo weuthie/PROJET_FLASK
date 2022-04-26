@@ -11,6 +11,8 @@ from wtforms import StringField ,PasswordField
 from wtforms.validators import InputRequired,Email,Length,ValidationError
 # from flask import Flask, render_template, url_for ,request
 from flask_sqlalchemy import SQLAlchemy
+import folium 
+
 
 from creationbd import  *
 import requests 
@@ -66,10 +68,12 @@ def pagePrincipal():
 # -------------------BEGIN API PROCESS--------------------
 def getAndInsertDataFromApi(endpoint, nbelt):
     isEmpty = Users.query.all()
-    dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
-    data = dataFromApi.json()
+    # dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
+    # data = dataFromApi.json()
     # if len(isEmpty) == 0:
     if len(isEmpty) == 0:
+        dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
+        data = dataFromApi.json()
         if nbelt > len(data):
             stepApi = len(data)
         else:
@@ -106,6 +110,8 @@ def getAndInsertDataFromApi(endpoint, nbelt):
                 endIndex = len(data)
             # dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
             # data = dataFromApi.json()
+            dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
+            data = dataFromApi.json()
             for i in range(nextStepApi,endIndex):
                 if data[i].get('id') not in listOfId:
 
@@ -126,8 +132,10 @@ def getAndInsertDataFromApi(endpoint, nbelt):
 
 @app.route('/pageUser')
 def pageUser():
-    users = Users.query.all()
-    return render_template('pageUser.html' , users=users)
+    if 'userid' in session:
+        user = Users.query.filter_by(userid= session['userid']).first()
+
+        return render_template('pageUser.html' , users=user)
 # ----------------------------------------------------
 @app.route('/userPost')
 def userPost():
@@ -170,7 +178,14 @@ def todo():
 @app.route('/profil')
 def profil():
     if 'userid' in session:
-        return render_template('profil.html')
+        user = Users.query.filter_by(userid= session['userid']).first()
+        address = Address.query.filter_by(userid= session['userid']).first()
+        company = Company.query.filter_by(userid= session['userid']).first()
+        coordonne =(address.geo_lat , address.geo_lng)
+        map= folium.Map(location=coordonne,zoom_start=2)
+        folium.Marker(location=coordonne,popup=f"user:{user.name}",tooltip="appuiyez ici").add_to(map)
+        map.save('templates/map.html')
+        return render_template('profil.html',user=user,address=address, company=company)
     else:
         flash("Chargez votre user et connectez vous")
 
@@ -262,7 +277,6 @@ def addPhotos():
         url = request.form('url')
         thumb = request.form('thumbnailUrl')
         donnee_Photo = Photos(phototitle = title, photourl = url, photothumbnailurl = thumb)
-
 
         
 

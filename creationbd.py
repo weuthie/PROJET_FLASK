@@ -82,10 +82,7 @@ class Comment(db.Model):
 
 
 if __name__ == '__main__':
-<<<<<<< HEAD
     db.drop_all()
-=======
->>>>>>> 473265576e86f8538036f8d0d8841a7b95424ef8
     db.create_all()
 
 

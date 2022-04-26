@@ -29,7 +29,9 @@
          </form> 
         </div>
         <!-- formulaire a revoir en cas de wouyayoe -->
-
+{% for message in get_flashed_messages() %}
+        {{ message }}
+        {% endfor %}
         <table>
             <thead>
                 <tr>

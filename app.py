@@ -3,11 +3,12 @@ import email
 from pickletools import OpcodeInfo
 from wsgiref.validate import validator
 from click import password_option
-from flask import Flask, redirect ,render_template , request, session, url_for  
+from flask import Flask, redirect ,render_template , request, session, url_for, flash  
 from flask_wtf import FlaskForm
+from matplotlib.image import thumbnail
 from wtforms import StringField ,PasswordField ,IntegerField ,SubmitField
-from sqlalchemy import false
-# from wtforms import StringField ,PasswordField
+from sqlalchemy import false, null
+from wtforms import StringField ,PasswordField
 from wtforms.validators import InputRequired,Email,Length,ValidationError
 # from flask import Flask, render_template, url_for ,request
 from flask_sqlalchemy import SQLAlchemy
@@ -38,10 +39,11 @@ class Gerenmbre(FlaskForm):
     nbchoix=IntegerField('',validators=[InputRequired()])
     btn = SubmitField('Charger')
 
-# recuperation des donne de l'api
+
 
 @app.route('/')
 def index():
+    session.pop('userid',None)
     return render_template('pageindex.html')
 
 @app.route('/pagePrincipal', methods=["POST","GET"])
@@ -117,40 +119,43 @@ def userPost():
 # ---------------------------------------------------
 
 
-@app.route('/album')
+@app.route('/album/')
 def album():
-    return render_template('album.html')
+    if 'userid' in session:
+        return render_template('album.html')
+    else:
+        return redirect('/pagePrincipal')
 
 @app.route('/photo')
 def photo():
-    return render_template('photo.html')
-
+    if 'userid' in session:
+        return render_template('photo.html')
+    else:
+        return redirect('/pagePrincipal')
 @app.route('/todo')
+
 def todo():
-    return render_template('todo.html')
-
-# @app.route('/addtodo')
-# def addtodo():
-#     if request.method == "POST":
-#         title = request.form['title']
-#         etat = request.form['etat']
-
-
+    if 'userid' in session:
+        return render_template('todo.html')
+    else:
+        return redirect('/pagePrincipal')
 @app.route('/profil')
 def profil():
-    return render_template('profil.html')
-
+    if 'userid' in session:
+        return render_template('profil.html')
+    else:
+        return redirect('/pagePrincipal')
 # ----------------END DOING BY LOUFA---------------
 @app.route('/singin/<int:userid>', methods=['GET','POST'])
 def form(userid):
-    session.pop('userid',None)
+
     users = Users.query.get_or_404(userid)
     info_user = Login()
     if info_user.pwd.data == users.password:
         session["userid"]=users.userid
         return render_template('pageUser.html',users=users) 
-     
-    return render_template('formulaire_de__connxion.html', info_user = info_user,users=users)
+    
+    return render_template('formulaire_de__connxion.html', info_user = info_user,users=users )
 
 @app.route('/adduser', methods=["GET","POST"])
 def adduser():
@@ -202,6 +207,35 @@ def adduser():
             return  "erreur"
     else:
         return render_template('formulairedajout.html')
+# --------------------ADD BY DEME-----------------------
+def addPost():
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+        donnee_posts = Posts(posttitle = title, comments = content)
 
+
+def addTodo():
+    if request.method == 'POST':
+        title = request.form['title']
+        etat = request.form['etat']
+        donnee_todo = Todo(todotitle = title)
+
+def addAlbums():
+    if request.method == 'POST':
+        title = request.form('title')
+        donnee_Albums = Albums(albumtitle = title)
+
+def addPhotos():
+    if request.method == 'POST':
+        title = request.form('title')
+        url = request.form('url')
+        thumb = request.form('thumbnailUrl')
+        donnee_Photo = Photos(phototitle = title, photourl = url, photothumbnailurl = thumb)
+
+
+        
+
+# --------------------------END--------------------------
 app.run(debug=True)
 

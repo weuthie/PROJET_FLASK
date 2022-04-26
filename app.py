@@ -66,6 +66,16 @@ def pagePrincipal():
     return render_template('pagePrincipal.html',users=users,nb=nb,nbuser=nbuser,formulair=formulair)
 
 # -------------------BEGIN API PROCESS--------------------
+
+def commitInsert(dataForTable):
+    try:
+        db.session.add(dataForTable)
+        # db.session.commit()
+    except:
+        db.session.rollback()
+        return "erreur"
+
+
 URL = 'https://jsonplaceholder.typicode.com/'
 def getAndInsertDataFromApi(endpoint, nbelt):
     isEmpty = Users.query.all()
@@ -73,8 +83,8 @@ def getAndInsertDataFromApi(endpoint, nbelt):
     data = userDataFromApi.json()
     # if len(isEmpty) == 0:
     if len(isEmpty) == 0:
-        dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
-        data = dataFromApi.json()
+        # dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
+        # data = dataFromApi.json()
         if nbelt > len(data):
             stepApi = len(data)
         else:
@@ -96,26 +106,39 @@ def getAndInsertDataFromApi(endpoint, nbelt):
 
             for j in range(len(postData)):
                 postFromApi = Posts(postid = postData[j].get('id'), posttitle = postData[j].get('title'), postbody = postData[j].get('body'), userid = postData[j].get('userId'))
-                try:
-                    db.session.add(postFromApi)
-                except:
-                    db.session.rollback()
-                    return "erreur"
+
+                # postCommentFromApi = get(URL+'posts/'+str(j+1)+'/comments')
+                # commentData = postCommentFromApi.json()
+                # for k in range(len(commentData)):
+                #     commentFromApi = Comment(commentid = commentData[k].get('id'),commentname = commentData[k].get('name'),commentemail = commentData[k].get('email'),commentbody = commentData[k].get('body'), postid = commentData[k].get('postId'))
+
+                #     commitInsert(commentFromApi)
+                commitInsert(postFromApi)
+
+                # try:
+                #     db.session.add(postFromApi)
+                # except:
+                #     db.session.rollback()
+                #     return "erreur"
             for j in range(len(albumData)):
                 albumFromApi = Albums(albumid = albumData[j].get('id'), albumtitle = albumData[j].get('title'), userid = albumData[j].get('userId'))
-                try:
-                    db.session.add(albumFromApi)
-                except:
-                    db.session.rollback()
-                    return "erreur"
+
+                commitInsert(albumFromApi)
+                # try:
+                #     db.session.add(albumFromApi)
+                # except:
+                #     db.session.rollback()
+                #     return "erreur"
 
             for j in range(len(todoData)):
                 todoFromApi  = Todo(todoid = todoData[j].get('id'),todotitle = todoData[j].get('title'),todoetat = todoData[j].get('completed'), userid = todoData[j].get('userId') )
-                try:
-                    db.session.add(todoFromApi)
-                except:
-                    db.session.rollback()
-                    return "erreur"
+
+                commitInsert(todoFromApi)
+                # try:
+                #     db.session.add(todoFromApi)
+                # except:
+                #     db.session.rollback()
+                #     return "erreur"
 
             try:
                 db.session.add(personalDataFromApi)
@@ -157,26 +180,40 @@ def getAndInsertDataFromApi(endpoint, nbelt):
 
                     for j in range(len(postData)):
                         postFromApi = Posts(postid = postData[j].get('id'), posttitle = postData[j].get('title'), postbody = postData[j].get('body'), userid = postData[j].get('userId'))
-                        try:
-                            db.session.add(postFromApi)
-                        except:
-                            db.session.rollback()
-                            return "erreur"
+
+                        # postCommentFromApi = get(URL+'posts/'+str(j+1)+'/comments')
+                        # commentData = postCommentFromApi.json()
+                        # for k in range(len(commentData)):
+                        #     commentFromApi = Comment(commentid = commentData[k].get('id'),commentname = commentData[k].get('name'),commentemail = commentData[k].get('email'),commentbody = commentData[k].get('body'), postid = commentData[k].get('postId'))
+
+                        #     commitInsert(commentFromApi)
+
+                        commitInsert(postFromApi) 
+
+                        # try:
+                        #     db.session.add(postFromApi)
+                        # except:
+                        #     db.session.rollback()
+                        #     return "erreur"
                     for j in range(len(albumData)):
                         albumFromApi = Albums(albumid = albumData[j].get('id'), albumtitle = albumData[j].get('title'), userid = albumData[j].get('userId'))
-                        try:
-                            db.session.add(albumFromApi)
-                        except:
-                            db.session.rollback()
-                            return "erreur"
+
+                        commitInsert(albumFromApi)
+                        # try:
+                        #     db.session.add(albumFromApi)
+                        # except:
+                        #     db.session.rollback()
+                        #     return "erreur"
 
                     for j in range(len(todoData)):
                         todoFromApi  = Todo(todoid = todoData[j].get('id'),todotitle = todoData[j].get('title'),todoetat = todoData[j].get('completed'), userid = todoData[j].get('userId') )
-                        try:
-                            db.session.add(todoFromApi)
-                        except:
-                            db.session.rollback()
-                            return "erreur"
+
+                        commitInsert(todoFromApi)
+                        # try:
+                        #     db.session.add(todoFromApi)
+                        # except:
+                        #     db.session.rollback()
+                        #     return "erreur"
 # ----------------------------------------------------------------------------------------------
                 try:
                     db.session.add(personalDataFromApi)
@@ -186,6 +223,7 @@ def getAndInsertDataFromApi(endpoint, nbelt):
                 except:
                     db.session.rollback()                    
                     return  "erreur"
+    # db.session.commit()
 # ---------------------END API PROCESS------------------------
 
 @app.route('/pageUser')
@@ -248,6 +286,8 @@ def profil():
         flash("Chargez votre user et connectez vous")
 
         return redirect('/pagePrincipal')
+
+        
 # ----------------END DOING BY LOUFA---------------
 @app.route('/singin/<int:userid>', methods=['GET','POST'])
 def form(userid):

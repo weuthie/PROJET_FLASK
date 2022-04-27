@@ -4,9 +4,9 @@
 <link rel="stylesheet" href=" {{ url_for('static', filename='css/album.css') }} ">
 <button id="addAlbum">ADD ALBUM</button>
 <div class="album">
-    <a href="#"><img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}" alt=""></a>
+    <a href="{{url_for('photo')}}"><img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}" alt=""></a>
 
-    <a href="#"><img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}" alt=""></a>
+    <a href="{{url_for('photo')}}"><img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}" alt=""></a>
 
 </div>
 <div id="containtAddAlbum">
@@ -14,7 +14,7 @@
         <img src="{{ url_for('static', filename='img/close.png') }}" alt="">
     </button>
     <p>ADD ALBUM</p>
-    <form action="">
+    <form action="/addAlbum" method="post">
         <input type="text" name="title" id="title" placeholder="Title">
         <button type="submit" id="submit">VALIDER</button>
     </form>

@@ -11,7 +11,7 @@ from wtforms import StringField ,PasswordField
 from wtforms.validators import InputRequired,Email,Length,ValidationError
 # from flask import Flask, render_template, url_for ,request
 from flask_sqlalchemy import SQLAlchemy
-import folium 
+import folium
 
 
 from creationbd import  *

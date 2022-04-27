@@ -3,17 +3,46 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pageComment.css') }}">
 <div class="button">
-    <button id="addUser">ADD COMMENT</button>
+    <button id="addComment">ADD COMMENT</button>
     <div id="conteneur">
-        <article>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Atque maxime eos rem ipsum ab similique iste
+        <article id="post">ipsum dolor, sit amet consectetur adipisicing elit. Atque maxime eos rem ipsum ab similique iste
             praesentium reiciendis mollitia deleniti.
         </article>
-    <div id="name">Name</div>
+    <!-- <div id="name">Name</div>
     <article id="comment">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
         Iure odio nesciunt quas impedit deserunt iste nam quia quasi at accusamus ex omnis ab 
         quod, illo explicabo accusantium mol
-    </article>
+    </article> -->
     </div>
-
 </div>
+
+<div id="containtAddComment">
+    <button id="close">
+        <img src="{{ url_for('static', filename='img/close.png') }}" alt="">
+    </button>
+    <p>ADD COMMENT</p>
+    <form action="">
+        <input type="text" name="title" id="title" placeholder="Name">
+        <textarea name="content" id="content" cols="36" rows="5" placeholder="COMMENT"></textarea>
+
+        <button type="submit" id="submit">COMMENT</button>
+    </form>
+</div>
+
+<script>
+    let post = document.getElementById("post");
+    let popupAddComment = document.getElementById("containtAddComment");
+    let closePopupComment = document.getElementById("close");
+
+    post.addEventListener('click', () => {
+        popupAddComment.style.display = 'block';
+
+    });
+
+    closePopupComment.addEventListener('click', () => {
+        popupAddComment.style.display = 'none';
+
+    });
+</script>
+
 {% endblock %}

@@ -4,9 +4,14 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/todo.css') }}">
 
 <button id="addTodo">ADD TODO</button>
+
 <div id="containtTodo">
-    <h4>etat</h4>
-    <p>Content Todo</p>
+{% for todo in todos%}
+
+    <div class="widthtodo">
+    <h4 id="h4Etat">{{todo.todoetat}}</h4>
+    <p id="contentP">{{todo.todotitle}}</p>
+
     <button id="edit">
         <a href="#"><img src="{{ url_for('static', filename='img/edit.png') }}" alt="" class="modif"></a>
     </button>
@@ -14,7 +19,10 @@
     <button id="delete">
         <a href="#"><img src="{{ url_for('static', filename='img/delete.png') }}" alt="" class="del"></a>
     </button>
+    </div>
+    {% endfor%}
 </div>
+
 
 <div id="containtAddTodo">
     <button id="close">
@@ -36,6 +44,8 @@
     let addTodo = document.getElementById("addTodo");
     let popupCloseBtn = document.getElementById("close");
     let popupAddTodo = document.getElementById("containtAddTodo");
+    let h4Etat = document.getElementById('h4Etat');
+    let contentP = document.getElementById('contentP');
 
     addTodo.addEventListener('click', () => {
         popupAddTodo.style.display = 'block';

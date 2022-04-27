@@ -17,10 +17,11 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    width: 100%;
 }
 
 #containtTodo p {
-    width: 50%;
+    width: 60%;
     border: 1px solid #5894d8;
     /* height: 50px; */
     padding: 15px;
@@ -36,7 +37,12 @@
     background: none;
     border: none;
 }
-
+.widthtodo{
+    width: 70%;
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: center;
+}
 h4 {
     padding: 15px;
     text-align: center;

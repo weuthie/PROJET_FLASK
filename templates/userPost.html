@@ -6,9 +6,11 @@
 
 <div class="button">
     <button id="addPost">ADD POST</button>
-    <article>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Atque maxime eos rem ipsum ab similique iste
-        praesentium reiciendis mollitia deleniti.
+    {% for post in posts%}
+    <h3><span style="color: red;">Title:</span> {{post.posttitle}}</h3>
+    <article>{{post.postbody}}
     </article>
+    {% endfor%}
 </div>
 
 <div id="containtAddPost">

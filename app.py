@@ -270,7 +270,8 @@ def pageUser():
 @app.route('/userPost')
 def userPost():
     if 'userid' in session:
-        return render_template('userPost.html')
+        posts = Posts.query.filter_by(userid= session['userid'])
+        return render_template('userPost.html', posts=posts)
     else:
         flash("Chargez votre user et connectez vous")
 
@@ -278,15 +279,38 @@ def userPost():
 
 # ---------------------------------------------------
 
+@app.route('/addAlbum', methods=["POST","GET"])
+def addAlbum():
+    if request.method == 'POST':
+        title = request.form['title']
+        donnee_Albums = Albums(albumtitle = title,userid= session['userid'])
+        # commitInsert(donnee_Albums)
+    return redirect('/album/')
 
 @app.route('/album/', methods=["GET","POST"])
 def album():
     if 'userid' in session:
-        return render_template('album.html')
+        albums = Albums.query.filter_by(userid= session['userid'])
+        return render_template('album.html',albums=albums)
     else:
         flash("Chargez votre user et connectez vous")
 
         return redirect('/pagePrincipal')
+
+
+
+
+
+
+
+
+@app.route('/addPhoto', methods=["POST","GET"])
+def addPhotos():
+    if request.method == 'POST':
+        title = request.form['title']
+        url = request.form['url']
+        thumb = request.form['thumbnailUrl']
+        donnee_Photo = Photos(phototitle = title, photourl = url, photothumbnailurl = thumb)
 
 @app.route('/photo')
 def photo():
@@ -296,10 +320,27 @@ def photo():
         flash("Chargez votre user et connectez vous")
 
         return redirect('/pagePrincipal')
+
+
+
+
+
+
+
+
+@app.route('/addTodo', methods=["POST","GET"])
+def addTodo():
+    if request.method == 'POST':
+        title = request.form['title']
+        etat = request.form['etat']
+        donnee_todo = Todo(todotitle = title,userid= session['userid'],todoetat=etat)
+        # commitInsert(donnee_todo)
+    return redirect('/todo')
 @app.route('/todo')
 def todo():
     if 'userid' in session:
-        return render_template('todo.html')
+        todos = Todo.query.filter_by(userid= session['userid'])
+        return render_template('todo.html', todos=todos)
     else:
         flash("Chargez votre user et connectez vous")
 
@@ -312,6 +353,13 @@ def map():
         flash("Chargez votre user et connectez vous")
 
         return redirect('/pagePrincipal')
+
+
+
+
+
+
+
 @app.route('/profil')
 def profil():
     if 'userid' in session:
@@ -406,28 +454,7 @@ def addPost(postid,slug):
         return redirect(request.url)
     return render_template('pageComment',post = post,posts=posts)
 
-@app.route('/addTodo', methods=["POST","GET"])
-def addTodo():
-    if request.method == 'POST':
-        title = request.form['title']
-        etat = request.form['etat']
-        donnee_todo = Todo(todotitle = title,userid= session['userid'],todoetat=etat)
-        # commitInsert(donnee_todo)
-    return redirect('/todo')
-@app.route('/addAlbum', methods=["POST","GET"])
-def addAlbum():
-    if request.method == 'POST':
-        title = request.form['title']
-        donnee_Albums = Albums(albumtitle = title,userid= session['userid'])
-        # commitInsert(donnee_Albums)
-    return redirect('/album/')
-@app.route('/addPhoto', methods=["POST","GET"])
-def addPhotos():
-    if request.method == 'POST':
-        title = request.form['title']
-        url = request.form['url']
-        thumb = request.form['thumbnailUrl']
-        donnee_Photo = Photos(phototitle = title, photourl = url, photothumbnailurl = thumb)
+
 
 @app.route('/pageComment')
 def pageComment():

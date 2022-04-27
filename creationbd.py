@@ -78,13 +78,13 @@ class Comment(db.Model):
     commentid = db.Column(db.Integer(), primary_key = True) 
     commentname =  db.Column(db.String(255),nullable = False)
     commentemail = db.Column(db.String(255),nullable = False)
-    commentbody = db.Column(db.String(255),nullable = False)
+    commentbody = db.Column(db.Text(),nullable = False)
     postid = db.Column(db.Integer, db.ForeignKey('posts.postid'))
 
 
-if __name__ == '__main__':
-    db.drop_all()
-    db.create_all()
+# if __name__ == '__main__':
+#     db.drop_all()
+#     db.create_all()
 
 
 

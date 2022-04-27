@@ -1,13 +1,14 @@
 .album{
-    height: 77vh;
+    /* height: 77vh; */
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
+    margin: 0% 10% 0% 10%;
 }
 .album a{
     background-color: #787A7C;
-    margin: 20px;
+    /* margin: 20px; */
     text-decoration: none;
 
 }
@@ -103,4 +104,18 @@
     color: white;
     width: 100px;
     cursor: pointer;
+}
+
+.albumtitle{
+    width: 230px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.albumtitle h4{
+    height: 33px;
+    color: #0a76f1;
+    text-align: center;
 }

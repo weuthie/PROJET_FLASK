@@ -9,8 +9,8 @@
 {% for todo in todos%}
 
     <div class="widthtodo">
-    <h4>{{todo.todoetat}}</h4>
-    <p>{{todo.todotitle}}</p>
+    <h4 id="h4Etat">{{todo.todoetat}}</h4>
+    <p id="contentP">{{todo.todotitle}}</p>
 
     <button id="edit">
         <a href="#"><img src="{{ url_for('static', filename='img/edit.png') }}" alt="" class="modif"></a>
@@ -44,6 +44,8 @@
     let addTodo = document.getElementById("addTodo");
     let popupCloseBtn = document.getElementById("close");
     let popupAddTodo = document.getElementById("containtAddTodo");
+    let h4Etat = document.getElementById('h4Etat');
+    let contentP = document.getElementById('contentP');
 
     addTodo.addEventListener('click', () => {
         popupAddTodo.style.display = 'block';

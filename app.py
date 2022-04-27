@@ -112,33 +112,56 @@ def getAndInsertDataFromApi(endpoint, nbelt):
                 # for k in range(len(commentData)):
                 #     commentFromApi = Comment(commentid = commentData[k].get('id'),commentname = commentData[k].get('name'),commentemail = commentData[k].get('email'),commentbody = commentData[k].get('body'), postid = commentData[k].get('postId'))
 
-                #     commitInsert(commentFromApi)
-                commitInsert(postFromApi)
+                #     try:
+                #         db.session.add(commentFromApi)
+                #         db.session.commit()
+                #     except:
+                #         db.session.rollback()
+                #         return "erreur"
 
-                # try:
-                #     db.session.add(postFromApi)
-                # except:
-                #     db.session.rollback()
-                #     return "erreur"
+                #     commitInsert(commentFromApi)
+                # commitInsert(postFromApi)
+
+                try:
+                    db.session.add(postFromApi)
+                except:
+                    db.session.rollback()
+                    return "erreur"
             for j in range(len(albumData)):
                 albumFromApi = Albums(albumid = albumData[j].get('id'), albumtitle = albumData[j].get('title'), userid = albumData[j].get('userId'))
+                # photoAlbulmFromApi = get('https://jsonplaceholder.typicode.com/albums/'+str(j+1)+'/photos')
+                # photoData = photoAlbulmFromApi.json()
+                # for l in range(len(photoData)):
+                #     photoFromApi  = Photos( photoid = photoData[l].get('id'), phototitle = photoData[l].get('title'), photourl = photoData[l].get('url'), photothumbnailurl = photoData[l].get('thumnailUrl'), albumid = photoData[l].get('albumId'))
 
-                commitInsert(albumFromApi)
-                # try:
-                #     db.session.add(albumFromApi)
-                # except:
-                #     db.session.rollback()
-                #     return "erreur"
+                #     try:
+                #         db.session.add(photoFromApi)
+                #         db.session.commit()
+                #     except:
+                #         db.session.rollback()
+                #         return "erreur"
+
+
+                # commitInsert(albumFromApi)
+                try:
+                    db.session.add(albumFromApi)
+                except:
+                    db.session.rollback()
+                    return "erreur"
 
             for j in range(len(todoData)):
                 todoFromApi  = Todo(todoid = todoData[j].get('id'),todotitle = todoData[j].get('title'),todoetat = todoData[j].get('completed'), userid = todoData[j].get('userId') )
 
-                commitInsert(todoFromApi)
-                # try:
-                #     db.session.add(todoFromApi)
-                # except:
-                #     db.session.rollback()
-                #     return "erreur"
+                # commitInsert(todoFromApi)
+                try:
+                    db.session.add(todoFromApi)
+                except:
+                    db.session.rollback()
+                    return "erreur"
+            
+            # commitInsert(personalDataFromApi)
+            # commitInsert(addresFromApi)
+            # commitInsert(companyFromApi)
 
             try:
                 db.session.add(personalDataFromApi)
@@ -185,36 +208,47 @@ def getAndInsertDataFromApi(endpoint, nbelt):
                         # commentData = postCommentFromApi.json()
                         # for k in range(len(commentData)):
                         #     commentFromApi = Comment(commentid = commentData[k].get('id'),commentname = commentData[k].get('name'),commentemail = commentData[k].get('email'),commentbody = commentData[k].get('body'), postid = commentData[k].get('postId'))
+                        #     try:
+                        #         db.session.add(commentFromApi)
+                        #     except:
+                        #         db.session.rollback()
+                        #         return "erreur"
 
                         #     commitInsert(commentFromApi)
 
-                        commitInsert(postFromApi) 
+                        # commitInsert(postFromApi) 
 
-                        # try:
-                        #     db.session.add(postFromApi)
-                        # except:
-                        #     db.session.rollback()
-                        #     return "erreur"
+                        try:
+                            db.session.add(postFromApi)
+                        except:
+                            db.session.rollback()
+                            return "erreur"
                     for j in range(len(albumData)):
                         albumFromApi = Albums(albumid = albumData[j].get('id'), albumtitle = albumData[j].get('title'), userid = albumData[j].get('userId'))
 
-                        commitInsert(albumFromApi)
-                        # try:
-                        #     db.session.add(albumFromApi)
-                        # except:
-                        #     db.session.rollback()
-                        #     return "erreur"
+
+
+
+                        # commitInsert(albumFromApi)
+                        try:
+                            db.session.add(albumFromApi)
+                        except:
+                            db.session.rollback()
+                            return "erreur"
 
                     for j in range(len(todoData)):
                         todoFromApi  = Todo(todoid = todoData[j].get('id'),todotitle = todoData[j].get('title'),todoetat = todoData[j].get('completed'), userid = todoData[j].get('userId') )
 
-                        commitInsert(todoFromApi)
-                        # try:
-                        #     db.session.add(todoFromApi)
-                        # except:
-                        #     db.session.rollback()
-                        #     return "erreur"
+                        # commitInsert(todoFromApi)
+                        try:
+                            db.session.add(todoFromApi)
+                        except:
+                            db.session.rollback()
+                            return "erreur"
 # ----------------------------------------------------------------------------------------------
+                # commitInsert(personalDataFromApi)
+                # commitInsert(addresFromApi)
+                # commitInsert(companyFromApi)
                 try:
                     db.session.add(personalDataFromApi)
                     db.session.add(addresFromApi)

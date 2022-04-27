@@ -70,7 +70,7 @@ def pagePrincipal():
 def commitInsert(dataForTable):
     try:
         db.session.add(dataForTable)
-        # db.session.commit()
+        db.session.commit()
     except:
         db.session.rollback()
         return "erreur"
@@ -245,7 +245,7 @@ def userPost():
 # ---------------------------------------------------
 
 
-@app.route('/album/')
+@app.route('/album/', methods=["GET","POST"])
 def album():
     if 'userid' in session:
         return render_template('album.html')
@@ -372,23 +372,27 @@ def addPost(postid,slug):
         return redirect(request.url)
     return render_template('pageComment',post = post,posts=posts)
 
-
+@app.route('/addTodo', methods=["POST","GET"])
 def addTodo():
     if request.method == 'POST':
         title = request.form['title']
         etat = request.form['etat']
-        donnee_todo = Todo(todotitle = title)
-
-def addAlbums():
+        donnee_todo = Todo(todotitle = title,userid= session['userid'],todoetat=etat)
+        # commitInsert(donnee_todo)
+    return redirect('/todo')
+@app.route('/addAlbum', methods=["POST","GET"])
+def addAlbum():
     if request.method == 'POST':
-        title = request.form('title')
-        donnee_Albums = Albums(albumtitle = title)
-
+        title = request.form['title']
+        donnee_Albums = Albums(albumtitle = title,userid= session['userid'])
+        # commitInsert(donnee_Albums)
+    return redirect('/album/')
+@app.route('/addPhoto', methods=["POST","GET"])
 def addPhotos():
     if request.method == 'POST':
-        title = request.form('title')
-        url = request.form('url')
-        thumb = request.form('thumbnailUrl')
+        title = request.form['title']
+        url = request.form['url']
+        thumb = request.form['thumbnailUrl']
         donnee_Photo = Photos(phototitle = title, photourl = url, photothumbnailurl = thumb)
 
 @app.route('/pageComment')

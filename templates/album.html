@@ -4,10 +4,14 @@
 <link rel="stylesheet" href=" {{ url_for('static', filename='css/album.css') }} ">
 <button id="addAlbum">ADD ALBUM</button>
 <div class="album">
-    <a href="{{url_for('photo')}}"><img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}" alt=""></a>
+    {% for album in albums%}
+    <label for="">
+        <h4>{{album.albumtitle}}</h4>
+        <a href="{{url_for('photo')}}"><img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}" alt=""></a>
+    </label>
 
-    <a href="{{url_for('photo')}}"><img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}" alt=""></a>
-
+    <!-- <a href="{{url_for('photo')}}"><img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}" alt=""></a> -->
+{% endfor %}
 </div>
 <div id="containtAddAlbum">
     <button id="close">

@@ -36,7 +36,9 @@
     background: none;
     border: none;
 }
-
+.widthtodo{
+    width: 1000px;
+}
 h4 {
     padding: 15px;
     text-align: center;

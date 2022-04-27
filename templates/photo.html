@@ -16,7 +16,7 @@
         <img src="{{ url_for('static', filename='img/close.png') }}" alt="">
     </button>
     <p>ADD PHOTO</p>
-    <form action="">
+    <form action="/addPhoto" method="post">
         <input type="text" name="title" id="title" placeholder="Title" required>
         <input type="url" name="url" placeholder="url" required>
         <input type="text" name="thumbnailUrl" placeholder="thumbnailUrl" required>

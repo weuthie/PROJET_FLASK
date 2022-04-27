@@ -238,11 +238,19 @@ def adduser():
     else:
         return render_template('formulairedajout.html')
 # --------------------ADD BY DEME-----------------------
-def addPost():
+@app.route('/post/<int:postid>', methods=['POST','GET'])
+def addPost(postid,slug):
+    post = Posts.query.get_or_404(postid)
+    posts = Posts.query.order_by(Posts.id.desc()).all()
     if request.method == 'POST':
         title = request.form['title']
         content = request.form['content']
-        donnee_posts = Posts(posttitle = title, comments = content)
+        donnee_posts = Posts(posttitle = title, comments = content,postid=post.id)
+        db.session.add(donnee_posts)
+        flash('votre commentaire a été bien envoyé')
+        db.session.commit()
+        return redirect(request.url)
+    return render_template('pageComment',post = post,posts=posts)
 
 
 def addTodo():
@@ -262,6 +270,13 @@ def addPhotos():
         url = request.form('url')
         thumb = request.form('thumbnailUrl')
         donnee_Photo = Photos(phototitle = title, photourl = url, photothumbnailurl = thumb)
+
+@app.route('/pageComment')
+def pageComment():
+    comment = Comment.query.all()
+    return render_template('pageComment.html')
+
+
 
 
         

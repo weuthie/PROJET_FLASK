@@ -11,6 +11,8 @@ from wtforms import StringField ,PasswordField
 from wtforms.validators import InputRequired,Email,Length,ValidationError
 # from flask import Flask, render_template, url_for ,request
 from flask_sqlalchemy import SQLAlchemy
+import folium 
+
 
 from creationbd import  *
 import requests 
@@ -64,18 +66,29 @@ def pagePrincipal():
     return render_template('pagePrincipal.html',users=users,nb=nb,nbuser=nbuser,formulair=formulair)
 
 # -------------------BEGIN API PROCESS--------------------
+
+def commitInsert(dataForTable):
+    try:
+        db.session.add(dataForTable)
+        # db.session.commit()
+    except:
+        db.session.rollback()
+        return "erreur"
+
+
+URL = 'https://jsonplaceholder.typicode.com/'
 def getAndInsertDataFromApi(endpoint, nbelt):
     isEmpty = Users.query.all()
-    dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
-    data = dataFromApi.json()
+    userDataFromApi = get(URL+endpoint)
+    data = userDataFromApi.json()
     # if len(isEmpty) == 0:
     if len(isEmpty) == 0:
+        # dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
+        # data = dataFromApi.json()
         if nbelt > len(data):
             stepApi = len(data)
         else:
             stepApi = nbelt
-        # dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
-        # data = dataFromApi.json()
         for i in range(stepApi):
 
             personalDataFromApi = Users(userid = data[i].get('id'), name = data[i].get('name') , username = data[i].get('username'),phone=data[i].get('phone'),email=data[i].get('email'),website=data[i].get('website'), password=12)
@@ -83,6 +96,49 @@ def getAndInsertDataFromApi(endpoint, nbelt):
             addresFromApi = Address(addressid = data[i].get('id'), street = data[i]['address']['street'], suite = data[i]['address']['suite'], city = data[i]['address']['city'], zipcode = data[i]['address']['zipcode'], geo_lat = data[i]['address']['geo']['lat'], geo_lng = data[i]['address']['geo']['lat'], userid = data[i].get('id'))
 
             companyFromApi = Company(companyid = data[i].get('id'), companyname = data[i]['company']['name'], companycatchphrase = data[i]['company']['catchPhrase'], companybs = data[i]['company']['bs'], userid = data[i].get('id'))
+
+            userPostFromApi = get(URL+endpoint+'/'+str(i+1)+'/posts')
+            postData = userPostFromApi.json()
+            userAlbumFromApi = get(URL+endpoint+'/'+str(i+1)+'/albums')
+            albumData = userAlbumFromApi.json()
+            userTodoFromApi = get(URL+endpoint+'/'+str(i+1)+'/todos')
+            todoData = userTodoFromApi.json()
+
+            for j in range(len(postData)):
+                postFromApi = Posts(postid = postData[j].get('id'), posttitle = postData[j].get('title'), postbody = postData[j].get('body'), userid = postData[j].get('userId'))
+
+                # postCommentFromApi = get(URL+'posts/'+str(j+1)+'/comments')
+                # commentData = postCommentFromApi.json()
+                # for k in range(len(commentData)):
+                #     commentFromApi = Comment(commentid = commentData[k].get('id'),commentname = commentData[k].get('name'),commentemail = commentData[k].get('email'),commentbody = commentData[k].get('body'), postid = commentData[k].get('postId'))
+
+                #     commitInsert(commentFromApi)
+                commitInsert(postFromApi)
+
+                # try:
+                #     db.session.add(postFromApi)
+                # except:
+                #     db.session.rollback()
+                #     return "erreur"
+            for j in range(len(albumData)):
+                albumFromApi = Albums(albumid = albumData[j].get('id'), albumtitle = albumData[j].get('title'), userid = albumData[j].get('userId'))
+
+                commitInsert(albumFromApi)
+                # try:
+                #     db.session.add(albumFromApi)
+                # except:
+                #     db.session.rollback()
+                #     return "erreur"
+
+            for j in range(len(todoData)):
+                todoFromApi  = Todo(todoid = todoData[j].get('id'),todotitle = todoData[j].get('title'),todoetat = todoData[j].get('completed'), userid = todoData[j].get('userId') )
+
+                commitInsert(todoFromApi)
+                # try:
+                #     db.session.add(todoFromApi)
+                # except:
+                #     db.session.rollback()
+                #     return "erreur"
 
             try:
                 db.session.add(personalDataFromApi)
@@ -104,8 +160,8 @@ def getAndInsertDataFromApi(endpoint, nbelt):
                 endIndex = nextStepApi + nbelt
             else:
                 endIndex = len(data)
-            # dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
-            # data = dataFromApi.json()
+            # userDataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
+            # data = userDataFromApi.json()
             for i in range(nextStepApi,endIndex):
                 if data[i].get('id') not in listOfId:
 
@@ -114,6 +170,51 @@ def getAndInsertDataFromApi(endpoint, nbelt):
                     addresFromApi = Address(addressid = data[i].get('id'), street = data[i]['address']['street'], suite = data[i]['address']['suite'], city = data[i]['address']['city'], zipcode = data[i]['address']['zipcode'], geo_lat = data[i]['address']['geo']['lat'], geo_lng = data[i]['address']['geo']['lat'], userid = data[i].get('id'))
 
                     companyFromApi = Company(companyid = data[i].get('id'), companyname = data[i]['company']['name'], companycatchphrase = data[i]['company']['catchPhrase'], companybs = data[i]['company']['bs'], userid = data[i].get('id'))
+# --------------------------------------------------------------
+                    userPostFromApi = get(URL+endpoint+'/'+str(i+1)+'/posts')
+                    postData = userPostFromApi.json()
+                    userAlbumFromApi = get(URL+endpoint+'/'+str(i+1)+'/albums')
+                    albumData = userAlbumFromApi.json()
+                    userTodoFromApi = get(URL+endpoint+'/'+str(i+1)+'/todos')
+                    todoData = userTodoFromApi.json()
+
+                    for j in range(len(postData)):
+                        postFromApi = Posts(postid = postData[j].get('id'), posttitle = postData[j].get('title'), postbody = postData[j].get('body'), userid = postData[j].get('userId'))
+
+                        # postCommentFromApi = get(URL+'posts/'+str(j+1)+'/comments')
+                        # commentData = postCommentFromApi.json()
+                        # for k in range(len(commentData)):
+                        #     commentFromApi = Comment(commentid = commentData[k].get('id'),commentname = commentData[k].get('name'),commentemail = commentData[k].get('email'),commentbody = commentData[k].get('body'), postid = commentData[k].get('postId'))
+
+                        #     commitInsert(commentFromApi)
+
+                        commitInsert(postFromApi) 
+
+                        # try:
+                        #     db.session.add(postFromApi)
+                        # except:
+                        #     db.session.rollback()
+                        #     return "erreur"
+                    for j in range(len(albumData)):
+                        albumFromApi = Albums(albumid = albumData[j].get('id'), albumtitle = albumData[j].get('title'), userid = albumData[j].get('userId'))
+
+                        commitInsert(albumFromApi)
+                        # try:
+                        #     db.session.add(albumFromApi)
+                        # except:
+                        #     db.session.rollback()
+                        #     return "erreur"
+
+                    for j in range(len(todoData)):
+                        todoFromApi  = Todo(todoid = todoData[j].get('id'),todotitle = todoData[j].get('title'),todoetat = todoData[j].get('completed'), userid = todoData[j].get('userId') )
+
+                        commitInsert(todoFromApi)
+                        # try:
+                        #     db.session.add(todoFromApi)
+                        # except:
+                        #     db.session.rollback()
+                        #     return "erreur"
+# ----------------------------------------------------------------------------------------------
                 try:
                     db.session.add(personalDataFromApi)
                     db.session.add(addresFromApi)
@@ -122,12 +223,15 @@ def getAndInsertDataFromApi(endpoint, nbelt):
                 except:
                     db.session.rollback()                    
                     return  "erreur"
+    # db.session.commit()
 # ---------------------END API PROCESS------------------------
 
 @app.route('/pageUser')
 def pageUser():
-    users = Users.query.all()
-    return render_template('pageUser.html' , users=users)
+    if 'userid' in session:
+        user = Users.query.filter_by(userid= session['userid']).first()
+
+        return render_template('pageUser.html' , users=user)
 # ----------------------------------------------------
 @app.route('/userPost')
 def userPost():
@@ -159,7 +263,6 @@ def photo():
 
         return redirect('/pagePrincipal')
 @app.route('/todo')
-
 def todo():
     if 'userid' in session:
         return render_template('todo.html')
@@ -167,14 +270,31 @@ def todo():
         flash("Chargez votre user et connectez vous")
 
         return redirect('/pagePrincipal')
-@app.route('/profil')
-def profil():
+@app.route('/map')
+def map():
     if 'userid' in session:
-        return render_template('profil.html')
+        return render_template('map.html')
     else:
         flash("Chargez votre user et connectez vous")
 
         return redirect('/pagePrincipal')
+@app.route('/profil')
+def profil():
+    if 'userid' in session:
+        user = Users.query.filter_by(userid= session['userid']).first()
+        address = Address.query.filter_by(userid= session['userid']).first()
+        company = Company.query.filter_by(userid= session['userid']).first()
+        coordonne =(address.geo_lat , address.geo_lng)
+        map= folium.Map(location=coordonne,zoom_start=2)
+        folium.Marker(location=coordonne,popup=f"user:{user.name}",tooltip="appuiyez ici").add_to(map)
+        map.save('templates/map.html')
+        return render_template('profil.html',user=user,address=address, company=company)
+    else:
+        flash("Chargez votre user et connectez vous")
+
+        return redirect('/pagePrincipal')
+
+        
 # ----------------END DOING BY LOUFA---------------
 @app.route('/singin/<int:userid>', methods=['GET','POST'])
 def form(userid):
@@ -275,9 +395,6 @@ def addPhotos():
 def pageComment():
     comment = Comment.query.all()
     return render_template('pageComment.html')
-
-
-
 
         
 

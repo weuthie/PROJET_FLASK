@@ -46,6 +46,7 @@ class Address(db.Model):
 class Todo(db.Model):
     todoid = db.Column(db.Integer(), primary_key = True) 
     todotitle = db.Column(db.String(255),nullable = False)
+    todoetat = db.Column(db.String(20), nullable = False) 
     userid = db.Column(db.Integer, db.ForeignKey('users.userid'))
 
 
@@ -77,7 +78,7 @@ class Comment(db.Model):
     commentid = db.Column(db.Integer(), primary_key = True) 
     commentname =  db.Column(db.String(255),nullable = False)
     commentemail = db.Column(db.String(255),nullable = False)
-    commentbody = db.Column(db.String(255),nullable = False)
+    commentbody = db.Column(db.Text(),nullable = False)
     postid = db.Column(db.Integer, db.ForeignKey('posts.postid'))
 
 

@@ -10,7 +10,7 @@ from sqlalchemy import false, null
 from wtforms import StringField ,PasswordField
 from wtforms.validators import InputRequired,Email,Length,ValidationError
 # from flask import Flask, render_template, url_for ,request
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy,Pagination
 import folium
 
 
@@ -60,6 +60,7 @@ def pagePrincipal():
         nb = formulair.nbchoix.data
 
         getAndInsertDataFromApi('users', nb)
+        
 
         users = Users.query.all()
         nbuser =len(users)
@@ -68,10 +69,10 @@ def pagePrincipal():
 
 # -------------------BEGIN API PROCESS--------------------
 
-def commitInsert(dataForTable):
+def addRows(dataForTable):
     try:
         db.session.add(dataForTable)
-        db.session.commit()
+        # db.session.commit()
     except:
         db.session.rollback()
         return "erreur"
@@ -84,71 +85,89 @@ def getAndInsertDataFromApi(endpoint, nbelt):
     data = userDataFromApi.json()
     # if len(isEmpty) == 0:
     if len(isEmpty) == 0:
-        # dataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
-        # data = dataFromApi.json()
+        
         if nbelt > len(data):
             stepApi = len(data)
         else:
             stepApi = nbelt
         for i in range(stepApi):
 
-            personalDataFromApi = Users(userid = data[i].get('id'), name = data[i].get('name') , username = data[i].get('username'),phone=data[i].get('phone'),email=data[i].get('email'),website=data[i].get('website'), password=12)
+            personalDataFromApi = Users(userid = data[i].get('id'), 
+            name = data[i].get('name') , 
+            username = data[i].get('username'),
+            phone=data[i].get('phone'),
+            email=data[i].get('email'),
+            website=data[i].get('website'), 
+            password=12)
+            addRows(personalDataFromApi)
             
-            addresFromApi = Address(addressid = data[i].get('id'), street = data[i]['address']['street'], suite = data[i]['address']['suite'], city = data[i]['address']['city'], zipcode = data[i]['address']['zipcode'], geo_lat = data[i]['address']['geo']['lat'], geo_lng = data[i]['address']['geo']['lat'], userid = data[i].get('id'))
+            addresFromApi = Address(addressid = data[i].get('id'), 
+            street = data[i]['address']['street'], 
+            suite = data[i]['address']['suite'], 
+            city = data[i]['address']['city'], 
+            zipcode = data[i]['address']['zipcode'], 
+            geo_lat = data[i]['address']['geo']['lat'], 
+            geo_lng = data[i]['address']['geo']['lat'], 
+            userid = data[i].get('id'))
+            addRows(addresFromApi)
 
-            companyFromApi = Company(companyid = data[i].get('id'), companyname = data[i]['company']['name'], companycatchphrase = data[i]['company']['catchPhrase'], companybs = data[i]['company']['bs'], userid = data[i].get('id'))
 
-            userPostFromApi = get(URL+endpoint+'/'+str(i+1)+'/posts')
+            companyFromApi = Company(companyid = data[i].get('id'), 
+            companyname = data[i]['company']['name'], 
+            companycatchphrase = data[i]['company']['catchPhrase'], 
+            companybs = data[i]['company']['bs'], 
+            userid = data[i].get('id'))
+            addRows(companyFromApi)
+
+            userPostFromApi = get(URL+endpoint+'/'+str(data[i].get('id'))+'/posts')
             postData = userPostFromApi.json()
-            userAlbumFromApi = get(URL+endpoint+'/'+str(i+1)+'/albums')
+            userAlbumFromApi = get(URL+endpoint+'/'+str(data[i].get('id'))+'/albums')
             albumData = userAlbumFromApi.json()
-            userTodoFromApi = get(URL+endpoint+'/'+str(i+1)+'/todos')
+            userTodoFromApi = get(URL+endpoint+'/'+str(data[i].get('id'))+'/todos')
             todoData = userTodoFromApi.json()
 
             for j in range(len(postData)):
-                postFromApi = Posts(postid = postData[j].get('id'), posttitle = postData[j].get('title'), postbody = postData[j].get('body'), userid = postData[j].get('userId'))
-
-                # postCommentFromApi = get(URL+'posts/'+str(j+1)+'/comments')
-                # commentData = postCommentFromApi.json()
-                # for k in range(len(commentData)):
-                #     commentFromApi = Comment(commentid = commentData[k].get('id'),commentname = commentData[k].get('name'),commentemail = commentData[k].get('email'),commentbody = commentData[k].get('body'), postid = commentData[k].get('postId'))
-
-                #     commitInsert(commentFromApi)
-                commitInsert(postFromApi)
-
-                # try:
-                #     db.session.add(postFromApi)
-                # except:
-                #     db.session.rollback()
-                #     return "erreur"
+                postFromApi = Posts(postid = postData[j].get('id'), 
+                posttitle = postData[j].get('title'), 
+                postbody = postData[j].get('body'), 
+                userid = postData[j].get('userId'))
+                addRows(postFromApi)
+                
+                postCommentFromApi = get(URL+'posts/'+str(postData[j].get('id'))+'/comments')
+                commentData = postCommentFromApi.json()
+                for k in range(len(commentData)):
+                    commentFromApi = Comment(commentid = commentData[k].get('id'),
+                    commentname = commentData[k].get('name'),
+                    commentemail = commentData[k].get('email'),
+                    commentbody = commentData[k].get('body'),
+                    postid = commentData[k].get('postId'))
+                    addRows(commentFromApi)
+                
             for j in range(len(albumData)):
-                albumFromApi = Albums(albumid = albumData[j].get('id'), albumtitle = albumData[j].get('title'), userid = albumData[j].get('userId'))
+                albumFromApi = Albums(albumid = albumData[j].get('id'), 
+                albumtitle = albumData[j].get('title'), 
+                userid = albumData[j].get('userId'))
+                addRows(albumFromApi)
 
-                commitInsert(albumFromApi)
-                # try:
-                #     db.session.add(albumFromApi)
-                # except:
-                #     db.session.rollback()
-                #     return "erreur"
+                photoAlbulmFromApi = get(URL+'albums/'+str(albumData[j].get('id'))+'/photos')
+                photoData = photoAlbulmFromApi.json()
+                for l in range(len(photoData)):
+                    photoFromApi  = Photos( photoid = photoData[l].get('id'), 
+                    phototitle = photoData[l].get('title'), 
+                    photourl = photoData[l].get('url'), 
+                    photothumbnailurl = photoData[l].get('thumbnailUrl'), 
+                    albumid = photoData[l].get('albumId'))
+                    addRows(photoFromApi)
 
             for j in range(len(todoData)):
-                todoFromApi  = Todo(todoid = todoData[j].get('id'),todotitle = todoData[j].get('title'),todoetat = todoData[j].get('completed'), userid = todoData[j].get('userId') )
+                todoFromApi  = Todo(todoid = todoData[j].get('id'),
+                todotitle = todoData[j].get('title'),
+                todoetat = todoData[j].get('completed'), 
+                userid = todoData[j].get('userId') )
 
-                commitInsert(todoFromApi)
-                # try:
-                #     db.session.add(todoFromApi)
-                # except:
-                #     db.session.rollback()
-                #     return "erreur"
+                addRows(todoFromApi)
 
-            try:
-                db.session.add(personalDataFromApi)
-                db.session.add(addresFromApi)
-                db.session.add(companyFromApi)
-                db.session.commit()
-            except:
-                db.session.rollback()
-                return  "erreur"
+        db.session.commit()
     else:
         userOfId = Users.query.all()
         listOfId = {0}
@@ -161,70 +180,83 @@ def getAndInsertDataFromApi(endpoint, nbelt):
                 endIndex = nextStepApi + nbelt
             else:
                 endIndex = len(data)
-            # userDataFromApi = get('https://jsonplaceholder.typicode.com/'+endpoint)
-            # data = userDataFromApi.json()
+    
             for i in range(nextStepApi,endIndex):
                 if data[i].get('id') not in listOfId:
 
-                    personalDataFromApi = Users(userid = data[i].get('id'), name = data[i].get('name') , username = data[i].get('username'),phone=data[i].get('phone'),email=data[i].get('email'),website=data[i].get('website'), password=12)
+                    personalDataFromApi = Users(userid = data[i].get('id'), 
+                    name = data[i].get('name') , 
+                    username = data[i].get('username'),
+                    phone=data[i].get('phone'),
+                    email=data[i].get('email'),
+                    website=data[i].get('website'), 
+                    password=12)
+                    addRows(personalDataFromApi)
 
-                    addresFromApi = Address(addressid = data[i].get('id'), street = data[i]['address']['street'], suite = data[i]['address']['suite'], city = data[i]['address']['city'], zipcode = data[i]['address']['zipcode'], geo_lat = data[i]['address']['geo']['lat'], geo_lng = data[i]['address']['geo']['lat'], userid = data[i].get('id'))
+                    addresFromApi = Address(addressid = data[i].get('id'), 
+                    street = data[i]['address']['street'], 
+                    suite = data[i]['address']['suite'], 
+                    city = data[i]['address']['city'], 
+                    zipcode = data[i]['address']['zipcode'], 
+                    geo_lat = data[i]['address']['geo']['lat'], 
+                    geo_lng = data[i]['address']['geo']['lat'], 
+                    userid = data[i].get('id'))
+                    addRows(addresFromApi)
 
-                    companyFromApi = Company(companyid = data[i].get('id'), companyname = data[i]['company']['name'], companycatchphrase = data[i]['company']['catchPhrase'], companybs = data[i]['company']['bs'], userid = data[i].get('id'))
-# --------------------------------------------------------------
-                    userPostFromApi = get(URL+endpoint+'/'+str(i+1)+'/posts')
+                    companyFromApi = Company(companyid = data[i].get('id'), 
+                    companyname = data[i]['company']['name'], 
+                    companycatchphrase = data[i]['company']['catchPhrase'], 
+                    companybs = data[i]['company']['bs'], 
+                    userid = data[i].get('id'))
+                    addRows(companyFromApi)
+
+                    userPostFromApi = get(URL+endpoint+'/'+str(data[i].get('id'))+'/posts')
                     postData = userPostFromApi.json()
-                    userAlbumFromApi = get(URL+endpoint+'/'+str(i+1)+'/albums')
+                    userAlbumFromApi = get(URL+endpoint+'/'+str(data[i].get('id'))+'/albums')
                     albumData = userAlbumFromApi.json()
-                    userTodoFromApi = get(URL+endpoint+'/'+str(i+1)+'/todos')
+                    userTodoFromApi = get(URL+endpoint+'/'+str(data[i].get('id'))+'/todos')
                     todoData = userTodoFromApi.json()
-
                     for j in range(len(postData)):
-                        postFromApi = Posts(postid = postData[j].get('id'), posttitle = postData[j].get('title'), postbody = postData[j].get('body'), userid = postData[j].get('userId'))
+                        postFromApi = Posts(postid = postData[j].get('id'), 
+                        posttitle = postData[j].get('title'), 
+                        postbody = postData[j].get('body'), 
+                        userid = postData[j].get('userId'))
+                        addRows(postFromApi)
 
-                        # postCommentFromApi = get(URL+'posts/'+str(j+1)+'/comments')
-                        # commentData = postCommentFromApi.json()
-                        # for k in range(len(commentData)):
-                        #     commentFromApi = Comment(commentid = commentData[k].get('id'),commentname = commentData[k].get('name'),commentemail = commentData[k].get('email'),commentbody = commentData[k].get('body'), postid = commentData[k].get('postId'))
+                        postCommentFromApi = get(URL+'posts/'+str(postData[j].get('id'))+'/comments')
+                        commentData = postCommentFromApi.json()
+                        for k in range(len(commentData)):
+                            commentFromApi = Comment(commentid = commentData[k].get('id'),
+                            commentname = commentData[k].get('name'),
+                            commentemail = commentData[k].get('email'),
+                            commentbody = commentData[k].get('body'),
+                            postid = commentData[k].get('postId'))
+                            addRows(commentFromApi)
 
-                        #     commitInsert(commentFromApi)
-
-                        commitInsert(postFromApi) 
-
-                        # try:
-                        #     db.session.add(postFromApi)
-                        # except:
-                        #     db.session.rollback()
-                        #     return "erreur"
                     for j in range(len(albumData)):
-                        albumFromApi = Albums(albumid = albumData[j].get('id'), albumtitle = albumData[j].get('title'), userid = albumData[j].get('userId'))
+                        albumFromApi = Albums(albumid = albumData[j].get('id'), 
+                        albumtitle = albumData[j].get('title'), 
+                        userid = albumData[j].get('userId'))
+                        addRows(albumFromApi)
 
-                        commitInsert(albumFromApi)
-                        # try:
-                        #     db.session.add(albumFromApi)
-                        # except:
-                        #     db.session.rollback()
-                        #     return "erreur"
+                        photoAlbulmFromApi = get(URL+'albums/'+str(albumData[j].get('id'))+'/photos')
+                        photoData = photoAlbulmFromApi.json()
+                        for l in range(len(photoData)):
+                            photoFromApi  = Photos( photoid = photoData[l].get('id'), 
+                            phototitle = photoData[l].get('title'), 
+                            photourl = photoData[l].get('url'), 
+                            photothumbnailurl = photoData[l].get('thumbnailUrl'), 
+                            albumid = photoData[l].get('albumId'))
+                            addRows(photoFromApi)
 
                     for j in range(len(todoData)):
-                        todoFromApi  = Todo(todoid = todoData[j].get('id'),todotitle = todoData[j].get('title'),todoetat = todoData[j].get('completed'), userid = todoData[j].get('userId') )
-
-                        commitInsert(todoFromApi)
-                        # try:
-                        #     db.session.add(todoFromApi)
-                        # except:
-                        #     db.session.rollback()
-                        #     return "erreur"
-# ----------------------------------------------------------------------------------------------
-                try:
-                    db.session.add(personalDataFromApi)
-                    db.session.add(addresFromApi)
-                    db.session.add(companyFromApi)
-                    db.session.commit()
-                except:
-                    db.session.rollback()                    
-                    return  "erreur"
-    # db.session.commit()
+                        todoFromApi  = Todo(todoid = todoData[j].get('id'),
+                        todotitle = todoData[j].get('title'),
+                        todoetat = todoData[j].get('completed'), 
+                        userid = todoData[j].get('userId') )
+                        addRows(todoFromApi)
+                        
+        db.session.commit()
 # ---------------------END API PROCESS------------------------
 
 @app.route('/pageUser')
@@ -251,7 +283,7 @@ def addAlbum():
     if request.method == 'POST':
         title = request.form['title']
         donnee_Albums = Albums(albumtitle = title,userid= session['userid'])
-        # commitInsert(donnee_Albums)
+        # addRows(donnee_Albums)
     return redirect('/album/')
 
 @app.route('/album/', methods=["GET","POST"])
@@ -308,7 +340,7 @@ def addTodo():
         title = request.form['title']
         etat = request.form['etat']
         donnee_todo = Todo(todotitle = title,userid= session['userid'],todoetat=etat)
-        # commitInsert(donnee_todo)
+        # addRows(donnee_todo)
     return redirect('/todo')
 @app.route('/todo')
 def todo():

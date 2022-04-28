@@ -255,7 +255,11 @@ def addAlbum():
 
 @app.route('/album/', methods=["GET","POST"])
 def album():
+
+    
+        
     if 'userid' in session:
+        
         albums = Albums.query.filter_by(userid= session['userid'])
         return render_template('album.html',albums=albums)
     else:
@@ -278,10 +282,13 @@ def addPhotos():
         thumb = request.form['thumbnailUrl']
         donnee_Photo = Photos(phototitle = title, photourl = url, photothumbnailurl = thumb)
 
-@app.route('/photo')
+@app.route('/photo/',methods=["POST","GET"])
 def photo():
+    id = request.form["id"] 
     if 'userid' in session:
-        return render_template('photo.html')
+        # albums = Albums.query.filter_by(userid= session['userid'])
+        # photos = Photos.query.filter_by(albumid=id)
+        return render_template('photo.html',id=id)#,photos=photos,id=id)
     else:
         flash("Chargez votre user et connectez vous")
 
@@ -422,10 +429,21 @@ def addPost(postid,slug):
 
 
 
-@app.route('/pageComment')
+@app.route('/pageComment',methods=["POST","GET"])
 def pageComment():
-    comment = Comment.query.all()
-    return render_template('pageComment.html')
+    id = request.form["id"] 
+
+    if 'userid' in session:
+        posts = Posts.query.filter_by(userid= session['userid'])
+        comments = Comment.query.filter_by(postid=id)
+
+        return render_template('pageComment.html',comments=comments,posts=posts,id=id)
+    else:
+        flash("Chargez votre user et connectez vous")
+
+        return redirect('/pagePrincipal')
+
+    
 
         
 

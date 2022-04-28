@@ -319,9 +319,9 @@ def addPhotos():
 def photo():
     id = request.form["id"] 
     if 'userid' in session:
-        # albums = Albums.query.filter_by(userid= session['userid'])
-        # photos = Photos.query.filter_by(albumid=id)
-        return render_template('photo.html',id=id)#,photos=photos,id=id)
+        albums = Albums.query.filter_by(userid= session['userid'])
+        photos = Photos.query.filter_by(albumid=id)
+        return render_template('photo.html',photos=photos)
     else:
         flash("Chargez votre user et connectez vous")
 

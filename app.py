@@ -63,6 +63,7 @@ def pagePrincipal():
 
         users = Users.query.all()
         nbuser =len(users)
+        
     return render_template('pagePrincipal.html',users=users,nb=nb,nbuser=nbuser,formulair=formulair)
 
 # -------------------BEGIN API PROCESS--------------------

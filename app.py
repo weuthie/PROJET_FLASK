@@ -74,11 +74,12 @@ def pagePrincipal():
 def addRows(dataForTable):
     try:
         db.session.add(dataForTable)
-        # db.session.commit()
+        # commit()
     except:
         db.session.rollback()
         return "erreur"
-
+def commit():
+    return db.session.commit()
 
 URL = 'https://jsonplaceholder.typicode.com/'
 def getAndInsertDataFromApi(endpoint, nbelt):
@@ -168,8 +169,7 @@ def getAndInsertDataFromApi(endpoint, nbelt):
                 userid = todoData[j].get('userId') )
 
                 addRows(todoFromApi)
-
-        db.session.commit()
+        commit()
     else:
         userOfId = Users.query.all()
         listOfId = {0}
@@ -258,7 +258,7 @@ def getAndInsertDataFromApi(endpoint, nbelt):
                         userid = todoData[j].get('userId') )
                         addRows(todoFromApi)
                         
-        db.session.commit()
+        commit()
 # ---------------------END API PROCESS------------------------
 
 @app.route('/pageUser')
@@ -278,21 +278,40 @@ def userPost():
 
         return redirect('/pagePrincipal')
 
-# ---------------------------------------------------
-
 @app.route('/addAlbum', methods=["POST","GET"])
 def addAlbum():
+    # listOfIdAlbum = set()
+    # queryAlbum = Albums.query.with_entities(Albums.albumid).all()
+    # if len(queryAlbum) != 0:
+    #     for id in range(len(queryAlbum)):
+    #         listOfIdAlbum.add(queryAlbum[id][0])
+    #     maxIdAlbum = max(listOfIdAlbum)
+    # else:
+    #     getAlbum = get(URL+'albums')
+    #     albumList = getAlbum.json()
+    #     maxIdAlbum = len(albumList)
     if request.method == 'POST':
         title = request.form['title']
-        donnee_Albums = Albums(albumtitle = title,userid= session['userid'])
-        # addRows(donnee_Albums)
+        donnee_Albums = Albums(albumid = getionIdForManullayInsertion(Albums, Albums.albumid, 'albums')+1, albumtitle = title,userid= session['userid'])
+        addRows(donnee_Albums)
+    commit()
     return redirect('/album/')
 
-@app.route('/album/', methods=["GET","POST"])
-def album():
+def getionIdForManullayInsertion(tableName, colName, enpoint):
+    listOfIdTable = set()
+    queryTable = tableName.query.with_entities(colName).all()
+    if len(queryTable) != 0:
+        for id in range(len(queryTable)):
+            listOfIdTable.add(queryTable[id][0])
+        maxId = max(listOfIdTable)
+    else:
+        getTable = get(URL+enpoint)
+        tableList = getTable.json()
+        maxId = len(tableList)
+    return maxId
 
-    
-        
+@app.route('/album/', methods=["GET","POST"])
+def album():     
     if 'userid' in session:
         
         albums = Albums.query.filter_by(userid= session['userid'])
@@ -302,24 +321,19 @@ def album():
 
         return redirect('/pagePrincipal')
 
-
-
-
-
-
-
-
 @app.route('/addPhoto', methods=["POST","GET"])
 def addPhotos():
     if request.method == 'POST':
         title = request.form['title']
         url = request.form['url']
         thumb = request.form['thumbnailUrl']
-        donnee_Photo = Photos(phototitle = title, photourl = url, photothumbnailurl = thumb)
-
+        donnee_Photo = Photos(photoid = getionIdForManullayInsertion(Photos,Photos.photoid,'photos')+1, phototitle = title, photourl = url, photothumbnailurl = thumb)
+        addRows(donnee_Photo)
+    commit()
+    return redirect('/photo')
 @app.route('/photo/',methods=["POST","GET"])
 def photo():
-    id = request.form["id"] 
+    # id = request.form["id"] 
     if 'userid' in session:
         # albums = Albums.query.filter_by(userid= session['userid'])
         # photos = Photos.query.filter_by(albumid=id)
@@ -330,20 +344,20 @@ def photo():
         return redirect('/pagePrincipal')
 
 
-
-
-
-
-
-
 @app.route('/addTodo', methods=["POST","GET"])
 def addTodo():
     if request.method == 'POST':
         title = request.form['title']
         etat = request.form['etat']
-        donnee_todo = Todo(todotitle = title,userid= session['userid'],todoetat=etat)
-        # addRows(donnee_todo)
+        if etat == 'In Progress':
+            etat = 'false'
+        else:
+            etat = 'true'
+        donnee_todo = Todo(todoid = getionIdForManullayInsertion(Todo, Todo.todoid, 'todos')+1, todotitle = title,userid= session['userid'],todoetat=etat)
+        addRows(donnee_todo)
+    # commit()
     return redirect('/todo')
+
 @app.route('/todo')
 def todo():
     if 'userid' in session:
@@ -353,6 +367,7 @@ def todo():
         flash("Chargez votre user et connectez vous")
 
         return redirect('/pagePrincipal')
+
 @app.route('/map')
 def map():
     if 'userid' in session:
@@ -423,11 +438,28 @@ def adduser():
         if len(userid) <= 10 and 11 not in listId:
             iduser = 11
 
-            donne_personnel= Users(userid = iduser, name = name , username = username,phone=phone,email=email,website=website, password=12)
+            donne_personnel= Users(userid = iduser, 
+            name = name , 
+            username = username,
+            phone=phone,
+            email=email,
+            website=website, 
+            password=12)
 
-            addres = Address(addressid = iduser, street = street, suite = suite, city = city, zipcode = zipcode, geo_lat = latitude, geo_lng = longitude, userid = iduser)
+            addres = Address(addressid = iduser, 
+            street = street, 
+            suite = suite, 
+            city = city, 
+            zipcode = zipcode, 
+            geo_lat = latitude, 
+            geo_lng = longitude, 
+            userid = iduser)
 
-            company = Company(companyid = iduser, companyname = companyname, companycatchphrase = catchPhrase, companybs = bs, userid = iduser)
+            company = Company(companyid = iduser, 
+            companyname = companyname, 
+            companycatchphrase = catchPhrase, 
+            companybs = bs, 
+            userid = iduser)
 
         else:
             donne_personnel= Users(userid = maxid, name = name , username = username,phone=phone,email=email,website=website, password=12)
@@ -440,7 +472,7 @@ def adduser():
             db.session.add(donne_personnel)
             db.session.add(addres)
             db.session.add(company)
-            db.session.commit()
+            commit()
             return  redirect('/pagePrincipal') 
         except:
             db.session.rollback()
@@ -458,7 +490,7 @@ def addPost(postid,slug):
         donnee_posts = Posts(posttitle = title, comments = content,postid=post.id)
         db.session.add(donnee_posts)
         flash('votre commentaire a été bien envoyé')
-        db.session.commit()
+        commit()
         return redirect(request.url)
     return render_template('pageComment',post = post,posts=posts)
 

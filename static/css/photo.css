@@ -1,10 +1,12 @@
-#containtPhoto{
+.containtPhoto{
     height: 76vh;
     display: flex;
+    /* flex-direction:column; */
     justify-content: center;
-    align-items: center;
     flex-wrap: wrap;
+    width: 100%;
 }
+
 #containtPhoto img{
     margin: 15px;
     height: 150px;
@@ -110,4 +112,22 @@ button:hover,
 button:active,
 #submit:active {
     background-color: #5894d8;
+}
+.photo{
+    width: 20%;
+    margin-left: 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.photo h3{
+    width: 70%;
+    text-align: center;
+}
+
+.photo img{
+    width: 50%;
+    height: 150px;
 }

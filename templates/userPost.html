@@ -9,8 +9,7 @@
     {% for post in posts%}
     <form action="/pageComment" method="post">
     <input type="hidden" name="id" value="{{post.postid}}">
-    <h2>{{post.posttitle}}</h2>
-    
+    <h3><span style="color: red;">Title:</span> {{post.posttitle}}</h3>
 
     <article>{{post.postbody}}
     </article>

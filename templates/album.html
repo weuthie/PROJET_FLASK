@@ -5,11 +5,15 @@
 <button id="addAlbum">ADD ALBUM</button>
 <div class="album">
     {% for album in albums%}
-    <label for="" class="albumtitle">
+    <form action="/photo/" method="post">
+    <label for="">
         <h4>{{album.albumtitle}}</h4>
-        <a href="{{url_for('photo')}}"><img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}" alt="" ></a>
-    </label>
+        <input type="hidden" name="id" value="{{album.albumid}}">
+        <button type="submit"> <img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}"/></button>
 
+        <!-- <a id={{album.albumid}} href="/photo/"><img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}" alt=""></a> -->
+    </label>
+    </form>
     <!-- <a href="{{url_for('photo')}}"><img src="{{ url_for('static', filename='img/avatarAlbum.jpeg') }}" alt=""></a> -->
 {% endfor %}
 </div>
@@ -39,3 +43,5 @@
 </script>
 {% endblock %}
 <!-- <script src="{{ url_for('static', filename='js/album.js') }}" defer></script> -->
+
+

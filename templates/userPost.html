@@ -7,9 +7,14 @@
 <div class="button">
     <button id="addPost">ADD POST</button>
     {% for post in posts%}
+    <form action="/pageComment" method="post">
+    <input type="hidden" name="id" value="{{post.postid}}">
     <h3><span style="color: red;">Title:</span> {{post.posttitle}}</h3>
+
     <article>{{post.postbody}}
     </article>
+    <button type="submit">affichez les commentaire</button>
+    </form>
     {% endfor%}
 </div>
 

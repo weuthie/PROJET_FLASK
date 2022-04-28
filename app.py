@@ -62,12 +62,10 @@ def pagePrincipal():
         getAndInsertDataFromApi('users', nb)
         
 
-        # pagination
-    # page = request.args.get('page',1, type=int)
-    # users = Users.query.paginate(page=page, per_page = 5)
-    users = Users.query.all()
-    nbuser =len(users)
-    return render_template('pagePrincipal.html',users = users,nb=nb, nbuser=nbuser, formulair=formulair)
+        users = Users.query.all()
+        nbuser =len(users)
+        
+    return render_template('pagePrincipal.html',users=users,nb=nb,nbuser=nbuser,formulair=formulair)
 
 # -------------------BEGIN API PROCESS--------------------
 
@@ -321,9 +319,9 @@ def addPhotos():
 def photo():
     id = request.form["id"] 
     if 'userid' in session:
-        # albums = Albums.query.filter_by(userid= session['userid'])
-        # photos = Photos.query.filter_by(albumid=id)
-        return render_template('photo.html',id=id)#,photos=photos,id=id)
+        albums = Albums.query.filter_by(userid= session['userid'])
+        photos = Photos.query.filter_by(albumid=id)
+        return render_template('photo.html',photos=photos)
     else:
         flash("Chargez votre user et connectez vous")
 

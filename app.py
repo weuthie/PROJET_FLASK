@@ -305,9 +305,9 @@ def getionIdForManullayInsertion(tableName, colName, enpoint):
 @app.route('/album/', methods=["GET","POST"])
 def album():     
     if 'userid' in session:
-        # page = request.args.get('page', 1, type=int)
-        # albums = Albums.query.filter_by(userid=session['userid']).paginate(page=page, per_page=5)
-        albums = Albums.query.filter_by(userid= session['userid'])
+        page = request.args.get('page', 1, type=int)
+        albums = Albums.query.filter_by(userid=session['userid']).paginate(page=page, per_page=10)
+        # albums = Albums.query.filter_by(userid= session['userid'])
         return render_template('album.html',albums=albums)
     else:
         flash("Chargez votre user et connectez vous")
@@ -325,15 +325,19 @@ def addPhotos():
     commit()
 @app.route('/photo/',methods=["POST","GET"])
 def photo():
-    id = request.form["id"] 
     if 'userid' in session:
-        albums = Albums.query.filter_by(userid= session['userid'])
-        photos = Photos.query.filter_by(albumid=id)
-        return render_template('photo.html',photos=photos,id=id)
-    else:
-        flash("Chargez votre user et connectez vous")
+        id = request.form["id"] 
 
-        return redirect('/pagePrincipal')
+        # albums = Albums.query.filter_by(userid= session['userid'])
+
+    page = request.args.get('page', 1, type=int)
+    photos = Photos.query.filter_by(albumid=id).paginate(page=page, per_page=8)
+        # photos = Photos.query.filter_by(albumid=id)
+    return render_template('photo.html',photos=photos,id=id)
+    # else:
+    #     flash("Chargez votre user et connectez vous")
+
+    return redirect('/pagePrincipal')
 
 
 @app.route('/addTodo', methods=["POST","GET"])

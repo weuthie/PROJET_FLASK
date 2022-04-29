@@ -8,7 +8,7 @@
 <div id="containtPhoto">
 <!-- <div class="containtPhoto"> -->
 
-    {% for photo in photos%}
+    {% for photo in photos.items%}
     <div class="photo">
         <h3>{{photo.phototitle}}</h3>
         <img src="{{photo.photourl}}" alt="{{photo.photothumbnailurl}}">
@@ -16,6 +16,41 @@
     {% endfor %}
 
 </div>
+
+<div class="pagination">
+    <!-- previous pages -->
+    {% if photos.has_prev %}
+    <li>
+        <a class="directionLink" href="{{ url_for('photo', page=photos.prev_num) }}">previous</a>
+    </li>
+    {% endif %}
+    
+    <!-- all pages numbers -->
+    {% for page_num in photos.iter_pages() %}
+        {% if page_num %}
+            {% if page_num != photos.page %}
+                <li>
+                    <a class="numPage" href="{{ url_for('photo', page=page_num) }}">{{ page_num }}</a>
+                </li>
+            {% else %}
+                <li class="" >
+                     <a class="activePage" href="#">{{ page_num }}</a>
+                </li>
+            {% endif %}
+        {% else %}
+                <li>
+                    <span class="ellipsis"></span>
+                </li>
+        {% endif %}
+    {% endfor %}
+    
+    <!-- next page -->
+    {% if photos.has_next %}
+    <li>
+        <a class="directionLink" href="{{ url_for('photo', page= photos.next_num) }}">next</a>
+    </li>
+    {% endif %}
+    </div>
 
 <div id="containtAddPhoto">
     <button id="close">

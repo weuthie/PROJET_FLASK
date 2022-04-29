@@ -1,5 +1,5 @@
 .album{
-    height: 77vh;
+    height: 65vh;
     display: flex;
     flex-wrap: wrap;
     margin: 0% 10% 0% 10%;
@@ -161,6 +161,7 @@
 }
 #formm{
     width: 20%;
+    height: 50%;
 }
 button img{
     width: 100%;

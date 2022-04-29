@@ -3,21 +3,63 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/userPost.css') }}">
 
+<button id="addPost">ADD POST</button>
 
-<div class="button">
-    <button id="addPost">ADD POST</button>
-    {% for post in posts%}
-    <form action="/pageComment" method="post">
-    <input type="hidden" name="id" value="{{post.postid}}">
+<div class="but">
+    {% for post in posts.items%}
+
     <h3><span style="color: red;">Title:</span> {{post.posttitle}}</h3>
 
-    <article>{{post.postbody}}
-    </article>
-    <button type="submit">affichez les commentaire</button>
-    </form>
+    <article>{{post.postbody}}</article>
+    <div class="butt">
+        <form action="/pageComment" method="post">
+            <input type="hidden" name="id" value="{{post.postid}}">
+            <input type="submit" class="displayComment" value="affichez les commentaires">
+        </form>
+        <div>
+            <input type="button" value="edit" class="edit">
+
+            <input type="button" value="delete" class="delete">
+        </div>
+
+    </div>
     {% endfor%}
 </div>
 
+<div class="pagination">
+<!-- previous pages -->
+{% if posts.has_prev %}
+<li>
+    <a class="directionLink" href="{{ url_for('userPost', page=posts.prev_num) }}">previous</a>
+</li>
+{% endif %}
+
+<!-- all pages numbers -->
+{% for page_num in posts.iter_pages() %}
+    {% if page_num %}
+        {% if page_num != posts.page %}
+            <li>
+                <a class="numPage" href="{{ url_for('userPost', page=page_num) }}">{{ page_num }}</a>
+            </li>
+        {% else %}
+            <li class="" >
+                 <a class="activePage" href="#">{{ page_num }}</a>
+            </li>
+        {% endif %}
+    {% else %}
+            <li>
+                <span class="ellipsis"></span>
+            </li>
+    {% endif %}
+{% endfor %}
+
+<!-- next page -->
+{% if posts.has_next %}
+<li>
+    <a class="directionLink" href="{{ url_for('userPost', page= posts.next_num) }}">next</a>
+</li>
+{% endif %}
+</div>
 <div id="containtAddPost">
     <button id="close">
         <img src="{{ url_for('static', filename='img/close.png') }}" alt="">

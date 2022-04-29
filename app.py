@@ -62,10 +62,12 @@ def pagePrincipal():
         getAndInsertDataFromApi('users', nb)
         
 
-        users = Users.query.all()
-        nbuser =len(users)
-        
-    return render_template('pagePrincipal.html',users=users,nb=nb,nbuser=nbuser,formulair=formulair)
+        # pagination
+    # page = request.args.get('page',1, type=int)
+    # users = Users.query.paginate(page=page, per_page = 5)
+    users = Users.query.all()
+    nbuser =len(users)
+    return render_template('pagePrincipal.html',users = users,nb=nb, nbuser=nbuser, formulair=formulair)
 
 # -------------------BEGIN API PROCESS--------------------
 
@@ -269,7 +271,9 @@ def pageUser():
 @app.route('/userPost')
 def userPost():
     if 'userid' in session:
-        posts = Posts.query.filter_by(userid= session['userid'])
+        page = request.args.get('page', 1, type=int)
+        posts = Posts.query.filter_by(userid=session['userid']).paginate(page=page, per_page=3)
+        # posts = Posts.query.filter_by(userid= session['userid'])
         return render_template('userPost.html', posts=posts)
     else:
         flash("Chargez votre user et connectez vous")
@@ -278,16 +282,6 @@ def userPost():
 
 @app.route('/addAlbum', methods=["POST","GET"])
 def addAlbum():
-    # listOfIdAlbum = set()
-    # queryAlbum = Albums.query.with_entities(Albums.albumid).all()
-    # if len(queryAlbum) != 0:
-    #     for id in range(len(queryAlbum)):
-    #         listOfIdAlbum.add(queryAlbum[id][0])
-    #     maxIdAlbum = max(listOfIdAlbum)
-    # else:
-    #     getAlbum = get(URL+'albums')
-    #     albumList = getAlbum.json()
-    #     maxIdAlbum = len(albumList)
     if request.method == 'POST':
         title = request.form['title']
         donnee_Albums = Albums(albumid = getionIdForManullayInsertion(Albums, Albums.albumid, 'albums')+1, albumtitle = title,userid= session['userid'])
@@ -311,7 +305,8 @@ def getionIdForManullayInsertion(tableName, colName, enpoint):
 @app.route('/album/', methods=["GET","POST"])
 def album():     
     if 'userid' in session:
-        
+        # page = request.args.get('page', 1, type=int)
+        # albums = Albums.query.filter_by(userid=session['userid']).paginate(page=page, per_page=5)
         albums = Albums.query.filter_by(userid= session['userid'])
         return render_template('album.html',albums=albums)
     else:
@@ -328,14 +323,13 @@ def addPhotos():
         donnee_Photo = Photos(photoid = getionIdForManullayInsertion(Photos,Photos.photoid,'photos')+1, phototitle = title, photourl = url, photothumbnailurl = thumb)
         addRows(donnee_Photo)
     commit()
-    return redirect('/photo')
 @app.route('/photo/',methods=["POST","GET"])
 def photo():
-    # id = request.form["id"] 
+    id = request.form["id"] 
     if 'userid' in session:
         albums = Albums.query.filter_by(userid= session['userid'])
         photos = Photos.query.filter_by(albumid=id)
-        return render_template('photo.html',photos=photos)
+        return render_template('photo.html',photos=photos,id=id)
     else:
         flash("Chargez votre user et connectez vous")
 

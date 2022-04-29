@@ -325,6 +325,7 @@ def addPhotos():
     commit()
 @app.route('/photo/',methods=["GET","POST"])
 def photo():
+    
     if 'userid' in session:
         id = request.form["id"] 
         albums = Albums.query.filter_by(userid= session['userid'])
@@ -509,7 +510,31 @@ def pageComment():
 
         return redirect('/pagePrincipal')
 
-    
+
+  
+@app.route('/editPost/<int:id>',methods=["POST","GET"])
+def editPost(id):
+    posts = Posts.query.get(id)
+    # print("title   ",posts.posttitle)
+
+    if request.method == "POST":
+        print('Ancien title :',Posts.query.get(id).posttitle)
+
+        posts.posttitle = request.form["title"]
+        posts.postbody = request.form["content"]
+        print(posts.posttitle)
+        print(posts.postbody)
+        
+
+
+        db.session.commit()
+
+        print('Nouveau title :',Posts.query.get(id).posttitle)
+        return redirect("/userPost")
+        
+
+    else:
+        return render_template('editpost.html', posts=posts)  
 
         
 

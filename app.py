@@ -332,7 +332,7 @@ def photo():
         page = request.args.get('page', 1, type=int)
         photos = Photos.query.filter_by(albumid=id).paginate(page=page, per_page=8)
         # photos = Photos.query.filter_by(albumid=id)
-        return render_template('photo.html',photos=photos,id=id)
+        return render_template('photo.html',photos=photos)
     else:
         flash("Chargez votre user et connectez vous")
 
@@ -356,8 +356,12 @@ def addTodo():
 @app.route('/todo')
 def todo():
     if 'userid' in session:
-        todos = Todo.query.filter_by(userid= session['userid'])
+        # todos = Todo.query.filter_by(userid= session['userid'])
+
+        page = request.args.get('page', 1, type=int)
+        todos = Todo.query.filter_by(userid= session['userid']).paginate(page=page, per_page=6)
         return render_template('todo.html', todos=todos)
+
     else:
         flash("Chargez votre user et connectez vous")
 

@@ -2,15 +2,17 @@
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/todo.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pagination.css') }}">
+
 
 <button id="addTodo">ADD TODO</button>
 
 <div id="containtTodo">
-{% for todo in todos%}
+{% for todo in todos.items %}
 
     <div class="widthtodo">
-    <h4 id="h4Etat">{{todo.todoetat}}</h4>
-    <p id="contentP">{{todo.todotitle}}</p>
+    <h4 class="h4Etat">{{todo.todoetat}}</h4>
+    <p class="contentP">{{todo.todotitle}}</p>
 
     <button id="edit">
         <a href="#"><img src="{{ url_for('static', filename='img/edit.png') }}" alt="" class="modif"></a>
@@ -23,6 +25,40 @@
     {% endfor%}
 </div>
 
+<div class="pagination">
+    <!-- previous pages -->
+    {% if todos.has_prev %}
+    <li>
+        <a class="directionLink" href="{{ url_for('todo', page=todos.prev_num) }}">previous</a>
+    </li>
+    {% endif %}
+    
+    <!-- all pages numbers -->
+    {% for page_num in todos.iter_pages() %}
+        {% if page_num %}
+            {% if page_num != todos.page %}
+                <li>
+                    <a class="numPage" href="{{ url_for('todo', page=page_num) }}">{{ page_num }}</a>
+                </li>
+            {% else %}
+                <li class="" >
+                     <a class="activePage" href="#">{{ page_num }}</a>
+                </li>
+            {% endif %}
+        {% else %}
+                <li>
+                    <span class="ellipsis"></span>
+                </li>
+        {% endif %}
+    {% endfor %}
+    
+    <!-- next page -->
+    {% if todos.has_next %}
+    <li>
+        <a class="directionLink" href="{{ url_for('todo', page= todos.next_num) }}">next</a>
+    </li>
+    {% endif %}
+    </div>
 
 <div id="containtAddTodo">
     <button id="close">
@@ -32,7 +68,7 @@
     <form action="/addTodo" method="POST">
         <input type="text" name="title" id="title" placeholder="Title" required>
         <select name="etat" id="etat" required>
-            <option value="Selectionner un état">Selectionner un état</option>
+            <option value="">Selectionner un état</option>
             <option value="In Progress">In Progress</option>
             <option value="Completed">Completed</option>
         </select>
@@ -44,9 +80,19 @@
     let addTodo = document.getElementById("addTodo");
     let popupCloseBtn = document.getElementById("close");
     let popupAddTodo = document.getElementById("containtAddTodo");
-    let h4Etat = document.getElementById('h4Etat');
-    let contentP = document.getElementById('contentP');
+    let h4Etat = document.querySelectorAll('.h4Etat');
+    let contentP = document.querySelectorAll('.contentP');
 
+    for (i=0; i< contentP.length; i++){
+        if(h4Etat[i].textContent == 'false'){
+            h4Etat[i].textContent = "In Progress";
+        }
+        else{
+            h4Etat[i].textContent = "Completed";
+        }
+
+    }
+    console.log(h4Etat.length)
     addTodo.addEventListener('click', () => {
         popupAddTodo.style.display = 'block';
     });

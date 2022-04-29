@@ -2,6 +2,9 @@
 
 {% block content %}
 <link rel="stylesheet" href=" {{ url_for('static', filename='css/album.css') }} ">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pagination.css') }}">
+
+
 <button id="addAlbum">ADD ALBUM</button>
 <div class="album">
     {% for album in albums.items%}

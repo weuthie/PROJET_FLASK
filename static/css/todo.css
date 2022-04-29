@@ -12,8 +12,9 @@
 }
 
 #containtTodo {
-    height: 76vh;
+    height: 65vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;

@@ -323,21 +323,20 @@ def addPhotos():
         donnee_Photo = Photos(photoid = getionIdForManullayInsertion(Photos,Photos.photoid,'photos')+1, phototitle = title, photourl = url, photothumbnailurl = thumb)
         addRows(donnee_Photo)
     commit()
-@app.route('/photo/',methods=["POST","GET"])
+@app.route('/photo/',methods=["GET","POST"])
 def photo():
     if 'userid' in session:
         id = request.form["id"] 
+        albums = Albums.query.filter_by(userid= session['userid'])
 
-        # albums = Albums.query.filter_by(userid= session['userid'])
-
-    page = request.args.get('page', 1, type=int)
-    photos = Photos.query.filter_by(albumid=id).paginate(page=page, per_page=8)
+        page = request.args.get('page', 1, type=int)
+        photos = Photos.query.filter_by(albumid=id).paginate(page=page, per_page=8)
         # photos = Photos.query.filter_by(albumid=id)
-    return render_template('photo.html',photos=photos,id=id)
-    # else:
-    #     flash("Chargez votre user et connectez vous")
+        return render_template('photo.html',photos=photos,id=id)
+    else:
+        flash("Chargez votre user et connectez vous")
 
-    return redirect('/pagePrincipal')
+        return redirect('/pagePrincipal')
 
 
 @app.route('/addTodo', methods=["POST","GET"])

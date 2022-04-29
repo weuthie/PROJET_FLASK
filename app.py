@@ -313,8 +313,9 @@ def addPhotos():
 
 @app.route('/photo/',methods=["POST","GET"])
 def photo():
-    id = request.form["id"] 
+    
     if 'userid' in session:
+        id = request.form["id"] 
         albums = Albums.query.filter_by(userid= session['userid'])
         photos = Photos.query.filter_by(albumid=id)
         return render_template('photo.html',photos=photos)

@@ -4,7 +4,7 @@
 <link rel="stylesheet" href=" {{ url_for('static', filename='css/album.css') }} ">
 <button id="addAlbum">ADD ALBUM</button>
 <div class="album">
-    {% for album in albums%}
+    {% for album in albums.items%}
     <form action="/photo/" method="post" id="formm">
     <label for="">
         <h4>{{album.albumtitle}}</h4>
@@ -19,6 +19,42 @@
 
     
 </div>
+
+<div class="pagination">
+    <!-- previous pages -->
+    {% if albums.has_prev %}
+    <li>
+        <a class="directionLink" href="{{ url_for('album', page=albums.prev_num) }}">previous</a>
+    </li>
+    {% endif %}
+    
+    <!-- all pages numbers -->
+    {% for page_num in albums.iter_pages() %}
+        {% if page_num %}
+            {% if page_num != albums.page %}
+                <li>
+                    <a class="numPage" href="{{ url_for('album', page=page_num) }}">{{ page_num }}</a>
+                </li>
+            {% else %}
+                <li class="" >
+                     <a class="activePage" href="#">{{ page_num }}</a>
+                </li>
+            {% endif %}
+        {% else %}
+                <li>
+                    <span class="ellipsis"></span>
+                </li>
+        {% endif %}
+    {% endfor %}
+    
+    <!-- next page -->
+    {% if albums.has_next %}
+    <li>
+        <a class="directionLink" href="{{ url_for('album', page= albums.next_num) }}">next</a>
+    </li>
+    {% endif %}
+    </div>
+
 <div id="containtAddAlbum">
     <button id="close">
         <img src="{{ url_for('static', filename='img/close.png') }}" alt="">

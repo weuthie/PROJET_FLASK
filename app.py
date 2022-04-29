@@ -323,32 +323,21 @@ def addPhotos():
         donnee_Photo = Photos(photoid = getionIdForManullayInsertion(Photos,Photos.photoid,'photos')+1, phototitle = title, photourl = url, photothumbnailurl = thumb)
         addRows(donnee_Photo)
     commit()
-@app.route('/photo/',methods=["POST","GET"])
+@app.route('/photo/',methods=["GET","POST"])
 def photo():
     
     if 'userid' in session:
         id = request.form["id"] 
         albums = Albums.query.filter_by(userid= session['userid'])
-        photos = Photos.query.filter_by(albumid=id)
-        return render_template('photo.html',photos=photos)
+
+        page = request.args.get('page', 1, type=int)
+        photos = Photos.query.filter_by(albumid=id).paginate(page=page, per_page=8)
+        # photos = Photos.query.filter_by(albumid=id)
+        return render_template('photo.html',photos=photos,id=id)
     else:
         flash("Chargez votre user et connectez vous")
 
         return redirect('/pagePrincipal')
-
-
-
-
-        # albums = Albums.query.filter_by(userid= session['userid'])
-
-    page = request.args.get('page', 1, type=int)
-    photos = Photos.query.filter_by(albumid=id).paginate(page=page, per_page=8)
-        # photos = Photos.query.filter_by(albumid=id)
-    return render_template('photo.html',photos=photos,id=id)
-    # else:
-    #     flash("Chargez votre user et connectez vous")
-
-    return redirect('/pagePrincipal')
 
 
 @app.route('/addTodo', methods=["POST","GET"])
@@ -517,7 +506,31 @@ def pageComment():
 
         return redirect('/pagePrincipal')
 
-    
+
+  
+@app.route('/editPost/<int:id>',methods=["POST","GET"])
+def editPost(id):
+    posts = Posts.query.get(id)
+    # print("title   ",posts.posttitle)
+
+    if request.method == "POST":
+        print('Ancien title :',Posts.query.get(id).posttitle)
+
+        posts.posttitle = request.form["title"]
+        posts.postbody = request.form["content"]
+        print(posts.posttitle)
+        print(posts.postbody)
+        
+
+
+        db.session.commit()
+
+        print('Nouveau title :',Posts.query.get(id).posttitle)
+        return redirect("/userPost")
+        
+
+    else:
+        return render_template('editpost.html', posts=posts)  
 
         
 

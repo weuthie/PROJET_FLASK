@@ -6,12 +6,15 @@
 
 <button id="addPhoto">ADD PHOTO</button>
 <div id="containtPhoto">
+<!-- <div class="containtPhoto"> -->
+
     {% for photo in photos%}
-    <h3>{{photo.phototitle}}</h3>
-    <h3>{{photo.photourl}}</h3>
-    <h3>{{photo.photothumbnailurl}}</h3>
-    <img src="{{ url_for('static', filename='img/defaultImg.png') }}" alt="">
+    <div class="photo">
+        <h3>{{photo.phototitle}}</h3>
+        <img src="{{photo.photourl}}" alt="{{photo.photothumbnailurl}}">
+    </div>
     {% endfor %}
+
 </div>
 
 <div id="containtAddPhoto">
@@ -32,10 +35,10 @@
     let popupAddPhoto = document.getElementById("containtAddPhoto");
     let popupCloseBtn = document.getElementById("close");
 
-    addPhoto.addEventListener('click', ()=>{
+    addPhoto.addEventListener('click', () => {
         popupAddPhoto.style.display = 'block';
     });
-    popupCloseBtn.addEventListener('click', ()=>{
+    popupCloseBtn.addEventListener('click', () => {
         popupAddPhoto.style.display = 'none';
     });
 </script>

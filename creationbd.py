@@ -21,6 +21,7 @@ class Users(db.Model):
     todo = db.relationship('Todo', backref = 'users')
     albums = db.relationship('Albums', backref = 'users')
     company = db.relationship('Company', backref = 'users')
+    archive = db.Column(db.Integer,default=1)
 
 
 

@@ -287,12 +287,8 @@ def addAlbum():
     return redirect('/album/')
 
 @app.route('/album/', methods=["GET","POST"])
-def album():
-
-    
-        
+def album():   
     if 'userid' in session:
-        
         albums = Albums.query.filter_by(userid= session['userid'])
         return render_template('album.html',albums=albums)
     else:

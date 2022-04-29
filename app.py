@@ -268,6 +268,17 @@ def pageUser():
 
         return render_template('pageUser.html' , users=user)
 # ----------------------------------------------------
+@app.route('/addPost', methods=["GET", "POST"])
+def addPost():
+    if request.method == "POST":
+        title = request.form['title']
+        content = request.form['content']
+        postid = getionIdForManullayInsertion(Posts, Posts.postid,'posts')
+        donnee_post = Posts(postid = postid+1, posttitle = title,postbody = content, userid = session['userid'])
+        addRows(donnee_post)
+    commit()
+    return redirect('/userPost')
+
 @app.route('/userPost')
 def userPost():
     if 'userid' in session:
@@ -345,13 +356,13 @@ def addTodo():
     if request.method == 'POST':
         title = request.form['title']
         etat = request.form['etat']
-        if etat == 'In Progress':
-            etat = 'false'
+        if etat == "In Progress":
+            etat = "false"
         else:
-            etat = 'true'
-        donnee_todo = Todo(todoid = getionIdForManullayInsertion(Todo, Todo.todoid, 'todos')+1, todotitle = title,userid= session['userid'],todoetat=etat)
+            etat = "true"
+        donnee_todo = Todo(todoid = getionIdForManullayInsertion(Todo, Todo.todoid, 'todos')+1, todotitle = title,todoetat=etat, userid= session['userid'])
         addRows(donnee_todo)
-    # commit()
+    commit()
     return redirect('/todo')
 
 @app.route('/todo')
@@ -376,12 +387,6 @@ def map():
         flash("Chargez votre user et connectez vous")
 
         return redirect('/pagePrincipal')
-
-
-
-
-
-
 
 @app.route('/profil')
 def profil():
@@ -429,70 +434,35 @@ def adduser():
         companyname = request.form['companyname']
         catchPhrase = request.form['catchPhrase']
         bs = request.form['bs']
-        # donne_personnel= Users(name = name , username = username,phone=phone,email=email,website=website, password=12)
-        userid = Users.query.all()
-        listId = {0}
-        for i in range(len(userid)):
-            listId.add(userid[i].userid)
-        maxid = max(listId)+1
-        if len(userid) <= 10 and 11 not in listId:
-            iduser = 11
-
-            donne_personnel= Users(userid = iduser, 
-            name = name , 
-            username = username,
-            phone=phone,
-            email=email,
-            website=website, 
-            password=12)
-
-            addres = Address(addressid = iduser, 
-            street = street, 
-            suite = suite, 
-            city = city, 
-            zipcode = zipcode, 
-            geo_lat = latitude, 
-            geo_lng = longitude, 
-            userid = iduser)
-
-            company = Company(companyid = iduser, 
-            companyname = companyname, 
-            companycatchphrase = catchPhrase, 
-            companybs = bs, 
-            userid = iduser)
-
-        else:
-            donne_personnel= Users(userid = maxid, name = name , username = username,phone=phone,email=email,website=website, password=12)
+        
+        userId = getionIdForManullayInsertion(Users, Users.userid, 'users')
+        donne_personnel= Users(userid = userId+1, name = name , username = username,phone=phone,email=email,website=website, password=12)
             
-            addres = Address(addressid = maxid, street = street, suite = suite, city = city, zipcode = zipcode, geo_lat = latitude, geo_lng = longitude, userid = maxid)
+        addres = Address(addressid = userId+1, street = street, suite = suite, city = city, zipcode = zipcode, geo_lat = latitude, geo_lng = longitude, userid = userId+1)
         
-            company = Company(companyid = maxid, companyname = companyname, companycatchphrase = catchPhrase, companybs = bs, userid = maxid)
-        
-        try:
-            db.session.add(donne_personnel)
-            db.session.add(addres)
-            db.session.add(company)
-            commit()
-            return  redirect('/pagePrincipal') 
-        except:
-            db.session.rollback()
-            return  "erreur"
+        company = Company(companyid = userId+1, companyname = companyname, companycatchphrase = catchPhrase, companybs = bs, userid = userId+1)
+        addRows(donne_personnel)
+        addRows(addres)
+        addRows(company)
+        commit()
+        return  redirect('/pagePrincipal') 
+
     else:
         return render_template('formulairedajout.html')
 # --------------------ADD BY DEME-----------------------
-@app.route('/post/<int:postid>', methods=['POST','GET'])
-def addPost(postid,slug):
-    post = Posts.query.get_or_404(postid)
-    posts = Posts.query.order_by(Posts.id.desc()).all()
-    if request.method == 'POST':
-        title = request.form['title']
-        content = request.form['content']
-        donnee_posts = Posts(posttitle = title, comments = content,postid=post.id)
-        db.session.add(donnee_posts)
-        flash('votre commentaire a été bien envoyé')
-        commit()
-        return redirect(request.url)
-    return render_template('pageComment',post = post,posts=posts)
+# @app.route('/post/<int:postid>', methods=['POST','GET'])
+# def addPost(postid,slug):
+#     post = Posts.query.get_or_404(postid)
+#     posts = Posts.query.order_by(Posts.id.desc()).all()
+#     if request.method == 'POST':
+#         title = request.form['title']
+#         content = request.form['content']
+#         donnee_posts = Posts(posttitle = title, comments = content,postid=post.id)
+#         db.session.add(donnee_posts)
+#         flash('votre commentaire a été bien envoyé')
+#         commit()
+#         return redirect(request.url)
+#     return render_template('pageComment',post = post,posts=posts)
 
 
 

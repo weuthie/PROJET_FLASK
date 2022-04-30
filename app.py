@@ -53,21 +53,28 @@ def index():
 @app.route('/pagePrincipal', methods=["POST","GET"])
 def pagePrincipal():
     nb = 0
-    users=[]
     nbuser = 0
     formulair= Gerenmbre()
     if formulair.validate_on_submit():
         nb = formulair.nbchoix.data
 
         getAndInsertDataFromApi('users', nb)
-        
-
-        # pagination
-    # page = request.args.get('page',1, type=int)
-    # users = Users.query.paginate(page=page, per_page = 5)
-    users = Users.query.all()
-    nbuser =len(users)
-    return render_template('pagePrincipal.html',users = users,nb=nb, nbuser=nbuser, formulair=formulair)
+    # if nb <= 5:
+    #     users=[]
+    #     users = Users.query.all()
+    #     nbuser =len(users)
+    # else:
+    # pagination
+    if nb <= 5:
+        USERS_ROWS = 3
+        page = request.args.get('page',1, type=int)
+        users = Users.query.paginate(page=page, per_page = USERS_ROWS)
+    else:
+        USERS_ROWS = 5
+        page = request.args.get('page',1, type=int)
+        users = Users.query.paginate(page=page, per_page = USERS_ROWS)
+    
+    return render_template('pagePrincipal.html',users = users,nb=nb, formulair=formulair)
 
 # -------------------BEGIN API PROCESS--------------------
 
@@ -174,9 +181,10 @@ def getAndInsertDataFromApi(endpoint, nbelt):
         userOfId = Users.query.all()
         listOfId = {0}
         for i in range(len(userOfId)):
-            listOfId.add(userOfId[i].userid)
+            if userOfId[i].userid <= 10:
+                listOfId.add(userOfId[i].userid)
 
-        nextStepApi = len(Users.query.all())
+        nextStepApi = len(listOfId)-1
         if nbelt >  nextStepApi:
             if nextStepApi+nbelt < len(data):
                 endIndex = nextStepApi + nbelt

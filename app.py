@@ -53,28 +53,21 @@ def index():
 @app.route('/pagePrincipal', methods=["POST","GET"])
 def pagePrincipal():
     nb = 0
+    users=[]
     nbuser = 0
     formulair= Gerenmbre()
     if formulair.validate_on_submit():
         nb = formulair.nbchoix.data
 
         getAndInsertDataFromApi('users', nb)
-    # if nb <= 5:
-    #     users=[]
-    #     users = Users.query.all()
-    #     nbuser =len(users)
-    # else:
-    # pagination
-    if nb <= 5:
-        USERS_ROWS = 3
-        page = request.args.get('page',1, type=int)
-        users = Users.query.paginate(page=page, per_page = USERS_ROWS)
-    else:
-        USERS_ROWS = 5
-        page = request.args.get('page',1, type=int)
-        users = Users.query.paginate(page=page, per_page = USERS_ROWS)
-    
-    return render_template('pagePrincipal.html',users = users,nb=nb, formulair=formulair)
+        
+
+        # pagination
+    # page = request.args.get('page',1, type=int)
+    # users = Users.query.paginate(page=page, per_page = 5)
+    users = Users.query.all()
+    nbuser =len(users)
+    return render_template('pagePrincipal.html',users = users,nb=nb, nbuser=nbuser, formulair=formulair)
 
 # -------------------BEGIN API PROCESS--------------------
 
@@ -181,10 +174,9 @@ def getAndInsertDataFromApi(endpoint, nbelt):
         userOfId = Users.query.all()
         listOfId = {0}
         for i in range(len(userOfId)):
-            if userOfId[i].userid <= 10:
-                listOfId.add(userOfId[i].userid)
+            listOfId.add(userOfId[i].userid)
 
-        nextStepApi = len(listOfId)-1
+        nextStepApi = len(Users.query.all())
         if nbelt >  nextStepApi:
             if nextStepApi+nbelt < len(data):
                 endIndex = nextStepApi + nbelt
@@ -276,17 +268,6 @@ def pageUser():
 
         return render_template('pageUser.html' , users=user)
 # ----------------------------------------------------
-@app.route('/addPost', methods=["GET", "POST"])
-def addPost():
-    if request.method == "POST":
-        title = request.form['title']
-        content = request.form['content']
-        postid = getionIdForManullayInsertion(Posts, Posts.postid,'posts')
-        donnee_post = Posts(postid = postid+1, posttitle = title,postbody = content, userid = session['userid'])
-        addRows(donnee_post)
-    commit()
-    return redirect('/userPost')
-
 @app.route('/userPost')
 def userPost():
     if 'userid' in session:
@@ -364,13 +345,13 @@ def addTodo():
     if request.method == 'POST':
         title = request.form['title']
         etat = request.form['etat']
-        if etat == "In Progress":
-            etat = "false"
+        if etat == 'In Progress':
+            etat = 'false'
         else:
-            etat = "true"
-        donnee_todo = Todo(todoid = getionIdForManullayInsertion(Todo, Todo.todoid, 'todos')+1, todotitle = title,todoetat=etat, userid= session['userid'])
+            etat = 'true'
+        donnee_todo = Todo(todoid = getionIdForManullayInsertion(Todo, Todo.todoid, 'todos')+1, todotitle = title,userid= session['userid'],todoetat=etat)
         addRows(donnee_todo)
-    commit()
+    # commit()
     return redirect('/todo')
 
 @app.route('/todo')
@@ -395,6 +376,12 @@ def map():
         flash("Chargez votre user et connectez vous")
 
         return redirect('/pagePrincipal')
+
+
+
+
+
+
 
 @app.route('/profil')
 def profil():
@@ -442,35 +429,70 @@ def adduser():
         companyname = request.form['companyname']
         catchPhrase = request.form['catchPhrase']
         bs = request.form['bs']
-        
-        userId = getionIdForManullayInsertion(Users, Users.userid, 'users')
-        donne_personnel= Users(userid = userId+1, name = name , username = username,phone=phone,email=email,website=website, password=12)
-            
-        addres = Address(addressid = userId+1, street = street, suite = suite, city = city, zipcode = zipcode, geo_lat = latitude, geo_lng = longitude, userid = userId+1)
-        
-        company = Company(companyid = userId+1, companyname = companyname, companycatchphrase = catchPhrase, companybs = bs, userid = userId+1)
-        addRows(donne_personnel)
-        addRows(addres)
-        addRows(company)
-        commit()
-        return  redirect('/pagePrincipal') 
+        # donne_personnel= Users(name = name , username = username,phone=phone,email=email,website=website, password=12)
+        userid = Users.query.all()
+        listId = {0}
+        for i in range(len(userid)):
+            listId.add(userid[i].userid)
+        maxid = max(listId)+1
+        if len(userid) <= 10 and 11 not in listId:
+            iduser = 11
 
+            donne_personnel= Users(userid = iduser, 
+            name = name , 
+            username = username,
+            phone=phone,
+            email=email,
+            website=website, 
+            password=12)
+
+            addres = Address(addressid = iduser, 
+            street = street, 
+            suite = suite, 
+            city = city, 
+            zipcode = zipcode, 
+            geo_lat = latitude, 
+            geo_lng = longitude, 
+            userid = iduser)
+
+            company = Company(companyid = iduser, 
+            companyname = companyname, 
+            companycatchphrase = catchPhrase, 
+            companybs = bs, 
+            userid = iduser)
+
+        else:
+            donne_personnel= Users(userid = maxid, name = name , username = username,phone=phone,email=email,website=website, password=12)
+            
+            addres = Address(addressid = maxid, street = street, suite = suite, city = city, zipcode = zipcode, geo_lat = latitude, geo_lng = longitude, userid = maxid)
+        
+            company = Company(companyid = maxid, companyname = companyname, companycatchphrase = catchPhrase, companybs = bs, userid = maxid)
+        
+        try:
+            db.session.add(donne_personnel)
+            db.session.add(addres)
+            db.session.add(company)
+            commit()
+            return  redirect('/pagePrincipal') 
+        except:
+            db.session.rollback()
+            return  "erreur"
     else:
         return render_template('formulairedajout.html')
 # --------------------ADD BY DEME-----------------------
-# @app.route('/post/<int:postid>', methods=['POST','GET'])
-# def addPost(postid,slug):
-#     post = Posts.query.get_or_404(postid)
-#     posts = Posts.query.order_by(Posts.id.desc()).all()
-#     if request.method == 'POST':
-#         title = request.form['title']
-#         content = request.form['content']
-#         donnee_posts = Posts(posttitle = title, comments = content,postid=post.id)
-#         db.session.add(donnee_posts)
-#         flash('votre commentaire a été bien envoyé')
-#         commit()
-#         return redirect(request.url)
-#     return render_template('pageComment',post = post,posts=posts)
+@app.route('/post/<int:postid>', methods=['POST','GET'])
+def addPost(postid,slug):
+    post = Posts.query.get_or_404(postid)
+    posts = Posts.query.order_by(Posts.id.desc()).all()
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+        donnee_posts = Posts(posttitle = title, comments = content,postid=post.id)
+        db.session.add(donnee_posts)
+        flash('votre commentaire a été bien envoyé')
+        commit()
+        return redirect(request.url)
+    return render_template('pageComment',post = post,posts=posts)
 
 
 

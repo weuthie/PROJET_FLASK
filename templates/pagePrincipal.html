@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/css/stylebg.css">
-    <link rel="stylesheet" href="../static/css/pagination.css">
     <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/stylebg.css') }}"> -->
     <title>Document</title>
 </head>
@@ -17,20 +16,20 @@
     <div id="container">
         <div id="btns">
             <a href="adduser">
-                <button class="btnP" id="btn1">AJOUTER</button>
-            </a>
-            <form action="" method="post">
-                <!-- <input type="submit" class="btnP" id="btn2" value="CHARGER"> -->
-                <!-- <input type="number" name="inputs" class="numelt" placeholder="nbre elms à charger" max="5" min="1"> -->
-                <!-- les modification que j'ai aporter -->
-                {{ formulair.hidden_tag()}}
-                {{ formulair.btn(class="btnP" ,id="btn2" )}}
-
-                {{ formulair.nbchoix(class="numelt" , placeholder="nbre elms à charger" )}}
-            </form>
+            <button class="btnP" id="btn1">AJOUTER</button>
+        </a>
+             <form action="" method="post"> 
+            <!-- <input type="submit" class="btnP" id="btn2" value="CHARGER"> -->
+            <!-- <input type="number" name="inputs" class="numelt" placeholder="nbre elms à charger" max="5" min="1"> -->
+<!-- les modification que j'ai aporter -->
+            {{ formulair.hidden_tag()}}
+            {{ formulair.btn(class="btnP" ,id="btn2" )}}
+            
+            {{ formulair.nbchoix(class="numelt" , placeholder="nbre elms à charger" )}}
+         </form> 
         </div>
         <!-- formulaire a revoir en cas de wouyayoe -->
-        {% for message in get_flashed_messages() %}
+{% for message in get_flashed_messages() %}
         {{ message }}
         {% endfor %}
         <table>
@@ -44,61 +43,21 @@
                 </tr>
             </thead>
             <tbody>
-                {% if nb %}
-                {% for user in users.items %}
+                
+                {% for user in range(nbuser) if user < nb %}
                 <tr>
-                    <td><a href="/singin/{{user.userid}}">{{ user.name}}</a></td>
-                    <td><a href="/singin/{user.userid}}">{{ user.username}}</a></td>
-                    <td><a href="/singin/{{user.userid}}">{{ user.email}}</a></td>
-                    <td><a href="/singin/{{user.userid}}">{{ user.website}}</a></td>
-                    <td><a href="/singin/{{user.userid}}">{{ user.phone}}</a></td>
+                    <td><a href="/singin/{{users[user].userid}}">{{ users[user].name}}</a></td>
+                    <td><a href="/singin/{{users[user].userid}}">{{ users[user].username}}</a></td>
+                    <td><a href="/singin/{{users[user].userid}}">{{ users[user].email}}</a></td>
+                    <td><a href="/singin/{{users[user].userid}}">{{ users[user].website}}</a></td>
+                    <td><a href="/singin/{{users[user].userid}}">{{ users[user].phone}}</a></td>
                 </tr>
                 {% endfor %}
-
             </tbody>
         </table>
-
-
-        <div class="pagination">
-            <!-- previous pages -->
-            {% if users.has_prev %}
-            <li>
-                <a class="directionLink" href="{{ url_for('pagePrincipal', page=users.prev_num) }}">previous</a>
-            </li>
-            {% endif %}
-
-            <!-- all pages numbers -->
-            {% for page_num in users.iter_pages() %}
-            {% if page_num %}
-            {% if page_num != users.page %}
-            <li>
-                <a class="numPage" href="{{ url_for('pagePrincipal', page=page_num) }}">{{ page_num }}</a>
-            </li>
-            {% else %}
-            <li class="">
-                <a class="activePage" href="#">{{ page_num }}</a>
-            </li>
-            {% endif %}
-            {% else %}
-            <li>
-                <span class="ellipsis"></span>
-            </li>
-            {% endif %}
-            {% endfor %}
-
-            <!-- next page -->
-            {% if users.has_next %}
-            <li>
-                <a class="directionLink" href="{{ url_for('pagePrincipal', page= users.next_num) }}">next</a>
-            </li>
-            {% endif %}
-        </div>
-        {% endif %}
+        
     </div>
-
-
-
-    <!-- <footer>&copy Groupe4 Flask_Projet P4 Dev_Data SA 2022</footer> -->
+    <footer>&copy Groupe4 Flask_Projet P4 Dev_Data SA 2022</footer>
 </body>
 
 </html>

@@ -37,6 +37,6 @@ Alors pour executer ce projet, veuillez suivre les étapes suivantes:
 
    `flask run`
 
-Vous de vez à présent apercevoir dans votre terminal le lien `127.0.0.1:5000`, copiez le et collez le dans votre navigateur. 
+Vous devez à présent apercevoir dans votre terminal le lien `127.0.0.1:5000`, copiez le et collez le dans votre navigateur. 
 
 ET BOUMMM! LE TOUR EST JOUÉ,

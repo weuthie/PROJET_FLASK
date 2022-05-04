@@ -19,10 +19,13 @@
             <input type="submit" class="displayComment" value="affichez les commentaires">
         </form>
         <div>
-            <a href="#">
+            <a href="/editPost/{{post.postid}}">
                 <input type="button" value="edit" class="edit">
             </a>
-            <input type="button" value="delete" class="delete">
+            <a href="/deletePost/{{post.postid}}">
+                <input type="button" value="delete" class="delete">
+
+            </a>
         </div>
 
     </div>
@@ -30,38 +33,38 @@
 </div>
 
 <div class="pagination">
-<!-- previous pages -->
-{% if posts.has_prev %}
-<li>
-    <a class="directionLink" href="{{ url_for('userPost', page=posts.prev_num) }}">previous</a>
-</li>
-{% endif %}
-
-<!-- all pages numbers -->
-{% for page_num in posts.iter_pages() %}
-    {% if page_num %}
-        {% if page_num != posts.page %}
-            <li>
-                <a class="numPage" href="{{ url_for('userPost', page=page_num) }}">{{ page_num }}</a>
-            </li>
-        {% else %}
-            <li class="" >
-                 <a class="activePage" href="#">{{ page_num }}</a>
-            </li>
-        {% endif %}
-    {% else %}
-            <li>
-                <span class="ellipsis"></span>
-            </li>
+    <!-- previous pages -->
+    {% if posts.has_prev %}
+    <li>
+        <a class="directionLink" href="{{ url_for('userPost', page=posts.prev_num) }}">previous</a>
+    </li>
     {% endif %}
-{% endfor %}
 
-<!-- next page -->
-{% if posts.has_next %}
-<li>
-    <a class="directionLink" href="{{ url_for('userPost', page= posts.next_num) }}">next</a>
-</li>
-{% endif %}
+    <!-- all pages numbers -->
+    {% for page_num in posts.iter_pages() %}
+    {% if page_num %}
+    {% if page_num != posts.page %}
+    <li>
+        <a class="numPage" href="{{ url_for('userPost', page=page_num) }}">{{ page_num }}</a>
+    </li>
+    {% else %}
+    <li class="">
+        <a class="activePage" href="#">{{ page_num }}</a>
+    </li>
+    {% endif %}
+    {% else %}
+    <li>
+        <span class="ellipsis"></span>
+    </li>
+    {% endif %}
+    {% endfor %}
+
+    <!-- next page -->
+    {% if posts.has_next %}
+    <li>
+        <a class="directionLink" href="{{ url_for('userPost', page= posts.next_num) }}">next</a>
+    </li>
+    {% endif %}
 </div>
 <div id="containtAddPost">
     <button id="close">

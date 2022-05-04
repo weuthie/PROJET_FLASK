@@ -19,7 +19,7 @@
     </button>
 
     <button id="delete">
-        <a href="#"><img src="{{ url_for('static', filename='img/delete.png') }}" alt="" class="del"></a>
+        <a href="/deleteTodo/{{todo.todoid}}"><img src="{{ url_for('static', filename='img/delete.png') }}" alt="" class="del"></a>
     </button>
     </div>
     {% endfor%}

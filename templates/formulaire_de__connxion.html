@@ -12,8 +12,8 @@
     <h2> Sign in</h2>
     <form action="" method="POST">
         {{ info_user.csrf_token}} 
-        {{ info_user.email(placeholder="email" , value=users.email)}}
-        {{ info_user.pwd(placeholder="password")}}
+        {{ info_user.email(placeholder="email" , class="input", value=users.email)}}
+        {{ info_user.pwd(placeholder="password", class="input")}}
         <input type="submit" value="CONNEXION">
     </form>
 </div>

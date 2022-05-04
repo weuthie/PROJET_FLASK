@@ -7,7 +7,7 @@ nav{
     height: 100px;
     width: 100%;
 }
-nav ul{
+#ul{
     list-style: none;
     position: relative;
     /* left: 5%; */
@@ -15,7 +15,7 @@ nav ul{
     /* padding-left: 30px; */
     
 }
-nav ul li{
+#ul li{
     padding: 14px;
     display: inline-block;
     border: 1px solid #7a7babdd;
@@ -25,7 +25,7 @@ nav ul li{
     width: 150px;
     text-align: center;
 }
-nav ul li a{
+#ul li a{
     text-decoration: none;
     color: white;
     font-family: 'Times New Roman', Times, serif;
@@ -36,7 +36,7 @@ img{
     height: 65px;
     
 }
-nav ul>li:first-child{
+#ul>li:first-child{
     border: none;
     background:none;
     position: relative;
@@ -47,12 +47,40 @@ nav ul>li:first-child{
 }
 .profil{
     float: right;
-    margin-right: 2%;
     position: relative;
-    bottom: 90px;
+    /* margin-right: 10px; */
+    bottom: 85px;
+    list-style: none;
+}
+.profil ul{
+    list-style: none;
+    margin-top: 16px;
+    background-color: #787A7C;
+    display: none;
+    
+}
+
+.profil:hover ul{
+    display: block;
+}
+.profil ul li{
+    padding: 15px 0px;
+}
+
+.profil ul li a{
+    text-decoration: none;
+    font-size: large;
+    padding: 5px;
+    font-weight: bold;
+    color: white;
+
+}
+.profil ul li a:hover{
+    color: #0778f9;
 }
 .profil>img{
     border-radius: 50px;
+    
 }
 
 footer{

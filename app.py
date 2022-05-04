@@ -1,6 +1,7 @@
 from crypt import methods
 import email
 from pickletools import OpcodeInfo
+import re
 from wsgiref.validate import validator
 from click import password_option
 from flask import Flask, redirect ,render_template , request, session, url_for, flash  
@@ -398,6 +399,11 @@ def profil():
         flash("Chargez votre user et connectez vous")
 
         return redirect('/pagePrincipal')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('pagePrincipal')
 
         
 # ----------------END DOING BY LOUFA---------------

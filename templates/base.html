@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="../static/css/base.css"> -->
+    <link rel="stylesheet" href="../static/css/base.css">
     <link rel="stylesheet" href=" {{ url_for('static', filename='css/base.css') }} ">
 
 
     <title>{% block title %} {% endblock %} </title>
 </head>
+
 <body>
     <nav>
-        <ul>
+        <ul id="ul">
             <li class="li">
 
                 <a href=" {{ url_for('pageUser') }}"><img src="../static/img/home.png" alt=""></a>
@@ -27,11 +29,25 @@
                 <a href="{{ url_for('todo') }}">TODO</a>
             </li>
         </ul>
-        <a href="{{ url_for('profil') }}" class="profil"><img src="../static/img/avatar.png" alt="profil"></a>
+        <ul class="profil">
+            <li>
+                <img src="../static/img/avatar.png" alt="profil">
+
+                <ul>
+                    <li>
+                        <a href="{{ url_for('profil') }}">Profil</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('logout') }}">Deconnexion</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </nav>
     <div id="containt">
         {% block content %} {% endblock %}
     </div>
     <footer>&copy Groupe4 Flask_Projet P4 Dev_Data SA 2022</footer>
 </body>
+
 </html>

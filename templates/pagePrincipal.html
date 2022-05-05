@@ -17,20 +17,20 @@
     <div id="container">
         <div id="btns">
             <a href="adduser">
-            <button class="btnP" id="btn1">AJOUTER</button>
-        </a>
-             <form action="" method="post"> 
-            <!-- <input type="submit" class="btnP" id="btn2" value="CHARGER"> -->
-            <!-- <input type="number" name="inputs" class="numelt" placeholder="nbre elms à charger" max="5" min="1"> -->
-<!-- les modification que j'ai aporter -->
-            {{ formulair.hidden_tag()}}
-            {{ formulair.btn(class="btnP" ,id="btn2" )}}
-            
-            {{ formulair.nbchoix(class="numelt" , placeholder="nbre elms à charger" )}}
-         </form> 
+                <button class="btnP" id="btn1">AJOUTER</button>
+            </a>
+            <form action="" method="post">
+                <!-- <input type="submit" class="btnP" id="btn2" value="CHARGER"> -->
+                <!-- <input type="number" name="inputs" class="numelt" placeholder="nbre elms à charger" max="5" min="1"> -->
+                <!-- les modification que j'ai aporter -->
+                {{ formulair.hidden_tag()}}
+                {{ formulair.btn(class="btnP" ,id="btn2" )}}
+
+                {{ formulair.nbchoix(class="numelt" , placeholder="nbre elms à charger" )}}
+            </form>
         </div>
         <!-- formulaire a revoir en cas de wouyayoe -->
-{% for message in get_flashed_messages() %}
+        {% for message in get_flashed_messages() %}
         {{ message }}
         {% endfor %}
         <table>
@@ -41,72 +41,29 @@
                     <th>Email</th>
                     <th>Website</th>
                     <th>Phone</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                {% if nb <=5 %}
-                {% for user in range(nbuser) if user < nb %}
-                <tr>
+
+                {% for user in range(nbuser) if user < nb %} <tr>
                     <td><a href="/singin/{{users[user].userid}}">{{ users[user].name}}</a></td>
                     <td><a href="/singin/{{users[user].userid}}">{{ users[user].username}}</a></td>
                     <td><a href="/singin/{{users[user].userid}}">{{ users[user].email}}</a></td>
                     <td><a href="/singin/{{users[user].userid}}">{{ users[user].website}}</a></td>
                     <td><a href="/singin/{{users[user].userid}}">{{ users[user].phone}}</a></td>
-                </tr>
-                {% endfor %}
-                {% else %}
-                    {% for user in users_paginate.items %}
-                        <tr>
-                            <td><a href="/singin/{{users_paginate.userid}}">{{ user.name }}</a></td>
-                            <td><a href="/singin/{{users_paginate.userid}}">{{ user.username}}</a></td>
-                            <td><a href="/singin/{{users_paginate.userid}}">{{ user.email}}</a></td>
-                            <td><a href="/singin/{{users_paginate.userid}}">{{ user.website}}</a></td>
-                            <td><a href="/singin/{{users_paginate.userid}}">{{ user.phone}}</a></td>
-                        </tr>
-                    {% endfor %}
-                    
+                    <td>
+                        <form action="/archiver/{{users[user].userid}}" method="post">
+                            <input class="archiver" type="submit" value="Archiver">
+                        </form>
+                    </td>
 
-                    <div class="pagination">
-                        <!-- previous pages -->
-                        {% if users_paginate.has_prev %}
-                        <li>
-                            <a class="directionLink" href="{{ url_for('pagePrincipal', page=users_paginate.prev_num) }}">previous</a>
-                        </li>
-                        {% endif %}
-                    
-                        <!-- all pages numbers -->
-                        {% for page_num in users_paginate.iter_pages() %}
-                        {% if page_num %}
-                        {% if page_num != users_paginate.page %}
-                        <li>
-                            <a class="numPage" href="{{ url_for('pagePrincipal', page=page_num) }}">{{ page_num }}</a>
-                        </li>
-                        {% else %}
-                        <li class="">
-                            <a class="activePage" href="#">{{ page_num }}</a>
-                        </li>
-                        {% endif %}
-                        {% else %}
-                        <li>
-                            <span class="ellipsis"></span>
-                        </li>
-                        {% endif %}
-                        {% endfor %}
-                    
-                        <!-- next page -->
-                        {% if users_paginate.has_next %}
-                        <li>
-                            <a class="directionLink" href="{{ url_for('pagePrincipal', page= users_paginate.next_num) }}">next</a>
-                        </li>
-                        {% endif %}
-                    </div>
-                
-                    {% endif %}
+                    </tr>
+
+                    {% endfor %}
             </tbody>
         </table>
 
-
-    
     </div>
 
     

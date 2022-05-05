@@ -70,8 +70,9 @@ thead{
     margin: 5px;
     border-top: 3px solid #585AEC;
     border-bottom: 3px solid #585AEC;
-    width: 95%;
+    width: 88%;
     padding: 10px;
+    margin-right: 5%;
     background-color: #787A7C;
     color: white;
     font-weight: bolder;
@@ -86,7 +87,7 @@ tr{
     
 }
 tbody{
-    width: 95%;
+    width: 90%;
     /* padding: 8px; */
     font-style: normal;
     font-size: x-large;
@@ -94,8 +95,25 @@ tbody{
 tbody tr{
     border-bottom: 1px solid #d7c7c7c7;
     padding: 15px;
+    position: relative;
+    right: 4%;
 }
 a{
     text-decoration: none;
     color: black;
+}
+.archiver{
+    display: none;
+    width: 100px;
+    position: relative;
+    left: 15px;
+    height: 35px; 
+    cursor: pointer;
+}
+tbody tr:hover .archiver{
+    display: block;
+}
+.archiver:hover{
+    background-color: #787A7C;
+    color: white;
 }

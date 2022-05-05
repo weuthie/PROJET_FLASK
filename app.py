@@ -514,29 +514,16 @@ def pageComment():
   
 @app.route('/editPost/<int:id>',methods=["POST","GET"])
 def editPost(id):
-    posts = Posts.query.get(id)
-    # print("title   ",posts.posttitle)
-
+    posts = Posts.query.get_or_404(id)
     if request.method == "POST":
-        print('Ancien title :',Posts.query.get(id).posttitle)
-
         posts.posttitle = request.form["title"]
         posts.postbody = request.form["content"]
-        print(posts.posttitle)
-        print(posts.postbody)
-        
-
-
         db.session.commit()
-
-        print('Nouveau title :',Posts.query.get(id).posttitle)
         return redirect("/userPost")
-        
-
     else:
         return render_template('editpost.html', posts=posts)  
 
-        
+
 
 # --------------------------END--------------------------
 app.run(debug=True)

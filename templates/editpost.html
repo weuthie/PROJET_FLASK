@@ -3,16 +3,12 @@
 {% block content %}
 
 <div id="containtAddPost">
-    <button id="close">
-        <img src="{{ url_for('static', filename='img/close.png') }}" alt="">
-    </button>
     <p>EDIT POST</p>
-    <form action="/editPost/{{posts.postid}}" method="post">
+    <form action="/editPost/{{posts.postid}}" method="POST">
         
-        <input type="text" name="title" id="title" placeholder="Title" value="{{posts.posttitle}}">
-        <textarea name="content" id="content" cols="36" rows="5" placeholder="CONTENT" value="{{posts.postbody}}"></textarea>
-
-        <button type="submit" id="submit">VALIDER</button>
+        <input type="text" name="title"  placeholder="Title" value="{{posts.posttitle}}"><br>
+        <textarea name="content"  cols="36" rows="5" placeholder="CONTENT" >{{posts.postbody}}</textarea>
+        <input type="submit"  value="valider">
     </form>
 </div>
 

@@ -16,20 +16,20 @@
     <div id="container">
         <div id="btns">
             <a href="adduser">
-            <button class="btnP" id="btn1">AJOUTER</button>
-        </a>
-             <form action="" method="post"> 
-            <!-- <input type="submit" class="btnP" id="btn2" value="CHARGER"> -->
-            <!-- <input type="number" name="inputs" class="numelt" placeholder="nbre elms à charger" max="5" min="1"> -->
-<!-- les modification que j'ai aporter -->
-            {{ formulair.hidden_tag()}}
-            {{ formulair.btn(class="btnP" ,id="btn2" )}}
-            
-            {{ formulair.nbchoix(class="numelt" , placeholder="nbre elms à charger" )}}
-         </form> 
+                <button class="btnP" id="btn1">AJOUTER</button>
+            </a>
+            <form action="" method="post">
+                <!-- <input type="submit" class="btnP" id="btn2" value="CHARGER"> -->
+                <!-- <input type="number" name="inputs" class="numelt" placeholder="nbre elms à charger" max="5" min="1"> -->
+                <!-- les modification que j'ai aporter -->
+                {{ formulair.hidden_tag()}}
+                {{ formulair.btn(class="btnP" ,id="btn2" )}}
+
+                {{ formulair.nbchoix(class="numelt" , placeholder="nbre elms à charger" )}}
+            </form>
         </div>
         <!-- formulaire a revoir en cas de wouyayoe -->
-{% for message in get_flashed_messages() %}
+        {% for message in get_flashed_messages() %}
         {{ message }}
         {% endfor %}
         <table>
@@ -40,22 +40,29 @@
                     <th>Email</th>
                     <th>Website</th>
                     <th>Phone</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                
-                {% for user in range(nbuser) if user < nb %}
-                <tr>
+
+                {% for user in range(nbuser) if user < nb %} <tr>
                     <td><a href="/singin/{{users[user].userid}}">{{ users[user].name}}</a></td>
                     <td><a href="/singin/{{users[user].userid}}">{{ users[user].username}}</a></td>
                     <td><a href="/singin/{{users[user].userid}}">{{ users[user].email}}</a></td>
                     <td><a href="/singin/{{users[user].userid}}">{{ users[user].website}}</a></td>
                     <td><a href="/singin/{{users[user].userid}}">{{ users[user].phone}}</a></td>
-                </tr>
-                {% endfor %}
+                    <td>
+                        <form action="/archiver/{{users[user].userid}}" method="post">
+                            <input class="archiver" type="submit" value="Archiver">
+                        </form>
+                    </td>
+
+                    </tr>
+
+                    {% endfor %}
             </tbody>
         </table>
-        
+
     </div>
     <footer>&copy Groupe4 Flask_Projet P4 Dev_Data SA 2022</footer>
 </body>

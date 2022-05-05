@@ -7,15 +7,16 @@
     <div id="conteneur">
         <h1>{{id}}</h1>
         {% for comment in comments%}
-        
-    <h3>{{comment.commentname}}</h3>
-    <h3>{{comment.commentemail}}</h3>
+
+        <h3>{{comment.commentemail}}</h3>
+        <h3> <span style="color: red;">Title:</span> {{comment.commentname}}</h3>
+
         <article id="post">{{comment.commentbody}}
         </article>
-        
-    
-    {% endfor %}
-    <!-- <div id="name">Name</div>
+
+
+        {% endfor %}
+        <!-- <div id="name">Name</div>
     <article id="comment">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
         Iure odio nesciunt quas impedit deserunt iste nam quia quasi at accusamus ex omnis ab 
         quod, illo explicabo accusantium mol

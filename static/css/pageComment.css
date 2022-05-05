@@ -16,7 +16,7 @@ article {
     background-color: #FBF8F8;
     width: 80%;
     height: 120px;
-    margin-top: 40px;
+    margin-top: 6px;
     margin-left: 10%;
     border: 1px solid #C6D7EB;
     border-radius: 10px;
@@ -128,4 +128,14 @@ button:hover,
 button:active,
 #submit:active {
     background-color: #5894d8;
+}
+
+h3{
+    color: #5894d8;
+    margin-left: 10%;
+    margin-top: 10px;
+}
+h1{
+    color: red;
+    margin: 15px;
 }

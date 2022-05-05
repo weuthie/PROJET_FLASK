@@ -1,6 +1,7 @@
 from crypt import methods
 import email
 from pickletools import OpcodeInfo
+import re
 from wsgiref.validate import validator
 from click import password_option
 from flask import Flask, redirect ,render_template , request, session, url_for, flash  
@@ -14,7 +15,7 @@ from flask_sqlalchemy import SQLAlchemy,Pagination
 import folium
 
 
-from creationbd import  *
+from creationbd import *
 import requests 
 from requests import get
 
@@ -24,7 +25,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'groupe4'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://groupe4:test123@localhost/projetflask'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = false
-db = SQLAlchemy(app)
+# db = SQLAlchemy(app)
 
 #### Validation formulaire Dabakh #######
 
@@ -322,7 +323,8 @@ def addPhotos():
         thumb = request.form['thumbnailUrl']
         donnee_Photo = Photos(photoid = getionIdForManullayInsertion(Photos,Photos.photoid,'photos')+1, phototitle = title, photourl = url, photothumbnailurl = thumb)
         addRows(donnee_Photo)
-    commit()
+    # commit()
+    return redirect('/photo')
 @app.route('/photo/',methods=["GET","POST"])
 def photo():
     
@@ -339,6 +341,16 @@ def photo():
 
         return redirect('/pagePrincipal')
 
+@app.route('/editTodo/<int:id>')
+def editTodo():
+    pass
+
+@app.route('/deleteTodo/<int:id>')
+def deleteTodo(id):
+    todo = Todo.query.get_or_404(id)
+    db.session.delete(todo)
+    db.session.commit()
+    return redirect('/todo')
 
 @app.route('/addTodo', methods=["POST","GET"])
 def addTodo():
@@ -351,7 +363,7 @@ def addTodo():
             etat = 'true'
         donnee_todo = Todo(todoid = getionIdForManullayInsertion(Todo, Todo.todoid, 'todos')+1, todotitle = title,userid= session['userid'],todoetat=etat)
         addRows(donnee_todo)
-    # commit()
+    commit()
     return redirect('/todo')
 
 @app.route('/todo')
@@ -398,6 +410,11 @@ def profil():
         flash("Chargez votre user et connectez vous")
 
         return redirect('/pagePrincipal')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('pagePrincipal')
 
         
 # ----------------END DOING BY LOUFA---------------
@@ -480,21 +497,17 @@ def adduser():
     else:
         return render_template('formulairedajout.html')
 # --------------------ADD BY DEME-----------------------
-@app.route('/post/<int:postid>', methods=['POST','GET'])
-def addPost(postid,slug):
-    post = Posts.query.get_or_404(postid)
-    posts = Posts.query.order_by(Posts.id.desc()).all()
-    if request.method == 'POST':
-        title = request.form['title']
-        content = request.form['content']
-        donnee_posts = Posts(posttitle = title, comments = content,postid=post.id)
-        db.session.add(donnee_posts)
-        flash('votre commentaire a été bien envoyé')
+@app.route('/addPost', methods=['POST'])
+def addPost():
+    postid = getionIdForManullayInsertion(Posts, Posts.postid,'posts')
+    if 'userid' in session:
+        if request.method == 'POST':
+            title = request.form['title']
+            content = request.form['content']
+            donnee_posts = Posts(postid = postid+1, posttitle = title, postbody = content, userid = session['userid'])
+            addRows(donnee_posts)
         commit()
-        return redirect(request.url)
-    return render_template('pageComment',post = post,posts=posts)
-
-
+    return redirect('/userPost')
 
 @app.route('/pageComment',methods=["POST","GET"])
 def pageComment():
@@ -514,16 +527,28 @@ def pageComment():
   
 @app.route('/editPost/<int:id>',methods=["POST","GET"])
 def editPost(id):
-    posts = Posts.query.get_or_404(id)
+    post = Posts.query.get_or_404(id)
+    # print("title   ",posts.posttitle)
+
     if request.method == "POST":
-        posts.posttitle = request.form["title"]
-        posts.postbody = request.form["content"]
+        post.posttitle = request.form["title"]
+        post.postbody = request.form["content"]
         db.session.commit()
+        # print('Nouveau title :',Posts.query.get(id).posttitle)
         return redirect("/userPost")
+        
     else:
-        return render_template('editpost.html', posts=posts)  
+        return render_template('editpost.html', post=post)  
 
 
+@app.route('/deletePost/<int:id>')
+def deletePost(id):
+    post = Posts.query.get_or_404(id)
+    db.session.delete(post)
+    db.session.commit()
+    return redirect('/userPost')
 
 # --------------------------END--------------------------
+
+db.init_app(app)
 app.run(debug=True)

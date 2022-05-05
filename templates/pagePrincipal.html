@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/css/stylebg.css">
+    <link rel="stylesheet" href="../static/css/pagination.css">
     <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/stylebg.css') }}"> -->
     <title>Document</title>
 </head>
@@ -43,7 +44,7 @@
                 </tr>
             </thead>
             <tbody>
-                
+                {% if nb <=5 %}
                 {% for user in range(nbuser) if user < nb %}
                 <tr>
                     <td><a href="/singin/{{users[user].userid}}">{{ users[user].name}}</a></td>
@@ -53,10 +54,63 @@
                     <td><a href="/singin/{{users[user].userid}}">{{ users[user].phone}}</a></td>
                 </tr>
                 {% endfor %}
+                {% else %}
+                    {% for user in users_paginate.items %}
+                        <tr>
+                            <td><a href="/singin/{{users_paginate.userid}}">{{ user.name }}</a></td>
+                            <td><a href="/singin/{{users_paginate.userid}}">{{ user.username}}</a></td>
+                            <td><a href="/singin/{{users_paginate.userid}}">{{ user.email}}</a></td>
+                            <td><a href="/singin/{{users_paginate.userid}}">{{ user.website}}</a></td>
+                            <td><a href="/singin/{{users_paginate.userid}}">{{ user.phone}}</a></td>
+                        </tr>
+                    {% endfor %}
+                    
+
+                    <div class="pagination">
+                        <!-- previous pages -->
+                        {% if users_paginate.has_prev %}
+                        <li>
+                            <a class="directionLink" href="{{ url_for('pagePrincipal', page=users_paginate.prev_num) }}">previous</a>
+                        </li>
+                        {% endif %}
+                    
+                        <!-- all pages numbers -->
+                        {% for page_num in users_paginate.iter_pages() %}
+                        {% if page_num %}
+                        {% if page_num != users_paginate.page %}
+                        <li>
+                            <a class="numPage" href="{{ url_for('pagePrincipal', page=page_num) }}">{{ page_num }}</a>
+                        </li>
+                        {% else %}
+                        <li class="">
+                            <a class="activePage" href="#">{{ page_num }}</a>
+                        </li>
+                        {% endif %}
+                        {% else %}
+                        <li>
+                            <span class="ellipsis"></span>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                    
+                        <!-- next page -->
+                        {% if users_paginate.has_next %}
+                        <li>
+                            <a class="directionLink" href="{{ url_for('pagePrincipal', page= users_paginate.next_num) }}">next</a>
+                        </li>
+                        {% endif %}
+                    </div>
+                
+                    {% endif %}
             </tbody>
         </table>
-        
+
+
+    
     </div>
+
+    
+
     <footer>&copy Groupe4 Flask_Projet P4 Dev_Data SA 2022</footer>
 </body>
 

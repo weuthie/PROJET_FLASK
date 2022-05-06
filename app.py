@@ -252,22 +252,9 @@ def adduser():
         if len(userid) <= 10 and 11 not in listId:
             iduser = 11
 
-            donne_personnel= Users(userid = iduser, 
-            name = name , 
-            username = username,
-            phone=phone,
-            email=email,
-            website=website, 
-            password=12)
+            donne_personnel= Users(userid = iduser, name = name, username = username, phone=phone,email=email,website=website, password=12)
 
-            addres = Address(addressid = iduser, 
-            street = street, 
-            suite = suite, 
-            city = city, 
-            zipcode = zipcode, 
-            geo_lat = latitude, 
-            geo_lng = longitude, 
-            userid = iduser)
+            addres = Address(addressid = iduser, street = street, suite = suite, city = city, zipcode = zipcode, geo_lat = latitude, geo_lng = longitude, userid = iduser)
 
             company = Company(companyid = iduser, 
             companyname = companyname, companycatchphrase = catchPhrase, companybs = bs, userid = iduser)

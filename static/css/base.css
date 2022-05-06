@@ -48,22 +48,26 @@ img{
 .profil{
     float: right;
     position: relative;
-    /* margin-right: 10px; */
+    margin-right: 29px;
     bottom: 85px;
     list-style: none;
 }
 .profil ul{
     list-style: none;
-    margin-top: 16px;
+    /* margin-top: 5px; */
     background-color: #787A7C;
     display: none;
+    position: absolute;
+    z-index: 1;
     
 }
 
 .profil:hover ul{
     display: block;
+    
 }
 .profil ul li{
+    margin-top: 10px;
     padding: 15px 0px;
 }
 

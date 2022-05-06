@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div id="containtAddTodo">
+    <p>EDIT TODO</p>
+    <form action="/editTodo/{{todo.todoid}}" method="POST">
+        <input type="text" name="title" id="title"  value = "{{todo.todotitle}}" placeholder="Title" required>
+        <select name="etat" id="etat" required>
+            <option value="{{todo.todoetat}}">Selectionner un état</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+        </select>
+        <button type="submit" id="submit">VALIDER</button>
+    </form>
+</div>
+
+
+{% endblock %}

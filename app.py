@@ -59,13 +59,25 @@ def pagePrincipal():
 
         getAndInsertDataFromApi('users', nb)
         
+    
+    # pagination
+
+        
+    # page = request.args.get('page',1, type=int)
+    # users_paginate = Users.query.paginate(page=page, per_page = 5)
+    # if nb <= 5:
+    users = Users.query.all()
+    nbuser =len(users)
+
+    return render_template('pagePrincipal.html',users=users,nbuser=nbuser, nb=nb,formulair=formulair)
+
 
         # pagination
     # page = request.args.get('page',1, type=int)
     # users = Users.query.paginate(page=page, per_page = 5)
-    users = Users.query.filter_by(archive=1).all()
-    nbuser =len(users)
-    return render_template('pagePrincipal.html',users = users,nb=nb, nbuser=nbuser, formulair=formulair)
+    # users = Users.query.filter_by(archive=1).all()
+    # nbuser =len(users)
+    # return render_template('pagePrincipal.html',users = users,nb=nb, nbuser=nbuser, formulair=formulair)
 
     
 @app.route('/archiver/<int:userid>', methods=["POST","GET"])
@@ -100,7 +112,7 @@ def userPost():
 def addAlbum():
     if request.method == 'POST':
         title = request.form['title']
-        donnee_Albums = Albums(albumid = getionIdForManullayInsertion(Albums, Albums.albumid, 'albums')+1, albumtitle = title,userid= session['userid'])
+        donnee_Albums = Albums(albumid = gestionIdForManullayInsertion(Albums, Albums.albumid, 'albums')+1, albumtitle = title,userid= session['userid'])
         addRows(donnee_Albums)
     commit()
     return redirect('/album/')
@@ -124,7 +136,7 @@ def addPhotos():
         title = request.form['title']
         url = request.form['url']
         thumb = request.form['thumbnailUrl']
-        donnee_Photo = Photos(photoid = getionIdForManullayInsertion(Photos,Photos.photoid,'photos')+1, phototitle = title, photourl = url, photothumbnailurl = thumb)
+        donnee_Photo = Photos(photoid = gestionIdForManullayInsertion(Photos,Photos.photoid,'photos')+1, phototitle = title, photourl = url, photothumbnailurl = thumb)
         addRows(donnee_Photo)
     # commit()
     return redirect('/photo')
@@ -144,9 +156,6 @@ def photo():
 
         return redirect('/pagePrincipal')
 
-@app.route('/editTodo/<int:id>')
-def editTodo():
-    pass
 
 @app.route('/deleteTodo/<int:id>')
 def deleteTodo(id):
@@ -164,7 +173,7 @@ def addTodo():
             etat = 'false'
         else:
             etat = 'true'
-        donnee_todo = Todo(todoid = getionIdForManullayInsertion(Todo, Todo.todoid, 'todos')+1, todotitle = title,userid= session['userid'],todoetat=etat)
+        donnee_todo = Todo(todoid = gestionIdForManullayInsertion(Todo, Todo.todoid, 'todos')+1, todotitle = title,userid= session['userid'],todoetat=etat)
         addRows(donnee_todo)
     commit()
     return redirect('/todo')
@@ -280,7 +289,7 @@ def adduser():
 # --------------------ADD BY DEME-----------------------
 @app.route('/addPost', methods=['POST'])
 def addPost():
-    postid = getionIdForManullayInsertion(Posts, Posts.postid,'posts')
+    postid = gestionIdForManullayInsertion(Posts, Posts.postid,'posts')
     if 'userid' in session:
         if request.method == 'POST':
             title = request.form['title']
@@ -296,7 +305,9 @@ def pageComment():
 
     if 'userid' in session:
         posts = Posts.query.filter_by(userid= session['userid'])
-        comments = Comment.query.filter_by(postid=id)
+        # comments = Comment.query.filter_by(postid=id)
+        page = request.args.get('page', 1, type=int)
+        comments = Comment.query.filter_by(postid=id).paginate(page=page, per_page=3)
 
         return render_template('pageComment.html',comments=comments,posts=posts,id=id)
     else:
@@ -328,6 +339,17 @@ def deletePost(id):
     db.session.delete(post)
     db.session.commit()
     return redirect('/userPost')
+
+@app.route('/editTodo/<int:id>',methods=["POST","GET"])
+def editTodo(id):
+    todo = Todo.query.get_or_404(id)
+    if request.method == "POST":
+        todo.todotitle = request.form["title"]
+        todo.todoetat = request.form["etat"]
+        db.session.commit()
+        return redirect("/todo") 
+    else:
+        return render_template('editTodo.html', todo=todo)
 
 # --------------------------END--------------------------
 

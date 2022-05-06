@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pagination.css') }}">
 
 
-<button id="addTodo">ADD TODO</button>
+<button id="addTodo">NEW TODO</button>
 
 <div id="containtTodo">
 {% for todo in todos.items %}
@@ -15,7 +15,7 @@
     <p class="contentP">{{todo.todotitle}}</p>
 
     <button id="edit">
-        <a href="#"><img src="{{ url_for('static', filename='img/edit.png') }}" alt="" class="modif"></a>
+        <a href="/editTodo/{{todo.todoid}}"><img src="{{ url_for('static', filename='img/edit.png') }}" alt="" class="modif"></a>
     </button>
 
     <button id="delete">
@@ -64,7 +64,7 @@
     <button id="close">
         <img src="{{ url_for('static', filename='img/close.png') }}" alt="">
     </button>
-    <p>ADD TODO</p>
+    <p>NEW TODO</p>
     <form action="/addTodo" method="POST">
         <input type="text" name="title" id="title" placeholder="Title" required>
         <select name="etat" id="etat" required>

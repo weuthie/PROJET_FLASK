@@ -1,7 +1,7 @@
 from creationbd import *
 from requests import get
 
-def getionIdForManullayInsertion(tableName, colName, enpoint):
+def gestionIdForManullayInsertion(tableName, colName, enpoint):
     listOfIdTable = set()
     queryTable = tableName.query.with_entities(colName).all()
     if len(queryTable) != 0:

@@ -74,11 +74,13 @@
 </div>
 
 <script>
-    let post = document.getElementById("post");
+    let post = document.getElementById("addComment");
+
     let popupAddComment = document.getElementById("containtAddComment");
     let closePopupComment = document.getElementById("close");
 
     post.addEventListener('click', () => {
+        console.log("haha")
         popupAddComment.style.display = 'block';
 
     });

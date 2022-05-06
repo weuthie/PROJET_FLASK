@@ -15,7 +15,7 @@
     <p class="contentP">{{todo.todotitle}}</p>
 
     <button id="edit">
-        <a href="#"><img src="{{ url_for('static', filename='img/edit.png') }}" alt="" class="modif"></a>
+        <a href="/editTodo/{{todo.todoid}}"><img src="{{ url_for('static', filename='img/edit.png') }}" alt="" class="modif"></a>
     </button>
 
     <button id="delete">

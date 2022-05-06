@@ -59,6 +59,18 @@ def pagePrincipal():
 
         getAndInsertDataFromApi('users', nb)
         
+    
+    # pagination
+
+        
+    # page = request.args.get('page',1, type=int)
+    # users_paginate = Users.query.paginate(page=page, per_page = 5)
+    # if nb <= 5:
+    users = Users.query.all()
+    nbuser =len(users)
+
+    return render_template('pagePrincipal.html',users=users,nbuser=nbuser, nb=nb,formulair=formulair)
+
 
         # pagination
     # page = request.args.get('page',1, type=int)
@@ -144,9 +156,6 @@ def photo():
 
         return redirect('/pagePrincipal')
 
-@app.route('/editTodo/<int:id>')
-def editTodo():
-    pass
 
 @app.route('/deleteTodo/<int:id>')
 def deleteTodo(id):
@@ -343,6 +352,17 @@ def deletePost(id):
     db.session.delete(post)
     db.session.commit()
     return redirect('/userPost')
+
+@app.route('/editTodo/<int:id>',methods=["POST","GET"])
+def editTodo(id):
+    todo = Todo.query.get_or_404(id)
+    if request.method == "POST":
+        todo.todotitle = request.form["title"]
+        todo.todoetat = request.form["etat"]
+        db.session.commit()
+        return redirect("/todo") 
+    else:
+        return render_template('editTodo.html', todo=todo)
 
 # --------------------------END--------------------------
 

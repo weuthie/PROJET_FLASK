@@ -1,16 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<link rel="stylesheet" href="{{ url_for('static', filename='css/editpost.css') }}">
 <div id="containtAddPost">
-    <button id="close">
-        <img src="{{ url_for('static', filename='img/close.png') }}" alt="">
-    </button>
-    <p>EDIT POST</p>
+    <p id="editpost">EDIT POST</p>
     <form action="/editPost/{{post.postid}}" method="post">
         
-        <input type="text" name="title" id="title" placeholder="Title" value="{{post.posttitle}}">
-        <textarea name="content" id="content" cols="36" rows="5" placeholder="CONTENT" value="{{post.postbody}}"></textarea>
+        <input type="text" name="title" id="title" placeholder="Title" value="{{post.posttitle}}" required>
+        <textarea name="content" id="content" cols="78" rows="10" placeholder="CONTENT" value="{{post.postbody}}" required></textarea>
 
         <button type="submit" id="submit">VALIDER</button>
     </form>

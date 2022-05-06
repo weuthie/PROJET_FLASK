@@ -2,11 +2,12 @@
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pageComment.css') }}">
+<link rel="stylesheet" href="../static/css/pagination.css">
 <div class="button">
-    <button id="addComment">ADD COMMENT</button>
+    <button id="addComment">NEW COMMENT</button>
     <div id="conteneur">
-        <h1>{{id}}</h1>
-        {% for comment in comments%}
+        <!-- <h1>{{id}}</h1> -->
+        {% for comment in comments.items%}
 
         <h3>{{comment.commentemail}}</h3>
         <h3> <span style="color: red;">Title:</span> {{comment.commentname}}</h3>
@@ -17,18 +18,53 @@
 
         {% endfor %}
         <!-- <div id="name">Name</div>
-    <article id="comment">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+    <article id="comment">Lorem ipsum dolor sit amet consectetur adipisicing elit. S
         Iure odio nesciunt quas impedit deserunt iste nam quia quasi at accusamus ex omnis ab 
         quod, illo explicabo accusantium mol
     </article> -->
     </div>
 </div>
 
+<div class="pagination">
+    <!-- previous pages -->
+    {% if comments.has_prev %}
+    <li>
+        <a class="directionLink" href="{{ url_for('pageComment', page=comments.prev_num) }}">previous</a>
+    </li>
+    {% endif %}
+
+    <!-- all pages numbers -->
+    {% for page_num in comments.iter_pages() %}
+    {% if page_num %}
+    {% if page_num != comments.page %}
+    <li>
+        <a class="numPage" href="{{ url_for('pageComment', page=page_num) }}">{{ page_num }}</a>
+    </li>
+    {% else %}
+    <li class="">
+        <a class="activePage" href="#">{{ page_num }}</a>
+    </li>
+    {% endif %}
+    {% else %}
+    <li>
+        <span class="ellipsis"></span>
+    </li>
+    {% endif %}
+    {% endfor %}
+
+    <!-- next page -->
+    {% if comments.has_next %}
+    <li>
+        <a class="directionLink" href="{{ url_for('pageComment', page= comments.next_num) }}">next</a>
+    </li>
+    {% endif %}
+</div>
+
 <div id="containtAddComment">
     <button id="close">
         <img src="{{ url_for('static', filename='img/close.png') }}" alt="">
     </button>
-    <p>ADD COMMENT</p>
+    <p>NEW COMMENT</p>
     <form action="">
         <input type="text" name="title" id="title" placeholder="Name">
         <textarea name="content" id="content" cols="36" rows="5" placeholder="COMMENT"></textarea>

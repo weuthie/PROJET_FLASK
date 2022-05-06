@@ -309,7 +309,9 @@ def pageComment():
 
     if 'userid' in session:
         posts = Posts.query.filter_by(userid= session['userid'])
-        comments = Comment.query.filter_by(postid=id)
+        # comments = Comment.query.filter_by(postid=id)
+        page = request.args.get('page', 1, type=int)
+        comments = Comment.query.filter_by(postid=id).paginate(page=page, per_page=3)
 
         return render_template('pageComment.html',comments=comments,posts=posts,id=id)
     else:

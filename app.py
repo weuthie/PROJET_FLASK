@@ -361,12 +361,12 @@ def dashbord():
     d_false= db.session.query(db.func.count(Todo.todoetat)).filter_by(todoetat = 'false').first()
     d_true= db.session.query(db.func.count(Todo.todoetat)).filter_by(todoetat = 'true').first()
     # d_= db.session.query(db.func.count(Todo.todoetat)).first()
+
+
+
     
 
-
-    
-
-    return redirect('/')
+    return render_template('dashbord.html',list_post=list_post)
 
 # --------------------------END--------------------------
 

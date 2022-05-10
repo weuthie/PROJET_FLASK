@@ -142,15 +142,15 @@ def addPhotos():
     return redirect('/photo')
 @app.route('/photo/',methods=["GET","POST"])
 def photo():
+    id = request.form["id"] 
     
     if 'userid' in session:
-        id = request.form["id"] 
         albums = Albums.query.filter_by(userid= session['userid'])
 
         page = request.args.get('page', 1, type=int)
         photos = Photos.query.filter_by(albumid=id).paginate(page=page, per_page=8)
         # photos = Photos.query.filter_by(albumid=id)
-        return render_template('photo.html',photos=photos)
+        return render_template('photo.html',photos=photos,page=page,id=id)
     else:
         flash("Chargez votre user et connectez vous")
 
@@ -169,7 +169,7 @@ def addTodo():
     if request.method == 'POST':
         title = request.form['title']
         etat = request.form['etat']
-        if etat == 'In Progress':
+        if etat == "In Progress":
             etat = 'false'
         else:
             etat = 'true'
@@ -351,6 +351,30 @@ def editTodo(id):
         return redirect("/todo") 
     else:
         return render_template('editTodo.html', todo=todo)
+
+
+@app.route('/dashbord')
+def dashbord():
+    posts= Posts.query.all()
+    users=Users.query.all()
+    list_user=[]
+    list_post=[]
+    for user in users:
+        v=(user.username,len(user.posts))
+        list_user.append(v)
+    for post in posts:
+        c=(post.postid,len(post.comments))
+        list_post.append(c)
+    
+    d_false= db.session.query(db.func.count(Todo.todoetat)).filter_by(todoetat = 'false').first()
+    d_true= db.session.query(db.func.count(Todo.todoetat)).filter_by(todoetat = 'true').first()
+    # d_= db.session.query(db.func.count(Todo.todoetat)).first()
+    
+
+
+    
+
+    return redirect('/')
 
 # --------------------------END--------------------------
 

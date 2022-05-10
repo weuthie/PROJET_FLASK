@@ -287,6 +287,7 @@ def adduser():
     else:
         return render_template('formulairedajout.html')
 # --------------------ADD BY DEME-----------------------
+
 @app.route('/addPost', methods=['POST'])
 def addPost():
     postid = gestionIdForManullayInsertion(Posts, Posts.postid,'posts')

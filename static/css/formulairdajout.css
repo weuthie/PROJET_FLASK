@@ -6,11 +6,7 @@
 display: flex;
 flex-direction: column;
 align-items: center;
-
-    
-    width: 100%;
-   
-
+width: 100%;
 }
 fieldset{
     display: flex;
@@ -41,6 +37,7 @@ legend{
 }
 form{
 display: flex;
+justify-content: center;
 flex-wrap: wrap;
 }
 #milieux_bas{

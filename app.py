@@ -75,9 +75,9 @@ def pagePrincipal():
         # pagination
     # page = request.args.get('page',1, type=int)
     # users = Users.query.paginate(page=page, per_page = 5)
-    users = Users.query.filter_by(archive=1).all()
-    nbuser =len(users)
-    return render_template('pagePrincipal.html',users = users,nb=nb, nbuser=nbuser, formulair=formulair)
+    # users = Users.query.filter_by(archive=1).all()
+    # nbuser =len(users)
+    # return render_template('pagePrincipal.html',users = users,nb=nb, nbuser=nbuser, formulair=formulair)
 
     
 @app.route('/archiver/<int:userid>', methods=["POST","GET"])
@@ -112,7 +112,7 @@ def userPost():
 def addAlbum():
     if request.method == 'POST':
         title = request.form['title']
-        donnee_Albums = Albums(albumid = getionIdForManullayInsertion(Albums, Albums.albumid, 'albums')+1, albumtitle = title,userid= session['userid'])
+        donnee_Albums = Albums(albumid = gestionIdForManullayInsertion(Albums, Albums.albumid, 'albums')+1, albumtitle = title,userid= session['userid'])
         addRows(donnee_Albums)
     commit()
     return redirect('/album/')
@@ -136,7 +136,7 @@ def addPhotos():
         title = request.form['title']
         url = request.form['url']
         thumb = request.form['thumbnailUrl']
-        donnee_Photo = Photos(photoid = getionIdForManullayInsertion(Photos,Photos.photoid,'photos')+1, phototitle = title, photourl = url, photothumbnailurl = thumb)
+        donnee_Photo = Photos(photoid = gestionIdForManullayInsertion(Photos,Photos.photoid,'photos')+1, phototitle = title, photourl = url, photothumbnailurl = thumb)
         addRows(donnee_Photo)
     # commit()
     return redirect('/photo')
@@ -173,7 +173,7 @@ def addTodo():
             etat = 'false'
         else:
             etat = 'true'
-        donnee_todo = Todo(todoid = getionIdForManullayInsertion(Todo, Todo.todoid, 'todos')+1, todotitle = title,userid= session['userid'],todoetat=etat)
+        donnee_todo = Todo(todoid = gestionIdForManullayInsertion(Todo, Todo.todoid, 'todos')+1, todotitle = title,userid= session['userid'],todoetat=etat)
         addRows(donnee_todo)
     commit()
     return redirect('/todo')
@@ -261,22 +261,9 @@ def adduser():
         if len(userid) <= 10 and 11 not in listId:
             iduser = 11
 
-            donne_personnel= Users(userid = iduser, 
-            name = name , 
-            username = username,
-            phone=phone,
-            email=email,
-            website=website, 
-            password=12)
+            donne_personnel= Users(userid = iduser, name = name, username = username, phone=phone,email=email,website=website, password=12)
 
-            addres = Address(addressid = iduser, 
-            street = street, 
-            suite = suite, 
-            city = city, 
-            zipcode = zipcode, 
-            geo_lat = latitude, 
-            geo_lng = longitude, 
-            userid = iduser)
+            addres = Address(addressid = iduser, street = street, suite = suite, city = city, zipcode = zipcode, geo_lat = latitude, geo_lng = longitude, userid = iduser)
 
             company = Company(companyid = iduser, 
             companyname = companyname, companycatchphrase = catchPhrase, companybs = bs, userid = iduser)
@@ -302,7 +289,7 @@ def adduser():
 # --------------------ADD BY DEME-----------------------
 @app.route('/addPost', methods=['POST'])
 def addPost():
-    postid = getionIdForManullayInsertion(Posts, Posts.postid,'posts')
+    postid = gestionIdForManullayInsertion(Posts, Posts.postid,'posts')
     if 'userid' in session:
         if request.method == 'POST':
             title = request.form['title']
@@ -318,7 +305,9 @@ def pageComment():
 
     if 'userid' in session:
         posts = Posts.query.filter_by(userid= session['userid'])
-        comments = Comment.query.filter_by(postid=id)
+        # comments = Comment.query.filter_by(postid=id)
+        page = request.args.get('page', 1, type=int)
+        comments = Comment.query.filter_by(postid=id).paginate(page=page, per_page=3)
 
         return render_template('pageComment.html',comments=comments,posts=posts,id=id)
     else:

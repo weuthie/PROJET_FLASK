@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pagination.css') }}">
 
 
-<button id="addPhoto">ADD PHOTO</button>
+<button id="addPhoto">NEW PHOTO</button>
 <div id="containtPhoto">
 <!-- <div class="containtPhoto"> -->
 
@@ -58,7 +58,7 @@
     <button id="close">
         <img src="{{ url_for('static', filename='img/close.png') }}" alt="">
     </button>
-    <p>ADD PHOTO</p>
+    <p>NEW PHOTO</p>
     <form action="/addPhoto" method="post">
         <input type="text" name="title" id="title" placeholder="Title" required>
         <input type="url" name="url" placeholder="url" required>

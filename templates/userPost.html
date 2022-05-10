@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pagination.css') }}">
 
 
-<button id="addPost">ADD POST</button>
+<button id="addPost">NEW POST</button>
 
 <div class="but">
     {% for post in posts.items%}
@@ -70,7 +70,7 @@
     <button id="close">
         <img src="{{ url_for('static', filename='img/close.png') }}" alt="">
     </button>
-    <p>ADD POST</p>
+    <p>NEW POST</p>
     <form action="/addPost" method="post">
         <input type="text" name="title" id="title" placeholder="Title">
         <textarea name="content" id="content" cols="36" rows="5" placeholder="CONTENT"></textarea>

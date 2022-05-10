@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<link rel="stylesheet" href="{{ url_for('static', filename='css/editpost.css') }}">
 <div id="containtAddPost">
-    <p>EDIT POST</p>
+    <p id="editpost">EDIT POST</p>
+    <form action="/editPost/{{post.postid}}" method="post">
+        
+        <input type="text" name="title" id="title" placeholder="Title" value="{{post.posttitle}}" required>
+        <textarea name="content" id="content" cols="78" rows="10" placeholder="CONTENT" value="{{post.postbody}}" required></textarea>
 
     <form action="/editPost/{{post.postid}}" method="POST">
         

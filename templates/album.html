@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/pagination.css') }}">
 
 
-<button id="addAlbum">ADD ALBUM</button>
+<button id="addAlbum">NEW ALBUM</button>
 <div class="album">
     {% for album in albums.items%}
     <form action="/photo/" method="post" id="formm">
@@ -62,7 +62,7 @@
     <button id="close">
         <img src="{{ url_for('static', filename='img/close.png') }}" alt="">
     </button>
-    <p>ADD ALBUM</p>
+    <p>NEW ALBUM</p>
     <form action="/addAlbum" method="post">
         <input type="text" name="title" id="title" placeholder="Title">
         <button type="submit" id="submit">VALIDER</button>

@@ -360,7 +360,7 @@ def dashbord():
     list_user=[]
     list_post=[]
     for user in users:
-        v=(user.username,len(user.posts))
+        v=(user.username)
         list_user.append(v)
     for post in posts:
         c=(post.postid,len(post.comments))
@@ -374,7 +374,7 @@ def dashbord():
 
     
 
-    return render_template('dashbord.html',list_post=list_post)
+    return render_template('dashbord.html',list_post = list_post,list_user=list_user)
 
 # --------------------------END--------------------------
 

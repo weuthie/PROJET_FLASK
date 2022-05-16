@@ -71,14 +71,6 @@ def pagePrincipal():
 
     return render_template('pagePrincipal.html',users=users,nbuser=nbuser, nb=nb,formulair=formulair)
 
-
-        # pagination
-    # page = request.args.get('page',1, type=int)
-    # users = Users.query.paginate(page=page, per_page = 5)
-    # users = Users.query.filter_by(archive=1).all()
-    # nbuser =len(users)
-    # return render_template('pagePrincipal.html',users = users,nb=nb, nbuser=nbuser, formulair=formulair)
-
     
 @app.route('/archiver/<int:userid>', methods=["POST","GET"])
 def archiver(userid):
@@ -122,6 +114,7 @@ def addAlbum():
 def album():     
     if 'userid' in session:
         page = request.args.get('page', 1, type=int)
+
         albums = Albums.query.filter_by(userid=session['userid']).paginate(page=page, per_page=10)
         # albums = Albums.query.filter_by(userid= session['userid'])
         return render_template('album.html',albums=albums)
@@ -361,6 +354,7 @@ def dashbord():
     for user in users:
         v=(user.username,len(user.posts))
         list_user.append(v)
+    print(list_user)
     for post in posts:
         c=(post.postid,len(post.comments))
         list_post.append(c)
@@ -373,7 +367,7 @@ def dashbord():
 
     
 
-    return render_template('dashbord.html',list_post=list_post)
+    return render_template('dashbord.html',list_post=list_post, list_user=list_user)
 
 # --------------------------END--------------------------
 

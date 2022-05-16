@@ -7,13 +7,9 @@
     <form action="/editPost/{{post.postid}}" method="post">
         
         <input type="text" name="title" id="title" placeholder="Title" value="{{post.posttitle}}" required>
-        <textarea name="content" id="content" cols="78" rows="10" placeholder="CONTENT" value="{{post.postbody}}" required></textarea>
+        <textarea name="content" id="content" cols="78" rows="10" placeholder="CONTENT" value="" required>{{post.postbody}}</textarea>
 
-    <form action="/editPost/{{post.postid}}" method="POST">
-        
-        <input type="text" name="title"  placeholder="Title" value="{{post.posttitle}}"><br>
-        <textarea name="content"  cols="36" rows="5" placeholder="CONTENT" >{{post.postbody}}</textarea>
-        <input type="submit"  value="valider">
+        <input type="submit" id="submit"  value="valider">
     </form>
 </div>
 

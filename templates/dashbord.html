@@ -1,29 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="../static/js/dashbord.js"></script>
     <title>Dashbord</title>
 </head>
+
 <body>
-    <canvas id="line" width="400" height="400"></canvas>
+    <canvas id="line" width="800" height="300"></canvas>
     <canvas id="pie" width="400" height="400"></canvas>
     <canvas id="bar" width="400" height="400"></canvas>
-    <script>
-        
-        const grapheLine = document.getElementById('line').getContext('2d');
-        const myChart = new Chart(grapheLine, {
-            type: 'line',
-            data :{
-                labels:{{list_post | safe }},
 
+    <div id="courbe">
+        <script>
+            const grapheLine = document.getElementById('line').getContext('2d');
+            const myChart = new Chart(grapheLine, {
+                type: 'line',
+                data: {
+                    labels: [{% for n in list_post %} {{ n[0]}}, {% endfor %}],
+            datasets: [{
+                label: 'Comment Func Post',
+                data: [{% for elmt in list_post %} {{ elmt[1]}}, {% endfor %}],
+                borderWidth: 1
+                    }]
+                },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
-        }
-        </script>
-    
+            });
 
-        
+        </script>
+    </div>
+
+    <div id="graph_en_bar">
+
+        <script>
+            //graphe en bar
+
+            const grapheBar = document.getElementById('bar').getContext('2d');
+            const myChartBar = new Chart(grapheBar, {
+                type: 'bar',
+                data: {
+                    labels: [{% for nom in list_user %} '{{nom[0]}}', {% endfor %}],
+            datasets: [{
+                label: 'pots Func user',
+                data: [{% for elm in list_user %} {{ elm[1]}}, {% endfor %}],
+                borderWidth: 1
+                    }]
+                },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+            });
+        </script>
+
+    </div>
+
 </body>
+
 </html>

@@ -12,7 +12,7 @@
 
 <body>
     <canvas id="line" width="800" height="300"></canvas>
-    <canvas id="pie" width="400" height="400"></canvas>
+    <canvas id="pie"></canvas>
     <canvas id="bar" width="400" height="400"></canvas>
 
     <div id="courbe">
@@ -21,7 +21,7 @@
             const myChart = new Chart(grapheLine, {
                 type: 'line',
                 data: {
-                    labels: [{% for n in list_post %} {{ n[0]}}, {% endfor %}],
+                    labels: [{% for n in list_post %} {{ n[0] }}, {% endfor %}],
             datasets: [{
                 label: 'Comment Func Post',
                 data: [{% for elmt in list_post %} {{ elmt[1]}}, {% endfor %}],
@@ -65,6 +65,36 @@
             }
             });
         </script>
+
+    </div>
+
+    <div id="graph_en_pie" style="height: 20px; width: 20px;">
+
+        <script>
+            //graphe en pie
+
+            const graphePie = document.getElementById('bar').getContext('2d');
+            const myChartPie = new Chart(graphePie, {
+                type: 'pie',
+                data: {
+                    labels: ['false','true'],
+            datasets: [{
+                label: 'pots Func user',
+                data: [{{d_false[0]}},{{d_true[0]}}],
+                backgroundColor:['red','blue'],
+                borderWidth: 1
+                    }]
+                },
+            /*  options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }*/
+            });
+        </script>
+
 
     </div>
 

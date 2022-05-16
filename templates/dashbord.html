@@ -16,22 +16,11 @@
         const grapheLine = document.getElementById('line').getContext('2d');
         const myChart = new Chart(grapheLine, {
             type: 'line',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Comment Func Post',
-                    data: [],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+            data :{
+                labels:{{list_post | safe }},
+
             }
-        });
+        }
         </script>
     
 

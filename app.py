@@ -280,6 +280,7 @@ def adduser():
     else:
         return render_template('formulairedajout.html')
 # --------------------ADD BY DEME-----------------------
+
 @app.route('/addPost', methods=['POST'])
 def addPost():
     postid = gestionIdForManullayInsertion(Posts, Posts.postid,'posts')
@@ -352,7 +353,7 @@ def dashbord():
     list_user=[]
     list_post=[]
     for user in users:
-        v=(user.username,len(user.posts))
+        v=(user.username)
         list_user.append(v)
     print(list_user)
     for post in posts:
@@ -363,11 +364,7 @@ def dashbord():
     d_true= db.session.query(db.func.count(Todo.todoetat)).filter_by(todoetat = 'true').first()
     # d_= db.session.query(db.func.count(Todo.todoetat)).first()
 
-
-
-    
-
-    return render_template('dashbord.html',list_post=list_post, list_user=list_user)
+    return render_template('dashbord.html',list_post=list_post, list_user=list_user,d_false=d_false,d_true=d_true)
 
 # --------------------------END--------------------------
 

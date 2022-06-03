@@ -32,6 +32,7 @@ class Posts(db.Model):
     postbody = db.Column(db.String(1000),nullable = False)
     userid = db.Column(db.Integer, db.ForeignKey('users.userid'))
     comments = db.relationship('Comment', backref = 'posts')
+    archive = db.Column(db.Integer,default=1)
 
 
 class Address(db.Model):
@@ -43,12 +44,14 @@ class Address(db.Model):
     geo_lat = db.Column(db.Float(),nullable = False)
     geo_lng = db.Column(db.Float(),nullable = False)
     userid = db.Column(db.Integer(), db.ForeignKey('users.userid'))
+    archive = db.Column(db.Integer,default=1)
 
 class Todo(db.Model):
     todoid = db.Column(db.Integer(), primary_key = True) 
     todotitle = db.Column(db.String(255),nullable = False)
     todoetat = db.Column(db.String(20), nullable = False) 
     userid = db.Column(db.Integer, db.ForeignKey('users.userid'))
+    archive = db.Column(db.Integer,default=1)
 
 
 class Albums(db.Model):
@@ -56,6 +59,7 @@ class Albums(db.Model):
     albumtitle = db.Column(db.String(255),nullable = False)
     userid = db.Column(db.Integer, db.ForeignKey('users.userid'))
     photos = db.relationship('Photos', backref = 'albums')
+    archive = db.Column(db.Integer,default=1)
 
 
 
@@ -65,6 +69,7 @@ class Photos(db.Model):
     photourl = db.Column(db.String(255),nullable = False)
     photothumbnailurl = db.Column(db.String(255),nullable = False)
     albumid = db.Column(db.Integer, db.ForeignKey('albums.albumid'))
+    archive = db.Column(db.Integer,default=1)
 
 
 
@@ -74,6 +79,7 @@ class Company(db.Model):
     companycatchphrase = db.Column(db.String(255),nullable = False)
     companybs = db.Column(db.String(255),nullable = False)
     userid = db.Column(db.Integer, db.ForeignKey('users.userid'))
+    archive = db.Column(db.Integer,default=1)
 
 class Comment(db.Model):
     commentid = db.Column(db.Integer(), primary_key = True) 
@@ -81,6 +87,7 @@ class Comment(db.Model):
     commentemail = db.Column(db.String(255),nullable = False)
     commentbody = db.Column(db.Text(),nullable = False)
     postid = db.Column(db.Integer, db.ForeignKey('posts.postid'))
+    archive = db.Column(db.Integer,default=1)
 
 
 if __name__ == '__main__':
